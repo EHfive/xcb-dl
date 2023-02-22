@@ -644,149 +644,189 @@ impl Default for xcb_res_query_resource_bytes_reply_t {
 #[cfg(feature = "xcb_res")]
 pub(crate) struct XcbResRes {
     xcb_res_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_res_client_next: LazySymbol<unsafe fn(i: *mut xcb_res_client_iterator_t)>,
+    xcb_res_client_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_res_client_iterator_t)>,
     xcb_res_client_end:
-        LazySymbol<unsafe fn(i: xcb_res_client_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_res_type_next: LazySymbol<unsafe fn(i: *mut xcb_res_type_iterator_t)>,
-    xcb_res_type_end: LazySymbol<unsafe fn(i: xcb_res_type_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_res_client_id_spec_next: LazySymbol<unsafe fn(i: *mut xcb_res_client_id_spec_iterator_t)>,
-    xcb_res_client_id_spec_end:
-        LazySymbol<unsafe fn(i: xcb_res_client_id_spec_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_res_client_id_value_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_res_client_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_res_type_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_res_type_iterator_t)>,
+    xcb_res_type_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_res_type_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_res_client_id_spec_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_res_client_id_spec_iterator_t)>,
+    xcb_res_client_id_spec_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_res_client_id_spec_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_res_client_id_value_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_res_client_id_value_value:
-        LazySymbol<unsafe fn(r: *const xcb_res_client_id_value_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_res_client_id_value_t) -> *mut u32>,
     xcb_res_client_id_value_value_length:
-        LazySymbol<unsafe fn(r: *const xcb_res_client_id_value_t) -> c_int>,
-    xcb_res_client_id_value_value_end:
-        LazySymbol<unsafe fn(r: *const xcb_res_client_id_value_t) -> xcb_generic_iterator_t>,
-    xcb_res_client_id_value_next: LazySymbol<unsafe fn(i: *mut xcb_res_client_id_value_iterator_t)>,
-    xcb_res_client_id_value_end:
-        LazySymbol<unsafe fn(i: xcb_res_client_id_value_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_res_client_id_value_t) -> c_int>,
+    xcb_res_client_id_value_value_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_res_client_id_value_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_res_client_id_value_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_res_client_id_value_iterator_t)>,
+    xcb_res_client_id_value_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_res_client_id_value_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_res_resource_id_spec_next:
-        LazySymbol<unsafe fn(i: *mut xcb_res_resource_id_spec_iterator_t)>,
-    xcb_res_resource_id_spec_end:
-        LazySymbol<unsafe fn(i: xcb_res_resource_id_spec_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_res_resource_id_spec_iterator_t)>,
+    xcb_res_resource_id_spec_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_res_resource_id_spec_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_res_resource_size_spec_next:
-        LazySymbol<unsafe fn(i: *mut xcb_res_resource_size_spec_iterator_t)>,
-    xcb_res_resource_size_spec_end:
-        LazySymbol<unsafe fn(i: xcb_res_resource_size_spec_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_res_resource_size_value_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_res_resource_size_spec_iterator_t)>,
+    xcb_res_resource_size_spec_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_res_resource_size_spec_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_res_resource_size_value_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_res_resource_size_value_cross_references: LazySymbol<
-        unsafe fn(r: *const xcb_res_resource_size_value_t) -> *mut xcb_res_resource_size_spec_t,
+        unsafe extern "C" fn(
+            r: *const xcb_res_resource_size_value_t,
+        ) -> *mut xcb_res_resource_size_spec_t,
     >,
     xcb_res_resource_size_value_cross_references_length:
-        LazySymbol<unsafe fn(r: *const xcb_res_resource_size_value_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_res_resource_size_value_t) -> c_int>,
     xcb_res_resource_size_value_cross_references_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_res_resource_size_value_t) -> xcb_res_resource_size_spec_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_res_resource_size_value_t,
+        ) -> xcb_res_resource_size_spec_iterator_t,
     >,
     xcb_res_resource_size_value_next:
-        LazySymbol<unsafe fn(i: *mut xcb_res_resource_size_value_iterator_t)>,
-    xcb_res_resource_size_value_end:
-        LazySymbol<unsafe fn(i: xcb_res_resource_size_value_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_res_resource_size_value_iterator_t)>,
+    xcb_res_resource_size_value_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_res_resource_size_value_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_res_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major: u8,
             client_minor: u8,
         ) -> xcb_res_query_version_cookie_t,
     >,
     xcb_res_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major: u8,
             client_minor: u8,
         ) -> xcb_res_query_version_cookie_t,
     >,
     xcb_res_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_res_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_res_query_version_reply_t,
     >,
-    xcb_res_query_clients_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_res_query_clients:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_res_query_clients_cookie_t>,
-    xcb_res_query_clients_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_res_query_clients_cookie_t>,
-    xcb_res_query_clients_clients:
-        LazySymbol<unsafe fn(r: *const xcb_res_query_clients_reply_t) -> *mut xcb_res_client_t>,
+    xcb_res_query_clients_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_res_query_clients: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_res_query_clients_cookie_t,
+    >,
+    xcb_res_query_clients_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_res_query_clients_cookie_t,
+    >,
+    xcb_res_query_clients_clients: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_res_query_clients_reply_t) -> *mut xcb_res_client_t,
+    >,
     xcb_res_query_clients_clients_length:
-        LazySymbol<unsafe fn(r: *const xcb_res_query_clients_reply_t) -> c_int>,
-    xcb_res_query_clients_clients_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_res_query_clients_reply_t) -> xcb_res_client_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_res_query_clients_reply_t) -> c_int>,
+    xcb_res_query_clients_clients_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_res_query_clients_reply_t) -> xcb_res_client_iterator_t,
+    >,
     xcb_res_query_clients_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_res_query_clients_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_res_query_clients_reply_t,
     >,
-    xcb_res_query_client_resources_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_res_query_client_resources_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_res_query_client_resources: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, xid: u32) -> xcb_res_query_client_resources_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            xid: u32,
+        ) -> xcb_res_query_client_resources_cookie_t,
     >,
     xcb_res_query_client_resources_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, xid: u32) -> xcb_res_query_client_resources_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            xid: u32,
+        ) -> xcb_res_query_client_resources_cookie_t,
     >,
     xcb_res_query_client_resources_types: LazySymbol<
-        unsafe fn(r: *const xcb_res_query_client_resources_reply_t) -> *mut xcb_res_type_t,
+        unsafe extern "C" fn(
+            r: *const xcb_res_query_client_resources_reply_t,
+        ) -> *mut xcb_res_type_t,
     >,
     xcb_res_query_client_resources_types_length:
-        LazySymbol<unsafe fn(r: *const xcb_res_query_client_resources_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_res_query_client_resources_reply_t) -> c_int>,
     xcb_res_query_client_resources_types_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_res_query_client_resources_reply_t) -> xcb_res_type_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_res_query_client_resources_reply_t,
+        ) -> xcb_res_type_iterator_t,
     >,
     xcb_res_query_client_resources_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_res_query_client_resources_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_res_query_client_resources_reply_t,
     >,
     xcb_res_query_client_pixmap_bytes: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, xid: u32) -> xcb_res_query_client_pixmap_bytes_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            xid: u32,
+        ) -> xcb_res_query_client_pixmap_bytes_cookie_t,
     >,
     xcb_res_query_client_pixmap_bytes_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, xid: u32) -> xcb_res_query_client_pixmap_bytes_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            xid: u32,
+        ) -> xcb_res_query_client_pixmap_bytes_cookie_t,
     >,
     xcb_res_query_client_pixmap_bytes_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_res_query_client_pixmap_bytes_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_res_query_client_pixmap_bytes_reply_t,
     >,
-    xcb_res_query_client_ids_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_res_query_client_ids_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_res_query_client_ids: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             num_specs: u32,
             specs: *const xcb_res_client_id_spec_t,
         ) -> xcb_res_query_client_ids_cookie_t,
     >,
     xcb_res_query_client_ids_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             num_specs: u32,
             specs: *const xcb_res_client_id_spec_t,
         ) -> xcb_res_query_client_ids_cookie_t,
     >,
     xcb_res_query_client_ids_ids_length:
-        LazySymbol<unsafe fn(r: *const xcb_res_query_client_ids_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_res_query_client_ids_reply_t) -> c_int>,
     xcb_res_query_client_ids_ids_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_res_query_client_ids_reply_t) -> xcb_res_client_id_value_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_res_query_client_ids_reply_t,
+        ) -> xcb_res_client_id_value_iterator_t,
     >,
     xcb_res_query_client_ids_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_res_query_client_ids_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_res_query_client_ids_reply_t,
     >,
-    xcb_res_query_resource_bytes_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_res_query_resource_bytes_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_res_query_resource_bytes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client: u32,
             num_specs: u32,
@@ -794,7 +834,7 @@ pub(crate) struct XcbResRes {
         ) -> xcb_res_query_resource_bytes_cookie_t,
     >,
     xcb_res_query_resource_bytes_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client: u32,
             num_specs: u32,
@@ -802,14 +842,14 @@ pub(crate) struct XcbResRes {
         ) -> xcb_res_query_resource_bytes_cookie_t,
     >,
     xcb_res_query_resource_bytes_sizes_length:
-        LazySymbol<unsafe fn(r: *const xcb_res_query_resource_bytes_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_res_query_resource_bytes_reply_t) -> c_int>,
     xcb_res_query_resource_bytes_sizes_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_res_query_resource_bytes_reply_t,
         ) -> xcb_res_resource_size_value_iterator_t,
     >,
     xcb_res_query_resource_bytes_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_res_query_resource_bytes_cookie_t,
             e: *mut *mut xcb_generic_error_t,

@@ -77,21 +77,21 @@ impl Default for xcb_genericevent_query_version_reply_t {
 pub(crate) struct XcbGeGe {
     xcb_genericevent_id: LazySymbol<*mut xcb_extension_t>,
     xcb_genericevent_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u16,
             client_minor_version: u16,
         ) -> xcb_genericevent_query_version_cookie_t,
     >,
     xcb_genericevent_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u16,
             client_minor_version: u16,
         ) -> xcb_genericevent_query_version_cookie_t,
     >,
     xcb_genericevent_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_genericevent_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,

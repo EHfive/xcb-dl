@@ -72,6 +72,9 @@ pub struct xcb_damage_bad_damage_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_damage_bad_damage_error_t {
@@ -268,32 +271,32 @@ impl Default for xcb_damage_notify_event_t {
 #[cfg(feature = "xcb_damage")]
 pub(crate) struct XcbDamageDamage {
     xcb_damage_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_damage_damage_next: LazySymbol<unsafe fn(i: *mut xcb_damage_damage_iterator_t)>,
+    xcb_damage_damage_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_damage_damage_iterator_t)>,
     xcb_damage_damage_end:
-        LazySymbol<unsafe fn(i: xcb_damage_damage_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_damage_damage_iterator_t) -> xcb_generic_iterator_t>,
     xcb_damage_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u32,
             client_minor_version: u32,
         ) -> xcb_damage_query_version_cookie_t,
     >,
     xcb_damage_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u32,
             client_minor_version: u32,
         ) -> xcb_damage_query_version_cookie_t,
     >,
     xcb_damage_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_damage_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_damage_query_version_reply_t,
     >,
     xcb_damage_create_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             damage: xcb_damage_damage_t,
             drawable: xcb_drawable_t,
@@ -301,7 +304,7 @@ pub(crate) struct XcbDamageDamage {
         ) -> xcb_void_cookie_t,
     >,
     xcb_damage_create: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             damage: xcb_damage_damage_t,
             drawable: xcb_drawable_t,
@@ -309,13 +312,19 @@ pub(crate) struct XcbDamageDamage {
         ) -> xcb_void_cookie_t,
     >,
     xcb_damage_destroy_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, damage: xcb_damage_damage_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            damage: xcb_damage_damage_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_damage_destroy: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, damage: xcb_damage_damage_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            damage: xcb_damage_damage_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_damage_subtract_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             damage: xcb_damage_damage_t,
             repair: xcb_xfixes_region_t,
@@ -323,7 +332,7 @@ pub(crate) struct XcbDamageDamage {
         ) -> xcb_void_cookie_t,
     >,
     xcb_damage_subtract: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             damage: xcb_damage_damage_t,
             repair: xcb_xfixes_region_t,
@@ -331,14 +340,14 @@ pub(crate) struct XcbDamageDamage {
         ) -> xcb_void_cookie_t,
     >,
     xcb_damage_add_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             region: xcb_xfixes_region_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_damage_add: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             region: xcb_xfixes_region_t,

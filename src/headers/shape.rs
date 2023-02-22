@@ -530,26 +530,29 @@ impl Default for xcb_shape_get_rectangles_reply_t {
 #[cfg(feature = "xcb_shape")]
 pub(crate) struct XcbShapeShape {
     xcb_shape_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_shape_op_next: LazySymbol<unsafe fn(i: *mut xcb_shape_op_iterator_t)>,
-    xcb_shape_op_end: LazySymbol<unsafe fn(i: xcb_shape_op_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_shape_kind_next: LazySymbol<unsafe fn(i: *mut xcb_shape_kind_iterator_t)>,
+    xcb_shape_op_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_shape_op_iterator_t)>,
+    xcb_shape_op_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_shape_op_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_shape_kind_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_shape_kind_iterator_t)>,
     xcb_shape_kind_end:
-        LazySymbol<unsafe fn(i: xcb_shape_kind_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_shape_query_version:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_shape_query_version_cookie_t>,
-    xcb_shape_query_version_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_shape_query_version_cookie_t>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_shape_kind_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_shape_query_version: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_shape_query_version_cookie_t,
+    >,
+    xcb_shape_query_version_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_shape_query_version_cookie_t,
+    >,
     xcb_shape_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_shape_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_shape_query_version_reply_t,
     >,
     xcb_shape_rectangles_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, rectangles_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, rectangles_len: u32) -> c_int>,
     xcb_shape_rectangles_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             operation: xcb_shape_op_t,
             destination_kind: xcb_shape_kind_t,
@@ -562,7 +565,7 @@ pub(crate) struct XcbShapeShape {
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_rectangles: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             operation: xcb_shape_op_t,
             destination_kind: xcb_shape_kind_t,
@@ -574,14 +577,16 @@ pub(crate) struct XcbShapeShape {
             rectangles: *const xcb_rectangle_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_shape_rectangles_rectangles:
-        LazySymbol<unsafe fn(r: *const xcb_shape_rectangles_request_t) -> *mut xcb_rectangle_t>,
+    xcb_shape_rectangles_rectangles: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_shape_rectangles_request_t) -> *mut xcb_rectangle_t,
+    >,
     xcb_shape_rectangles_rectangles_length:
-        LazySymbol<unsafe fn(r: *const xcb_shape_rectangles_request_t) -> c_int>,
-    xcb_shape_rectangles_rectangles_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_shape_rectangles_request_t) -> xcb_rectangle_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_shape_rectangles_request_t) -> c_int>,
+    xcb_shape_rectangles_rectangles_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_shape_rectangles_request_t) -> xcb_rectangle_iterator_t,
+    >,
     xcb_shape_mask_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             operation: xcb_shape_op_t,
             destination_kind: xcb_shape_kind_t,
@@ -592,7 +597,7 @@ pub(crate) struct XcbShapeShape {
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_mask: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             operation: xcb_shape_op_t,
             destination_kind: xcb_shape_kind_t,
@@ -603,7 +608,7 @@ pub(crate) struct XcbShapeShape {
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_combine_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             operation: xcb_shape_op_t,
             destination_kind: xcb_shape_kind_t,
@@ -615,7 +620,7 @@ pub(crate) struct XcbShapeShape {
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_combine: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             operation: xcb_shape_op_t,
             destination_kind: xcb_shape_kind_t,
@@ -627,7 +632,7 @@ pub(crate) struct XcbShapeShape {
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_offset_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination_kind: xcb_shape_kind_t,
             destination_window: xcb_window_t,
@@ -636,7 +641,7 @@ pub(crate) struct XcbShapeShape {
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_offset: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination_kind: xcb_shape_kind_t,
             destination_window: xcb_window_t,
@@ -645,81 +650,85 @@ pub(crate) struct XcbShapeShape {
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_query_extents: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination_window: xcb_window_t,
         ) -> xcb_shape_query_extents_cookie_t,
     >,
     xcb_shape_query_extents_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination_window: xcb_window_t,
         ) -> xcb_shape_query_extents_cookie_t,
     >,
     xcb_shape_query_extents_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_shape_query_extents_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_shape_query_extents_reply_t,
     >,
     xcb_shape_select_input_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination_window: xcb_window_t,
             enable: u8,
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_select_input: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination_window: xcb_window_t,
             enable: u8,
         ) -> xcb_void_cookie_t,
     >,
     xcb_shape_input_selected: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination_window: xcb_window_t,
         ) -> xcb_shape_input_selected_cookie_t,
     >,
     xcb_shape_input_selected_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination_window: xcb_window_t,
         ) -> xcb_shape_input_selected_cookie_t,
     >,
     xcb_shape_input_selected_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_shape_input_selected_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_shape_input_selected_reply_t,
     >,
-    xcb_shape_get_rectangles_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_shape_get_rectangles_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_shape_get_rectangles: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             source_kind: xcb_shape_kind_t,
         ) -> xcb_shape_get_rectangles_cookie_t,
     >,
     xcb_shape_get_rectangles_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             source_kind: xcb_shape_kind_t,
         ) -> xcb_shape_get_rectangles_cookie_t,
     >,
-    xcb_shape_get_rectangles_rectangles:
-        LazySymbol<unsafe fn(r: *const xcb_shape_get_rectangles_reply_t) -> *mut xcb_rectangle_t>,
+    xcb_shape_get_rectangles_rectangles: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_shape_get_rectangles_reply_t) -> *mut xcb_rectangle_t,
+    >,
     xcb_shape_get_rectangles_rectangles_length:
-        LazySymbol<unsafe fn(r: *const xcb_shape_get_rectangles_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_shape_get_rectangles_reply_t) -> c_int>,
     xcb_shape_get_rectangles_rectangles_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_shape_get_rectangles_reply_t) -> xcb_rectangle_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_shape_get_rectangles_reply_t,
+        ) -> xcb_rectangle_iterator_t,
     >,
     xcb_shape_get_rectangles_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_shape_get_rectangles_cookie_t,
             e: *mut *mut xcb_generic_error_t,

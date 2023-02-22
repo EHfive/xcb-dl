@@ -196,52 +196,62 @@ impl Default for xcb_xc_misc_get_xid_list_reply_t {
 pub(crate) struct XcbXc_Misc {
     xcb_xc_misc_id: LazySymbol<*mut xcb_extension_t>,
     xcb_xc_misc_get_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u16,
             client_minor_version: u16,
         ) -> xcb_xc_misc_get_version_cookie_t,
     >,
     xcb_xc_misc_get_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u16,
             client_minor_version: u16,
         ) -> xcb_xc_misc_get_version_cookie_t,
     >,
     xcb_xc_misc_get_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xc_misc_get_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xc_misc_get_version_reply_t,
     >,
-    xcb_xc_misc_get_xid_range:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_xc_misc_get_xid_range_cookie_t>,
-    xcb_xc_misc_get_xid_range_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_xc_misc_get_xid_range_cookie_t>,
+    xcb_xc_misc_get_xid_range: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_xc_misc_get_xid_range_cookie_t,
+    >,
+    xcb_xc_misc_get_xid_range_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_xc_misc_get_xid_range_cookie_t,
+    >,
     xcb_xc_misc_get_xid_range_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xc_misc_get_xid_range_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xc_misc_get_xid_range_reply_t,
     >,
-    xcb_xc_misc_get_xid_list_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xc_misc_get_xid_list_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xc_misc_get_xid_list: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, count: u32) -> xcb_xc_misc_get_xid_list_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            count: u32,
+        ) -> xcb_xc_misc_get_xid_list_cookie_t,
     >,
     xcb_xc_misc_get_xid_list_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, count: u32) -> xcb_xc_misc_get_xid_list_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            count: u32,
+        ) -> xcb_xc_misc_get_xid_list_cookie_t,
     >,
     xcb_xc_misc_get_xid_list_ids:
-        LazySymbol<unsafe fn(r: *const xcb_xc_misc_get_xid_list_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xc_misc_get_xid_list_reply_t) -> *mut u32>,
     xcb_xc_misc_get_xid_list_ids_length:
-        LazySymbol<unsafe fn(r: *const xcb_xc_misc_get_xid_list_reply_t) -> c_int>,
-    xcb_xc_misc_get_xid_list_ids_end:
-        LazySymbol<unsafe fn(r: *const xcb_xc_misc_get_xid_list_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xc_misc_get_xid_list_reply_t) -> c_int>,
+    xcb_xc_misc_get_xid_list_ids_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xc_misc_get_xid_list_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xc_misc_get_xid_list_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xc_misc_get_xid_list_cookie_t,
             e: *mut *mut xcb_generic_error_t,

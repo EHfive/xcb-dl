@@ -508,56 +508,84 @@ impl Default for xcb_dri3_buffers_from_pixmap_reply_t {
     }
 }
 
+/// The opcode for `DRI3::SetDRMDeviceInUse` requests.
+///
+/// If this value appears in [`xcb_protocol_request_t::opcode`], and
+/// [`xcb_protocol_request_t::ext`] is [`XcbDri3::xcb_dri3_id()`], then the type of the request is
+/// [`xcb_dri3_set_drm_device_in_use_request_t`].
+pub const XCB_DRI3_SET_DRM_DEVICE_IN_USE: u8 = 9i32 as u8;
+
+/// The `DRI3::SetDRMDeviceInUse` request.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_dri3_set_drm_device_in_use_request_t {
+    pub major_opcode: u8,
+    pub minor_opcode: u8,
+    pub length: u16,
+    pub window: xcb_window_t,
+    pub drm_major: u32,
+    pub drm_minor: u32,
+}
+
+impl Default for xcb_dri3_set_drm_device_in_use_request_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
 #[cfg(feature = "xcb_dri3")]
 pub(crate) struct XcbDri3Dri3 {
     xcb_dri3_id: LazySymbol<*mut xcb_extension_t>,
     xcb_dri3_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
         ) -> xcb_dri3_query_version_cookie_t,
     >,
     xcb_dri3_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
         ) -> xcb_dri3_query_version_cookie_t,
     >,
     xcb_dri3_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri3_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri3_query_version_reply_t,
     >,
     xcb_dri3_open: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             provider: u32,
         ) -> xcb_dri3_open_cookie_t,
     >,
     xcb_dri3_open_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             provider: u32,
         ) -> xcb_dri3_open_cookie_t,
     >,
     xcb_dri3_open_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri3_open_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri3_open_reply_t,
     >,
     xcb_dri3_open_reply_fds: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, reply: *mut xcb_dri3_open_reply_t) -> *mut c_int,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            reply: *mut xcb_dri3_open_reply_t,
+        ) -> *mut c_int,
     >,
     xcb_dri3_pixmap_from_buffer_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             pixmap: xcb_pixmap_t,
             drawable: xcb_drawable_t,
@@ -571,7 +599,7 @@ pub(crate) struct XcbDri3Dri3 {
         ) -> xcb_void_cookie_t,
     >,
     xcb_dri3_pixmap_from_buffer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             pixmap: xcb_pixmap_t,
             drawable: xcb_drawable_t,
@@ -585,32 +613,32 @@ pub(crate) struct XcbDri3Dri3 {
         ) -> xcb_void_cookie_t,
     >,
     xcb_dri3_buffer_from_pixmap: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             pixmap: xcb_pixmap_t,
         ) -> xcb_dri3_buffer_from_pixmap_cookie_t,
     >,
     xcb_dri3_buffer_from_pixmap_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             pixmap: xcb_pixmap_t,
         ) -> xcb_dri3_buffer_from_pixmap_cookie_t,
     >,
     xcb_dri3_buffer_from_pixmap_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri3_buffer_from_pixmap_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri3_buffer_from_pixmap_reply_t,
     >,
     xcb_dri3_buffer_from_pixmap_reply_fds: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             reply: *mut xcb_dri3_buffer_from_pixmap_reply_t,
         ) -> *mut c_int,
     >,
     xcb_dri3_fence_from_fd_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             fence: u32,
@@ -619,7 +647,7 @@ pub(crate) struct XcbDri3Dri3 {
         ) -> xcb_void_cookie_t,
     >,
     xcb_dri3_fence_from_fd: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             fence: u32,
@@ -628,35 +656,36 @@ pub(crate) struct XcbDri3Dri3 {
         ) -> xcb_void_cookie_t,
     >,
     xcb_dri3_fd_from_fence: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             fence: u32,
         ) -> xcb_dri3_fd_from_fence_cookie_t,
     >,
     xcb_dri3_fd_from_fence_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             fence: u32,
         ) -> xcb_dri3_fd_from_fence_cookie_t,
     >,
     xcb_dri3_fd_from_fence_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri3_fd_from_fence_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri3_fd_from_fence_reply_t,
     >,
     xcb_dri3_fd_from_fence_reply_fds: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             reply: *mut xcb_dri3_fd_from_fence_reply_t,
         ) -> *mut c_int,
     >,
-    xcb_dri3_get_supported_modifiers_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_dri3_get_supported_modifiers_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_dri3_get_supported_modifiers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: u32,
             depth: u8,
@@ -664,36 +693,44 @@ pub(crate) struct XcbDri3Dri3 {
         ) -> xcb_dri3_get_supported_modifiers_cookie_t,
     >,
     xcb_dri3_get_supported_modifiers_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: u32,
             depth: u8,
             bpp: u8,
         ) -> xcb_dri3_get_supported_modifiers_cookie_t,
     >,
-    xcb_dri3_get_supported_modifiers_window_modifiers:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> *mut u64>,
-    xcb_dri3_get_supported_modifiers_window_modifiers_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> c_int>,
-    xcb_dri3_get_supported_modifiers_window_modifiers_end: LazySymbol<
-        unsafe fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> xcb_generic_iterator_t,
+    xcb_dri3_get_supported_modifiers_window_modifiers: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> *mut u64,
     >,
-    xcb_dri3_get_supported_modifiers_screen_modifiers:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> *mut u64>,
-    xcb_dri3_get_supported_modifiers_screen_modifiers_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> c_int>,
+    xcb_dri3_get_supported_modifiers_window_modifiers_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> c_int,
+    >,
+    xcb_dri3_get_supported_modifiers_window_modifiers_end: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_dri3_get_supported_modifiers_reply_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_dri3_get_supported_modifiers_screen_modifiers: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> *mut u64,
+    >,
+    xcb_dri3_get_supported_modifiers_screen_modifiers_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> c_int,
+    >,
     xcb_dri3_get_supported_modifiers_screen_modifiers_end: LazySymbol<
-        unsafe fn(r: *const xcb_dri3_get_supported_modifiers_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_dri3_get_supported_modifiers_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_dri3_get_supported_modifiers_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri3_get_supported_modifiers_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri3_get_supported_modifiers_reply_t,
     >,
     xcb_dri3_pixmap_from_buffers_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             pixmap: xcb_pixmap_t,
             window: xcb_window_t,
@@ -715,7 +752,7 @@ pub(crate) struct XcbDri3Dri3 {
         ) -> xcb_void_cookie_t,
     >,
     xcb_dri3_pixmap_from_buffers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             pixmap: xcb_pixmap_t,
             window: xcb_window_t,
@@ -737,52 +774,77 @@ pub(crate) struct XcbDri3Dri3 {
         ) -> xcb_void_cookie_t,
     >,
     xcb_dri3_buffers_from_pixmap_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, buffers: i32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, buffers: i32) -> c_int>,
     xcb_dri3_buffers_from_pixmap: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             pixmap: xcb_pixmap_t,
         ) -> xcb_dri3_buffers_from_pixmap_cookie_t,
     >,
     xcb_dri3_buffers_from_pixmap_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             pixmap: xcb_pixmap_t,
         ) -> xcb_dri3_buffers_from_pixmap_cookie_t,
     >,
-    xcb_dri3_buffers_from_pixmap_strides:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> *mut u32>,
+    xcb_dri3_buffers_from_pixmap_strides: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> *mut u32,
+    >,
     xcb_dri3_buffers_from_pixmap_strides_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> c_int>,
     xcb_dri3_buffers_from_pixmap_strides_end: LazySymbol<
-        unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_dri3_buffers_from_pixmap_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_dri3_buffers_from_pixmap_offsets:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> *mut u32>,
+    xcb_dri3_buffers_from_pixmap_offsets: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> *mut u32,
+    >,
     xcb_dri3_buffers_from_pixmap_offsets_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> c_int>,
     xcb_dri3_buffers_from_pixmap_offsets_end: LazySymbol<
-        unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_dri3_buffers_from_pixmap_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_dri3_buffers_from_pixmap_buffers:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> *mut i32>,
+    xcb_dri3_buffers_from_pixmap_buffers: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> *mut i32,
+    >,
     xcb_dri3_buffers_from_pixmap_buffers_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> c_int>,
     xcb_dri3_buffers_from_pixmap_buffers_end: LazySymbol<
-        unsafe fn(r: *const xcb_dri3_buffers_from_pixmap_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_dri3_buffers_from_pixmap_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_dri3_buffers_from_pixmap_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri3_buffers_from_pixmap_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri3_buffers_from_pixmap_reply_t,
     >,
     xcb_dri3_buffers_from_pixmap_reply_fds: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             reply: *mut xcb_dri3_buffers_from_pixmap_reply_t,
         ) -> *mut c_int,
+    >,
+    xcb_dri3_set_drm_device_in_use_checked: LazySymbol<
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            window: xcb_window_t,
+            drm_major: u32,
+            drm_minor: u32,
+        ) -> xcb_void_cookie_t,
+    >,
+    xcb_dri3_set_drm_device_in_use: LazySymbol<
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            window: xcb_window_t,
+            drm_major: u32,
+            drm_minor: u32,
+        ) -> xcb_void_cookie_t,
     >,
 }
 
@@ -1750,6 +1812,48 @@ impl XcbDri3 {
     pub fn has_xcb_dri3_buffers_from_pixmap_reply_fds(&self) -> bool {
         has_sym!(self, xcb_dri3_buffers_from_pixmap_reply_fds)
     }
+
+    /// Sends a `DRI3::SetDRMDeviceInUse` request (checked).
+    ///
+    /// This request generates a reply. You must either discard it with
+    /// [`discard_reply`] or retrieve it with [`xcb_request_check`].
+    ///
+    /// [`discard_reply`]: crate::Xcb::xcb_discard_reply
+    /// [`xcb_request_check`]: crate::Xcb::xcb_request_check
+    #[inline]
+    pub unsafe fn xcb_dri3_set_drm_device_in_use_checked(
+        &self,
+        c: *mut xcb_connection_t,
+        window: xcb_window_t,
+        drm_major: u32,
+        drm_minor: u32,
+    ) -> xcb_void_cookie_t {
+        sym!(self, xcb_dri3_set_drm_device_in_use_checked)(c, window, drm_major, drm_minor)
+    }
+
+    /// Returns `true` iff the symbol `xcb_dri3_set_drm_device_in_use_checked` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_dri3_set_drm_device_in_use_checked(&self) -> bool {
+        has_sym!(self, xcb_dri3_set_drm_device_in_use_checked)
+    }
+
+    /// Sends a `DRI3::SetDRMDeviceInUse` request (unchecked).
+    #[inline]
+    pub unsafe fn xcb_dri3_set_drm_device_in_use(
+        &self,
+        c: *mut xcb_connection_t,
+        window: xcb_window_t,
+        drm_major: u32,
+        drm_minor: u32,
+    ) -> xcb_void_cookie_t {
+        sym!(self, xcb_dri3_set_drm_device_in_use)(c, window, drm_major, drm_minor)
+    }
+
+    /// Returns `true` iff the symbol `xcb_dri3_set_drm_device_in_use` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_dri3_set_drm_device_in_use(&self) -> bool {
+        has_sym!(self, xcb_dri3_set_drm_device_in_use)
+    }
 }
 
 #[cfg(feature = "xcb_dri3")]
@@ -1804,5 +1908,7 @@ mod test {
         assert!(lib.has_xcb_dri3_buffers_from_pixmap_buffers_end());
         assert!(lib.has_xcb_dri3_buffers_from_pixmap_reply());
         assert!(lib.has_xcb_dri3_buffers_from_pixmap_reply_fds());
+        assert!(lib.has_xcb_dri3_set_drm_device_in_use_checked());
+        assert!(lib.has_xcb_dri3_set_drm_device_in_use());
     }
 }

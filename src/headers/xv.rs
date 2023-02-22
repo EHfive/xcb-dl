@@ -511,6 +511,9 @@ pub struct xcb_xv_bad_port_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_xv_bad_port_error_t {
@@ -532,6 +535,9 @@ pub struct xcb_xv_bad_encoding_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_xv_bad_encoding_error_t {
@@ -553,6 +559,9 @@ pub struct xcb_xv_bad_control_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_xv_bad_control_error_t {
@@ -1511,156 +1520,191 @@ impl Default for xcb_xv_shm_put_image_request_t {
 #[cfg(feature = "xcb_xv")]
 pub(crate) struct XcbXvXv {
     xcb_xv_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_xv_port_next: LazySymbol<unsafe fn(i: *mut xcb_xv_port_iterator_t)>,
-    xcb_xv_port_end: LazySymbol<unsafe fn(i: xcb_xv_port_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xv_encoding_next: LazySymbol<unsafe fn(i: *mut xcb_xv_encoding_iterator_t)>,
+    xcb_xv_port_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_port_iterator_t)>,
+    xcb_xv_port_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_xv_port_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xv_encoding_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_encoding_iterator_t)>,
     xcb_xv_encoding_end:
-        LazySymbol<unsafe fn(i: xcb_xv_encoding_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xv_rational_next: LazySymbol<unsafe fn(i: *mut xcb_xv_rational_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xv_encoding_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xv_rational_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_rational_iterator_t)>,
     xcb_xv_rational_end:
-        LazySymbol<unsafe fn(i: xcb_xv_rational_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xv_format_next: LazySymbol<unsafe fn(i: *mut xcb_xv_format_iterator_t)>,
-    xcb_xv_format_end: LazySymbol<unsafe fn(i: xcb_xv_format_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xv_adaptor_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xv_adaptor_info_name: LazySymbol<unsafe fn(r: *const xcb_xv_adaptor_info_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xv_rational_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xv_format_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_format_iterator_t)>,
+    xcb_xv_format_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_xv_format_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xv_adaptor_info_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xv_adaptor_info_name:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_adaptor_info_t) -> *mut c_char>,
     xcb_xv_adaptor_info_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_adaptor_info_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_adaptor_info_t) -> c_int>,
     xcb_xv_adaptor_info_name_end:
-        LazySymbol<unsafe fn(r: *const xcb_xv_adaptor_info_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_adaptor_info_t) -> xcb_generic_iterator_t>,
     xcb_xv_adaptor_info_formats:
-        LazySymbol<unsafe fn(r: *const xcb_xv_adaptor_info_t) -> *mut xcb_xv_format_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_adaptor_info_t) -> *mut xcb_xv_format_t>,
     xcb_xv_adaptor_info_formats_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_adaptor_info_t) -> c_int>,
-    xcb_xv_adaptor_info_formats_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_xv_adaptor_info_t) -> xcb_xv_format_iterator_t>,
-    xcb_xv_adaptor_info_next: LazySymbol<unsafe fn(i: *mut xcb_xv_adaptor_info_iterator_t)>,
-    xcb_xv_adaptor_info_end:
-        LazySymbol<unsafe fn(i: xcb_xv_adaptor_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xv_encoding_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_adaptor_info_t) -> c_int>,
+    xcb_xv_adaptor_info_formats_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xv_adaptor_info_t) -> xcb_xv_format_iterator_t,
+    >,
+    xcb_xv_adaptor_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_adaptor_info_iterator_t)>,
+    xcb_xv_adaptor_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xv_adaptor_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xv_encoding_info_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xv_encoding_info_name:
-        LazySymbol<unsafe fn(r: *const xcb_xv_encoding_info_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_encoding_info_t) -> *mut c_char>,
     xcb_xv_encoding_info_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_encoding_info_t) -> c_int>,
-    xcb_xv_encoding_info_name_end:
-        LazySymbol<unsafe fn(r: *const xcb_xv_encoding_info_t) -> xcb_generic_iterator_t>,
-    xcb_xv_encoding_info_next: LazySymbol<unsafe fn(i: *mut xcb_xv_encoding_info_iterator_t)>,
-    xcb_xv_encoding_info_end:
-        LazySymbol<unsafe fn(i: xcb_xv_encoding_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xv_image_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xv_image_pitches: LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> *mut u32>,
-    xcb_xv_image_pitches_length: LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_encoding_info_t) -> c_int>,
+    xcb_xv_encoding_info_name_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xv_encoding_info_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xv_encoding_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_encoding_info_iterator_t)>,
+    xcb_xv_encoding_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xv_encoding_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xv_image_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xv_image_pitches: LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> *mut u32>,
+    xcb_xv_image_pitches_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> c_int>,
     xcb_xv_image_pitches_end:
-        LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> xcb_generic_iterator_t>,
-    xcb_xv_image_offsets: LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> *mut u32>,
-    xcb_xv_image_offsets_length: LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> xcb_generic_iterator_t>,
+    xcb_xv_image_offsets: LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> *mut u32>,
+    xcb_xv_image_offsets_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> c_int>,
     xcb_xv_image_offsets_end:
-        LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> xcb_generic_iterator_t>,
-    xcb_xv_image_data: LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> *mut u8>,
-    xcb_xv_image_data_length: LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> xcb_generic_iterator_t>,
+    xcb_xv_image_data: LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> *mut u8>,
+    xcb_xv_image_data_length: LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> c_int>,
     xcb_xv_image_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_xv_image_t) -> xcb_generic_iterator_t>,
-    xcb_xv_image_next: LazySymbol<unsafe fn(i: *mut xcb_xv_image_iterator_t)>,
-    xcb_xv_image_end: LazySymbol<unsafe fn(i: xcb_xv_image_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xv_attribute_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_image_t) -> xcb_generic_iterator_t>,
+    xcb_xv_image_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_image_iterator_t)>,
+    xcb_xv_image_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_xv_image_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xv_attribute_info_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xv_attribute_info_name:
-        LazySymbol<unsafe fn(r: *const xcb_xv_attribute_info_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_attribute_info_t) -> *mut c_char>,
     xcb_xv_attribute_info_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_attribute_info_t) -> c_int>,
-    xcb_xv_attribute_info_name_end:
-        LazySymbol<unsafe fn(r: *const xcb_xv_attribute_info_t) -> xcb_generic_iterator_t>,
-    xcb_xv_attribute_info_next: LazySymbol<unsafe fn(i: *mut xcb_xv_attribute_info_iterator_t)>,
-    xcb_xv_attribute_info_end:
-        LazySymbol<unsafe fn(i: xcb_xv_attribute_info_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_attribute_info_t) -> c_int>,
+    xcb_xv_attribute_info_name_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xv_attribute_info_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xv_attribute_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_attribute_info_iterator_t)>,
+    xcb_xv_attribute_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xv_attribute_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xv_image_format_info_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xv_image_format_info_iterator_t)>,
-    xcb_xv_image_format_info_end:
-        LazySymbol<unsafe fn(i: xcb_xv_image_format_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xv_query_extension:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_xv_query_extension_cookie_t>,
-    xcb_xv_query_extension_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_xv_query_extension_cookie_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xv_image_format_info_iterator_t)>,
+    xcb_xv_image_format_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xv_image_format_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xv_query_extension: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_xv_query_extension_cookie_t,
+    >,
+    xcb_xv_query_extension_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_xv_query_extension_cookie_t,
+    >,
     xcb_xv_query_extension_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_query_extension_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_query_extension_reply_t,
     >,
-    xcb_xv_query_adaptors_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xv_query_adaptors_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xv_query_adaptors: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_xv_query_adaptors_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            window: xcb_window_t,
+        ) -> xcb_xv_query_adaptors_cookie_t,
     >,
     xcb_xv_query_adaptors_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_xv_query_adaptors_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            window: xcb_window_t,
+        ) -> xcb_xv_query_adaptors_cookie_t,
     >,
     xcb_xv_query_adaptors_info_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_query_adaptors_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_query_adaptors_reply_t) -> c_int>,
     xcb_xv_query_adaptors_info_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xv_query_adaptors_reply_t) -> xcb_xv_adaptor_info_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xv_query_adaptors_reply_t,
+        ) -> xcb_xv_adaptor_info_iterator_t,
     >,
     xcb_xv_query_adaptors_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_query_adaptors_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_query_adaptors_reply_t,
     >,
-    xcb_xv_query_encodings_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xv_query_encodings_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xv_query_encodings: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, port: xcb_xv_port_t) -> xcb_xv_query_encodings_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            port: xcb_xv_port_t,
+        ) -> xcb_xv_query_encodings_cookie_t,
     >,
     xcb_xv_query_encodings_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, port: xcb_xv_port_t) -> xcb_xv_query_encodings_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            port: xcb_xv_port_t,
+        ) -> xcb_xv_query_encodings_cookie_t,
     >,
     xcb_xv_query_encodings_info_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_query_encodings_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_query_encodings_reply_t) -> c_int>,
     xcb_xv_query_encodings_info_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xv_query_encodings_reply_t) -> xcb_xv_encoding_info_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xv_query_encodings_reply_t,
+        ) -> xcb_xv_encoding_info_iterator_t,
     >,
     xcb_xv_query_encodings_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_query_encodings_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_query_encodings_reply_t,
     >,
     xcb_xv_grab_port: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             time: xcb_timestamp_t,
         ) -> xcb_xv_grab_port_cookie_t,
     >,
     xcb_xv_grab_port_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             time: xcb_timestamp_t,
         ) -> xcb_xv_grab_port_cookie_t,
     >,
     xcb_xv_grab_port_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_grab_port_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_grab_port_reply_t,
     >,
     xcb_xv_ungrab_port_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             time: xcb_timestamp_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_ungrab_port: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             time: xcb_timestamp_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_put_video_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -1676,7 +1720,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_put_video: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -1692,7 +1736,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_put_still_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -1708,7 +1752,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_put_still: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -1724,7 +1768,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_get_video_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -1740,7 +1784,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_get_video: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -1756,7 +1800,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_get_still_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -1772,7 +1816,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_get_still: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -1788,41 +1832,49 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_stop_video_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_stop_video: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_select_video_notify_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             onoff: u8,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_select_video_notify: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             onoff: u8,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_select_port_notify_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, port: xcb_xv_port_t, onoff: u8) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            port: xcb_xv_port_t,
+            onoff: u8,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_xv_select_port_notify: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, port: xcb_xv_port_t, onoff: u8) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            port: xcb_xv_port_t,
+            onoff: u8,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_xv_query_best_size: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             vid_w: u16,
@@ -1833,7 +1885,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_xv_query_best_size_cookie_t,
     >,
     xcb_xv_query_best_size_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             vid_w: u16,
@@ -1844,14 +1896,14 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_xv_query_best_size_cookie_t,
     >,
     xcb_xv_query_best_size_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_query_best_size_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_query_best_size_reply_t,
     >,
     xcb_xv_set_port_attribute_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             attribute: xcb_atom_t,
@@ -1859,7 +1911,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_set_port_attribute: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             attribute: xcb_atom_t,
@@ -1867,86 +1919,91 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_get_port_attribute: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             attribute: xcb_atom_t,
         ) -> xcb_xv_get_port_attribute_cookie_t,
     >,
     xcb_xv_get_port_attribute_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             attribute: xcb_atom_t,
         ) -> xcb_xv_get_port_attribute_cookie_t,
     >,
     xcb_xv_get_port_attribute_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_get_port_attribute_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_get_port_attribute_reply_t,
     >,
-    xcb_xv_query_port_attributes_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xv_query_port_attributes_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xv_query_port_attributes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
         ) -> xcb_xv_query_port_attributes_cookie_t,
     >,
     xcb_xv_query_port_attributes_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
         ) -> xcb_xv_query_port_attributes_cookie_t,
     >,
     xcb_xv_query_port_attributes_attributes_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_query_port_attributes_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_query_port_attributes_reply_t) -> c_int>,
     xcb_xv_query_port_attributes_attributes_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xv_query_port_attributes_reply_t,
         ) -> xcb_xv_attribute_info_iterator_t,
     >,
     xcb_xv_query_port_attributes_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_query_port_attributes_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_query_port_attributes_reply_t,
     >,
-    xcb_xv_list_image_formats_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xv_list_image_formats_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xv_list_image_formats: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
         ) -> xcb_xv_list_image_formats_cookie_t,
     >,
     xcb_xv_list_image_formats_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
         ) -> xcb_xv_list_image_formats_cookie_t,
     >,
     xcb_xv_list_image_formats_format: LazySymbol<
-        unsafe fn(r: *const xcb_xv_list_image_formats_reply_t) -> *mut xcb_xv_image_format_info_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xv_list_image_formats_reply_t,
+        ) -> *mut xcb_xv_image_format_info_t,
     >,
     xcb_xv_list_image_formats_format_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_list_image_formats_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_list_image_formats_reply_t) -> c_int>,
     xcb_xv_list_image_formats_format_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xv_list_image_formats_reply_t,
         ) -> xcb_xv_image_format_info_iterator_t,
     >,
     xcb_xv_list_image_formats_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_list_image_formats_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_list_image_formats_reply_t,
     >,
-    xcb_xv_query_image_attributes_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xv_query_image_attributes_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xv_query_image_attributes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             id: u32,
@@ -1955,7 +2012,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_xv_query_image_attributes_cookie_t,
     >,
     xcb_xv_query_image_attributes_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             id: u32,
@@ -1963,30 +2020,37 @@ pub(crate) struct XcbXvXv {
             height: u16,
         ) -> xcb_xv_query_image_attributes_cookie_t,
     >,
-    xcb_xv_query_image_attributes_pitches:
-        LazySymbol<unsafe fn(r: *const xcb_xv_query_image_attributes_reply_t) -> *mut u32>,
-    xcb_xv_query_image_attributes_pitches_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_query_image_attributes_reply_t) -> c_int>,
-    xcb_xv_query_image_attributes_pitches_end: LazySymbol<
-        unsafe fn(r: *const xcb_xv_query_image_attributes_reply_t) -> xcb_generic_iterator_t,
+    xcb_xv_query_image_attributes_pitches: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xv_query_image_attributes_reply_t) -> *mut u32,
     >,
-    xcb_xv_query_image_attributes_offsets:
-        LazySymbol<unsafe fn(r: *const xcb_xv_query_image_attributes_reply_t) -> *mut u32>,
+    xcb_xv_query_image_attributes_pitches_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_query_image_attributes_reply_t) -> c_int>,
+    xcb_xv_query_image_attributes_pitches_end: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_xv_query_image_attributes_reply_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_xv_query_image_attributes_offsets: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xv_query_image_attributes_reply_t) -> *mut u32,
+    >,
     xcb_xv_query_image_attributes_offsets_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_query_image_attributes_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_query_image_attributes_reply_t) -> c_int>,
     xcb_xv_query_image_attributes_offsets_end: LazySymbol<
-        unsafe fn(r: *const xcb_xv_query_image_attributes_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xv_query_image_attributes_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xv_query_image_attributes_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xv_query_image_attributes_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xv_query_image_attributes_reply_t,
     >,
-    xcb_xv_put_image_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void, data_len: u32) -> c_int>,
+    xcb_xv_put_image_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, data_len: u32) -> c_int>,
     xcb_xv_put_image_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -2007,7 +2071,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_put_image: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -2027,13 +2091,15 @@ pub(crate) struct XcbXvXv {
             data: *const u8,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xv_put_image_data: LazySymbol<unsafe fn(r: *const xcb_xv_put_image_request_t) -> *mut u8>,
+    xcb_xv_put_image_data:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_put_image_request_t) -> *mut u8>,
     xcb_xv_put_image_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_xv_put_image_request_t) -> c_int>,
-    xcb_xv_put_image_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_xv_put_image_request_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xv_put_image_request_t) -> c_int>,
+    xcb_xv_put_image_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xv_put_image_request_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xv_shm_put_image_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,
@@ -2055,7 +2121,7 @@ pub(crate) struct XcbXvXv {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xv_shm_put_image: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port: xcb_xv_port_t,
             drawable: xcb_drawable_t,

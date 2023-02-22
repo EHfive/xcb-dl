@@ -6058,316 +6058,429 @@ impl Default for xcb_xkb_extension_device_notify_event_t {
 #[cfg(feature = "xcb_xkb")]
 pub(crate) struct XcbXkbXkb {
     xcb_xkb_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_xkb_device_spec_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_device_spec_iterator_t)>,
-    xcb_xkb_device_spec_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_device_spec_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_led_class_spec_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_led_class_spec_iterator_t)>,
-    xcb_xkb_led_class_spec_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_led_class_spec_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_bell_class_spec_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_bell_class_spec_iterator_t)>,
-    xcb_xkb_bell_class_spec_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_bell_class_spec_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_id_spec_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_id_spec_iterator_t)>,
+    xcb_xkb_device_spec_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_device_spec_iterator_t)>,
+    xcb_xkb_device_spec_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_device_spec_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_led_class_spec_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_led_class_spec_iterator_t)>,
+    xcb_xkb_led_class_spec_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_led_class_spec_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_bell_class_spec_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_bell_class_spec_iterator_t)>,
+    xcb_xkb_bell_class_spec_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_bell_class_spec_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_id_spec_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_id_spec_iterator_t)>,
     xcb_xkb_id_spec_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_id_spec_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_indicator_map_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_indicator_map_iterator_t)>,
-    xcb_xkb_indicator_map_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_indicator_map_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_mod_def_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_mod_def_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_id_spec_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_indicator_map_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_indicator_map_iterator_t)>,
+    xcb_xkb_indicator_map_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_indicator_map_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_mod_def_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_mod_def_iterator_t)>,
     xcb_xkb_mod_def_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_mod_def_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_key_name_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_key_name_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_mod_def_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_key_name_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_key_name_iterator_t)>,
     xcb_xkb_key_name_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_key_name_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_key_alias_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_key_alias_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_key_name_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_key_alias_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_key_alias_iterator_t)>,
     xcb_xkb_key_alias_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_key_alias_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_counted_string_16_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_key_alias_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_counted_string_16_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_counted_string_16_string:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_counted_string_16_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_counted_string_16_t) -> *mut c_char>,
     xcb_xkb_counted_string_16_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_counted_string_16_t) -> c_int>,
-    xcb_xkb_counted_string_16_string_end:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_counted_string_16_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_counted_string_16_t) -> c_int>,
+    xcb_xkb_counted_string_16_string_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_counted_string_16_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_counted_string_16_alignment_pad:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_counted_string_16_t) -> *mut c_void>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_counted_string_16_t) -> *mut c_void>,
     xcb_xkb_counted_string_16_alignment_pad_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_counted_string_16_t) -> c_int>,
-    xcb_xkb_counted_string_16_alignment_pad_end:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_counted_string_16_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_counted_string_16_t) -> c_int>,
+    xcb_xkb_counted_string_16_alignment_pad_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_counted_string_16_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_counted_string_16_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_counted_string_16_iterator_t)>,
-    xcb_xkb_counted_string_16_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_counted_string_16_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_kt_map_entry_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_kt_map_entry_iterator_t)>,
-    xcb_xkb_kt_map_entry_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_kt_map_entry_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_key_type_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_key_type_map:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_key_type_t) -> *mut xcb_xkb_kt_map_entry_t>,
-    xcb_xkb_key_type_map_length: LazySymbol<unsafe fn(r: *const xcb_xkb_key_type_t) -> c_int>,
-    xcb_xkb_key_type_map_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_key_type_t) -> xcb_xkb_kt_map_entry_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_counted_string_16_iterator_t)>,
+    xcb_xkb_counted_string_16_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_counted_string_16_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_kt_map_entry_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_kt_map_entry_iterator_t)>,
+    xcb_xkb_kt_map_entry_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_kt_map_entry_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_key_type_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_key_type_map: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_key_type_t) -> *mut xcb_xkb_kt_map_entry_t,
+    >,
+    xcb_xkb_key_type_map_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_key_type_t) -> c_int>,
+    xcb_xkb_key_type_map_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_key_type_t) -> xcb_xkb_kt_map_entry_iterator_t,
+    >,
     xcb_xkb_key_type_preserve:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_key_type_t) -> *mut xcb_xkb_mod_def_t>,
-    xcb_xkb_key_type_preserve_length: LazySymbol<unsafe fn(r: *const xcb_xkb_key_type_t) -> c_int>,
-    xcb_xkb_key_type_preserve_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_key_type_t) -> xcb_xkb_mod_def_iterator_t>,
-    xcb_xkb_key_type_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_key_type_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_key_type_t) -> *mut xcb_xkb_mod_def_t>,
+    xcb_xkb_key_type_preserve_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_key_type_t) -> c_int>,
+    xcb_xkb_key_type_preserve_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_key_type_t) -> xcb_xkb_mod_def_iterator_t,
+    >,
+    xcb_xkb_key_type_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_key_type_iterator_t)>,
     xcb_xkb_key_type_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_key_type_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_key_sym_map_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_key_type_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_key_sym_map_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_key_sym_map_syms:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_key_sym_map_t) -> *mut xcb_keysym_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_key_sym_map_t) -> *mut xcb_keysym_t>,
     xcb_xkb_key_sym_map_syms_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_key_sym_map_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_key_sym_map_t) -> c_int>,
     xcb_xkb_key_sym_map_syms_end:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_key_sym_map_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_key_sym_map_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_key_sym_map_iterator_t)>,
-    xcb_xkb_key_sym_map_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_key_sym_map_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_common_behavior_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_common_behavior_iterator_t)>,
-    xcb_xkb_common_behavior_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_common_behavior_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_key_sym_map_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_key_sym_map_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_key_sym_map_iterator_t)>,
+    xcb_xkb_key_sym_map_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_key_sym_map_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_common_behavior_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_common_behavior_iterator_t)>,
+    xcb_xkb_common_behavior_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_common_behavior_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_default_behavior_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_default_behavior_iterator_t)>,
-    xcb_xkb_default_behavior_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_default_behavior_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_lock_behavior_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_lock_behavior_iterator_t)>,
-    xcb_xkb_lock_behavior_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_lock_behavior_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_default_behavior_iterator_t)>,
+    xcb_xkb_default_behavior_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_default_behavior_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_lock_behavior_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_lock_behavior_iterator_t)>,
+    xcb_xkb_lock_behavior_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_lock_behavior_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_radio_group_behavior_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_radio_group_behavior_iterator_t)>,
-    xcb_xkb_radio_group_behavior_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_radio_group_behavior_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_radio_group_behavior_iterator_t)>,
+    xcb_xkb_radio_group_behavior_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_radio_group_behavior_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_overlay_behavior_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_overlay_behavior_iterator_t)>,
-    xcb_xkb_overlay_behavior_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_overlay_behavior_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_overlay_behavior_iterator_t)>,
+    xcb_xkb_overlay_behavior_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_overlay_behavior_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_permament_lock_behavior_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_permament_lock_behavior_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_permament_lock_behavior_iterator_t)>,
     xcb_xkb_permament_lock_behavior_end: LazySymbol<
-        unsafe fn(i: xcb_xkb_permament_lock_behavior_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_xkb_permament_lock_behavior_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_permament_radio_group_behavior_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_permament_radio_group_behavior_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_permament_radio_group_behavior_iterator_t)>,
     xcb_xkb_permament_radio_group_behavior_end: LazySymbol<
-        unsafe fn(i: xcb_xkb_permament_radio_group_behavior_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_xkb_permament_radio_group_behavior_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_permament_overlay_behavior_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_permament_overlay_behavior_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_permament_overlay_behavior_iterator_t)>,
     xcb_xkb_permament_overlay_behavior_end: LazySymbol<
-        unsafe fn(i: xcb_xkb_permament_overlay_behavior_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_xkb_permament_overlay_behavior_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_behavior_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_behavior_iterator_t)>,
+    xcb_xkb_behavior_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_behavior_iterator_t)>,
     xcb_xkb_behavior_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_behavior_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_set_behavior_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_set_behavior_iterator_t)>,
-    xcb_xkb_set_behavior_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_set_behavior_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_set_explicit_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_set_explicit_iterator_t)>,
-    xcb_xkb_set_explicit_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_set_explicit_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_key_mod_map_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_key_mod_map_iterator_t)>,
-    xcb_xkb_key_mod_map_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_key_mod_map_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_key_v_mod_map_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_key_v_mod_map_iterator_t)>,
-    xcb_xkb_key_v_mod_map_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_key_v_mod_map_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_behavior_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_set_behavior_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_set_behavior_iterator_t)>,
+    xcb_xkb_set_behavior_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_set_behavior_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_set_explicit_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_set_explicit_iterator_t)>,
+    xcb_xkb_set_explicit_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_set_explicit_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_key_mod_map_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_key_mod_map_iterator_t)>,
+    xcb_xkb_key_mod_map_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_key_mod_map_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_key_v_mod_map_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_key_v_mod_map_iterator_t)>,
+    xcb_xkb_key_v_mod_map_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_key_v_mod_map_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_kt_set_map_entry_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_kt_set_map_entry_iterator_t)>,
-    xcb_xkb_kt_set_map_entry_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_kt_set_map_entry_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_set_key_type_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_set_key_type_entries:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_key_type_t) -> *mut xcb_xkb_kt_set_map_entry_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_kt_set_map_entry_iterator_t)>,
+    xcb_xkb_kt_set_map_entry_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_kt_set_map_entry_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_set_key_type_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_set_key_type_entries: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_set_key_type_t) -> *mut xcb_xkb_kt_set_map_entry_t,
+    >,
     xcb_xkb_set_key_type_entries_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_key_type_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_key_type_t) -> c_int>,
     xcb_xkb_set_key_type_entries_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_key_type_t) -> xcb_xkb_kt_set_map_entry_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_key_type_t,
+        ) -> xcb_xkb_kt_set_map_entry_iterator_t,
     >,
-    xcb_xkb_set_key_type_preserve_entries:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_key_type_t) -> *mut xcb_xkb_kt_set_map_entry_t>,
+    xcb_xkb_set_key_type_preserve_entries: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_set_key_type_t) -> *mut xcb_xkb_kt_set_map_entry_t,
+    >,
     xcb_xkb_set_key_type_preserve_entries_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_key_type_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_key_type_t) -> c_int>,
     xcb_xkb_set_key_type_preserve_entries_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_key_type_t) -> xcb_xkb_kt_set_map_entry_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_key_type_t,
+        ) -> xcb_xkb_kt_set_map_entry_iterator_t,
     >,
-    xcb_xkb_set_key_type_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_set_key_type_iterator_t)>,
-    xcb_xkb_set_key_type_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_set_key_type_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_string8_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_string8_iterator_t)>,
+    xcb_xkb_set_key_type_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_set_key_type_iterator_t)>,
+    xcb_xkb_set_key_type_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_set_key_type_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_string8_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_string8_iterator_t)>,
     xcb_xkb_string8_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_string8_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_outline_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_outline_points: LazySymbol<unsafe fn(r: *const xcb_xkb_outline_t) -> *mut xcb_point_t>,
-    xcb_xkb_outline_points_length: LazySymbol<unsafe fn(r: *const xcb_xkb_outline_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_string8_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_outline_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_outline_points:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_outline_t) -> *mut xcb_point_t>,
+    xcb_xkb_outline_points_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_outline_t) -> c_int>,
     xcb_xkb_outline_points_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_outline_t) -> xcb_point_iterator_t>,
-    xcb_xkb_outline_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_outline_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_outline_t) -> xcb_point_iterator_t>,
+    xcb_xkb_outline_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_outline_iterator_t)>,
     xcb_xkb_outline_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_outline_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_shape_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_shape_outlines_length: LazySymbol<unsafe fn(r: *const xcb_xkb_shape_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_outline_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_shape_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_shape_outlines_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_shape_t) -> c_int>,
     xcb_xkb_shape_outlines_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_shape_t) -> xcb_xkb_outline_iterator_t>,
-    xcb_xkb_shape_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_shape_iterator_t)>,
-    xcb_xkb_shape_end: LazySymbol<unsafe fn(i: xcb_xkb_shape_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_key_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_key_iterator_t)>,
-    xcb_xkb_key_end: LazySymbol<unsafe fn(i: xcb_xkb_key_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_overlay_key_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_overlay_key_iterator_t)>,
-    xcb_xkb_overlay_key_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_overlay_key_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_overlay_row_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_overlay_row_keys:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_overlay_row_t) -> *mut xcb_xkb_overlay_key_t>,
-    xcb_xkb_overlay_row_keys_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_overlay_row_t) -> c_int>,
-    xcb_xkb_overlay_row_keys_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_overlay_row_t) -> xcb_xkb_overlay_key_iterator_t>,
-    xcb_xkb_overlay_row_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_overlay_row_iterator_t)>,
-    xcb_xkb_overlay_row_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_overlay_row_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_overlay_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_overlay_rows_length: LazySymbol<unsafe fn(r: *const xcb_xkb_overlay_t) -> c_int>,
-    xcb_xkb_overlay_rows_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_overlay_t) -> xcb_xkb_overlay_row_iterator_t>,
-    xcb_xkb_overlay_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_overlay_iterator_t)>,
-    xcb_xkb_overlay_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_overlay_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_row_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_row_keys: LazySymbol<unsafe fn(r: *const xcb_xkb_row_t) -> *mut xcb_xkb_key_t>,
-    xcb_xkb_row_keys_length: LazySymbol<unsafe fn(r: *const xcb_xkb_row_t) -> c_int>,
-    xcb_xkb_row_keys_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_row_t) -> xcb_xkb_key_iterator_t>,
-    xcb_xkb_row_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_row_iterator_t)>,
-    xcb_xkb_row_end: LazySymbol<unsafe fn(i: xcb_xkb_row_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_listing_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_listing_string:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_listing_t) -> *mut xcb_xkb_string8_t>,
-    xcb_xkb_listing_string_length: LazySymbol<unsafe fn(r: *const xcb_xkb_listing_t) -> c_int>,
-    xcb_xkb_listing_string_end:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_listing_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_listing_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_listing_iterator_t)>,
-    xcb_xkb_listing_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_listing_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_device_led_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xkb_device_led_info_names:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_device_led_info_t) -> *mut xcb_atom_t>,
-    xcb_xkb_device_led_info_names_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_device_led_info_t) -> c_int>,
-    xcb_xkb_device_led_info_names_end:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_device_led_info_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_device_led_info_maps:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_device_led_info_t) -> *mut xcb_xkb_indicator_map_t>,
-    xcb_xkb_device_led_info_maps_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_device_led_info_t) -> c_int>,
-    xcb_xkb_device_led_info_maps_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_device_led_info_t) -> xcb_xkb_indicator_map_iterator_t,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_shape_t) -> xcb_xkb_outline_iterator_t>,
+    xcb_xkb_shape_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_shape_iterator_t)>,
+    xcb_xkb_shape_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_shape_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_key_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_key_iterator_t)>,
+    xcb_xkb_key_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_key_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_overlay_key_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_overlay_key_iterator_t)>,
+    xcb_xkb_overlay_key_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_overlay_key_iterator_t) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_device_led_info_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_device_led_info_iterator_t)>,
-    xcb_xkb_device_led_info_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_device_led_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_no_action_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_no_action_iterator_t)>,
-    xcb_xkb_sa_no_action_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_no_action_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_set_mods_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_set_mods_iterator_t)>,
-    xcb_xkb_sa_set_mods_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_set_mods_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_latch_mods_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_latch_mods_iterator_t)>,
-    xcb_xkb_sa_latch_mods_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_latch_mods_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_lock_mods_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_lock_mods_iterator_t)>,
-    xcb_xkb_sa_lock_mods_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_lock_mods_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_set_group_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_set_group_iterator_t)>,
-    xcb_xkb_sa_set_group_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_set_group_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_latch_group_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_latch_group_iterator_t)>,
-    xcb_xkb_sa_latch_group_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_latch_group_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_lock_group_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_lock_group_iterator_t)>,
-    xcb_xkb_sa_lock_group_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_lock_group_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_move_ptr_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_move_ptr_iterator_t)>,
-    xcb_xkb_sa_move_ptr_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_move_ptr_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_ptr_btn_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_ptr_btn_iterator_t)>,
-    xcb_xkb_sa_ptr_btn_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_ptr_btn_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_lock_ptr_btn_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_lock_ptr_btn_iterator_t)>,
-    xcb_xkb_sa_lock_ptr_btn_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_lock_ptr_btn_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_set_ptr_dflt_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_set_ptr_dflt_iterator_t)>,
-    xcb_xkb_sa_set_ptr_dflt_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_set_ptr_dflt_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_iso_lock_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_iso_lock_iterator_t)>,
-    xcb_xkb_sa_iso_lock_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_iso_lock_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_terminate_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_terminate_iterator_t)>,
-    xcb_xkb_sa_terminate_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_terminate_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_overlay_row_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_overlay_row_keys: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_overlay_row_t) -> *mut xcb_xkb_overlay_key_t,
+    >,
+    xcb_xkb_overlay_row_keys_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_overlay_row_t) -> c_int>,
+    xcb_xkb_overlay_row_keys_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_overlay_row_t) -> xcb_xkb_overlay_key_iterator_t,
+    >,
+    xcb_xkb_overlay_row_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_overlay_row_iterator_t)>,
+    xcb_xkb_overlay_row_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_overlay_row_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_overlay_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_overlay_rows_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_overlay_t) -> c_int>,
+    xcb_xkb_overlay_rows_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_overlay_t) -> xcb_xkb_overlay_row_iterator_t,
+    >,
+    xcb_xkb_overlay_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_overlay_iterator_t)>,
+    xcb_xkb_overlay_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_overlay_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_row_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_row_keys:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_row_t) -> *mut xcb_xkb_key_t>,
+    xcb_xkb_row_keys_length: LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_row_t) -> c_int>,
+    xcb_xkb_row_keys_iterator:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_row_t) -> xcb_xkb_key_iterator_t>,
+    xcb_xkb_row_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_row_iterator_t)>,
+    xcb_xkb_row_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_row_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_listing_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_listing_string:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_listing_t) -> *mut xcb_xkb_string8_t>,
+    xcb_xkb_listing_string_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_listing_t) -> c_int>,
+    xcb_xkb_listing_string_end:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_listing_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_listing_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_listing_iterator_t)>,
+    xcb_xkb_listing_end:
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_listing_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_device_led_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_device_led_info_names:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_device_led_info_t) -> *mut xcb_atom_t>,
+    xcb_xkb_device_led_info_names_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_device_led_info_t) -> c_int>,
+    xcb_xkb_device_led_info_names_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_device_led_info_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_device_led_info_maps: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_device_led_info_t) -> *mut xcb_xkb_indicator_map_t,
+    >,
+    xcb_xkb_device_led_info_maps_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_device_led_info_t) -> c_int>,
+    xcb_xkb_device_led_info_maps_iterator: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_device_led_info_t,
+        ) -> xcb_xkb_indicator_map_iterator_t,
+    >,
+    xcb_xkb_device_led_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_device_led_info_iterator_t)>,
+    xcb_xkb_device_led_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_device_led_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_no_action_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_no_action_iterator_t)>,
+    xcb_xkb_sa_no_action_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_no_action_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_set_mods_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_set_mods_iterator_t)>,
+    xcb_xkb_sa_set_mods_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_set_mods_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_latch_mods_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_latch_mods_iterator_t)>,
+    xcb_xkb_sa_latch_mods_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_latch_mods_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_lock_mods_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_lock_mods_iterator_t)>,
+    xcb_xkb_sa_lock_mods_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_lock_mods_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_set_group_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_set_group_iterator_t)>,
+    xcb_xkb_sa_set_group_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_set_group_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_latch_group_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_latch_group_iterator_t)>,
+    xcb_xkb_sa_latch_group_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_latch_group_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_lock_group_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_lock_group_iterator_t)>,
+    xcb_xkb_sa_lock_group_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_lock_group_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_move_ptr_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_move_ptr_iterator_t)>,
+    xcb_xkb_sa_move_ptr_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_move_ptr_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_ptr_btn_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_ptr_btn_iterator_t)>,
+    xcb_xkb_sa_ptr_btn_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_ptr_btn_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_lock_ptr_btn_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_lock_ptr_btn_iterator_t)>,
+    xcb_xkb_sa_lock_ptr_btn_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_lock_ptr_btn_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_set_ptr_dflt_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_set_ptr_dflt_iterator_t)>,
+    xcb_xkb_sa_set_ptr_dflt_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_set_ptr_dflt_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_iso_lock_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_iso_lock_iterator_t)>,
+    xcb_xkb_sa_iso_lock_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_iso_lock_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_terminate_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_terminate_iterator_t)>,
+    xcb_xkb_sa_terminate_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_terminate_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_sa_switch_screen_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_switch_screen_iterator_t)>,
-    xcb_xkb_sa_switch_screen_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_switch_screen_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_set_controls_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_set_controls_iterator_t)>,
-    xcb_xkb_sa_set_controls_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_set_controls_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_switch_screen_iterator_t)>,
+    xcb_xkb_sa_switch_screen_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_switch_screen_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_set_controls_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_set_controls_iterator_t)>,
+    xcb_xkb_sa_set_controls_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_set_controls_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_sa_lock_controls_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_lock_controls_iterator_t)>,
-    xcb_xkb_sa_lock_controls_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_lock_controls_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_lock_controls_iterator_t)>,
+    xcb_xkb_sa_lock_controls_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_lock_controls_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_sa_action_message_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_action_message_iterator_t)>,
-    xcb_xkb_sa_action_message_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_action_message_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_redirect_key_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_redirect_key_iterator_t)>,
-    xcb_xkb_sa_redirect_key_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_redirect_key_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sa_device_btn_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_device_btn_iterator_t)>,
-    xcb_xkb_sa_device_btn_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_device_btn_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_action_message_iterator_t)>,
+    xcb_xkb_sa_action_message_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_action_message_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_redirect_key_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_redirect_key_iterator_t)>,
+    xcb_xkb_sa_redirect_key_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_redirect_key_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_sa_device_btn_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_device_btn_iterator_t)>,
+    xcb_xkb_sa_device_btn_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_device_btn_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_sa_lock_device_btn_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_lock_device_btn_iterator_t)>,
-    xcb_xkb_sa_lock_device_btn_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_lock_device_btn_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_lock_device_btn_iterator_t)>,
+    xcb_xkb_sa_lock_device_btn_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_lock_device_btn_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xkb_sa_device_valuator_next:
-        LazySymbol<unsafe fn(i: *mut xcb_xkb_sa_device_valuator_iterator_t)>,
-    xcb_xkb_sa_device_valuator_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sa_device_valuator_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_si_action_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_si_action_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sa_device_valuator_iterator_t)>,
+    xcb_xkb_sa_device_valuator_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sa_device_valuator_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_si_action_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_si_action_iterator_t)>,
     xcb_xkb_si_action_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_si_action_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_sym_interpret_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_sym_interpret_iterator_t)>,
-    xcb_xkb_sym_interpret_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_sym_interpret_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_action_next: LazySymbol<unsafe fn(i: *mut xcb_xkb_action_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_si_action_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xkb_sym_interpret_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_sym_interpret_iterator_t)>,
+    xcb_xkb_sym_interpret_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xkb_sym_interpret_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_action_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xkb_action_iterator_t)>,
     xcb_xkb_action_end:
-        LazySymbol<unsafe fn(i: xcb_xkb_action_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xkb_action_iterator_t) -> xcb_generic_iterator_t>,
     xcb_xkb_use_extension: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             wanted_major: u16,
             wanted_minor: u16,
         ) -> xcb_xkb_use_extension_cookie_t,
     >,
     xcb_xkb_use_extension_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             wanted_major: u16,
             wanted_minor: u16,
         ) -> xcb_xkb_use_extension_cookie_t,
     >,
     xcb_xkb_use_extension_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_use_extension_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_use_extension_reply_t,
     >,
     xcb_xkb_select_events_details_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             affectWhich: u16,
             clear: u16,
@@ -6376,7 +6489,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_select_events_details_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             affectWhich: u16,
             clear: u16,
@@ -6385,11 +6498,16 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_select_events_details_sizeof: LazySymbol<
-        unsafe fn(_buffer: *const c_void, affectWhich: u16, clear: u16, selectAll: u16) -> c_int,
+        unsafe extern "C" fn(
+            _buffer: *const c_void,
+            affectWhich: u16,
+            clear: u16,
+            selectAll: u16,
+        ) -> c_int,
     >,
-    xcb_xkb_select_events_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_select_events_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_select_events_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             affect_which: u16,
@@ -6401,7 +6519,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_select_events: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             affect_which: u16,
@@ -6413,7 +6531,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_select_events_aux_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             affect_which: u16,
@@ -6425,7 +6543,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_select_events_aux: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             affect_which: u16,
@@ -6437,9 +6555,9 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_select_events_details:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_select_events_request_t) -> *mut c_void>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_select_events_request_t) -> *mut c_void>,
     xcb_xkb_bell_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             bell_class: xcb_xkb_bell_class_spec_t,
@@ -6454,7 +6572,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_bell: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             bell_class: xcb_xkb_bell_class_spec_t,
@@ -6469,26 +6587,26 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_get_state: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
         ) -> xcb_xkb_get_state_cookie_t,
     >,
     xcb_xkb_get_state_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
         ) -> xcb_xkb_get_state_cookie_t,
     >,
     xcb_xkb_get_state_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_state_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_state_reply_t,
     >,
     xcb_xkb_latch_lock_state_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             affect_mod_locks: u8,
@@ -6501,7 +6619,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_latch_lock_state: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             affect_mod_locks: u8,
@@ -6514,26 +6632,26 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_get_controls: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
         ) -> xcb_xkb_get_controls_cookie_t,
     >,
     xcb_xkb_get_controls_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
         ) -> xcb_xkb_get_controls_cookie_t,
     >,
     xcb_xkb_get_controls_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_controls_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_controls_reply_t,
     >,
     xcb_xkb_set_controls_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             affect_internal_real_mods: u8,
@@ -6568,7 +6686,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_controls: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             affect_internal_real_mods: u8,
@@ -6603,102 +6721,133 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_get_map_map_types_rtrn_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_types_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_xkb_key_type_iterator_t,
     >,
     xcb_xkb_get_map_map_syms_rtrn_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_syms_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_xkb_key_sym_map_iterator_t,
     >,
     xcb_xkb_get_map_map_acts_rtrn_count:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_map_map_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_get_map_map_t) -> *mut u8>,
     xcb_xkb_get_map_map_acts_rtrn_count_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_acts_rtrn_count_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_get_map_map_acts_rtrn_acts:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_action_t>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_action_t>,
     xcb_xkb_get_map_map_acts_rtrn_acts_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_acts_rtrn_acts_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_xkb_action_iterator_t,
     >,
-    xcb_xkb_get_map_map_behaviors_rtrn:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_set_behavior_t>,
+    xcb_xkb_get_map_map_behaviors_rtrn: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_set_behavior_t,
+    >,
     xcb_xkb_get_map_map_behaviors_rtrn_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_behaviors_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_xkb_set_behavior_iterator_t,
     >,
     xcb_xkb_get_map_map_vmods_rtrn:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_map_map_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_get_map_map_t) -> *mut u8>,
     xcb_xkb_get_map_map_vmods_rtrn_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_vmods_rtrn_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_map_map_explicit_rtrn:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_set_explicit_t>,
+    xcb_xkb_get_map_map_explicit_rtrn: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_set_explicit_t,
+    >,
     xcb_xkb_get_map_map_explicit_rtrn_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_explicit_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_xkb_set_explicit_iterator_t,
     >,
-    xcb_xkb_get_map_map_modmap_rtrn:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_key_mod_map_t>,
+    xcb_xkb_get_map_map_modmap_rtrn: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_key_mod_map_t,
+    >,
     xcb_xkb_get_map_map_modmap_rtrn_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_modmap_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_xkb_key_mod_map_iterator_t,
     >,
-    xcb_xkb_get_map_map_vmodmap_rtrn:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_key_v_mod_map_t>,
+    xcb_xkb_get_map_map_vmodmap_rtrn: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_map_map_t) -> *mut xcb_xkb_key_v_mod_map_t,
+    >,
     xcb_xkb_get_map_map_vmodmap_rtrn_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_map_reply_t, s: *const xcb_xkb_get_map_map_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_map_reply_t,
+            s: *const xcb_xkb_get_map_map_t,
+        ) -> c_int,
     >,
     xcb_xkb_get_map_map_vmodmap_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_map_reply_t,
             s: *const xcb_xkb_get_map_map_t,
         ) -> xcb_xkb_key_v_mod_map_iterator_t,
     >,
     xcb_xkb_get_map_map_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -6714,7 +6863,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_map_map_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -6730,7 +6879,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_map_map_sizeof: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -6744,9 +6893,9 @@ pub(crate) struct XcbXkbXkb {
             present: u16,
         ) -> c_int,
     >,
-    xcb_xkb_get_map_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_get_map_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_get_map: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             full: u16,
@@ -6769,7 +6918,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_get_map_cookie_t,
     >,
     xcb_xkb_get_map_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             full: u16,
@@ -6791,111 +6940,144 @@ pub(crate) struct XcbXkbXkb {
             n_vmod_map_keys: u8,
         ) -> xcb_xkb_get_map_cookie_t,
     >,
-    xcb_xkb_get_map_map: LazySymbol<unsafe fn(r: *const xcb_xkb_get_map_reply_t) -> *mut c_void>,
+    xcb_xkb_get_map_map:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_map_reply_t) -> *mut c_void>,
     xcb_xkb_get_map_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_map_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_map_reply_t,
     >,
     xcb_xkb_set_map_values_types_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_types_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_xkb_set_key_type_iterator_t,
     >,
     xcb_xkb_set_map_values_syms_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_syms_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_xkb_key_sym_map_iterator_t,
     >,
     xcb_xkb_set_map_values_actions_count:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_map_values_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_map_values_t) -> *mut u8>,
     xcb_xkb_set_map_values_actions_count_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_actions_count_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_set_map_values_actions:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_action_t>,
+    xcb_xkb_set_map_values_actions: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_action_t,
+    >,
     xcb_xkb_set_map_values_actions_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_actions_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_xkb_action_iterator_t,
     >,
-    xcb_xkb_set_map_values_behaviors:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_set_behavior_t>,
+    xcb_xkb_set_map_values_behaviors: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_set_behavior_t,
+    >,
     xcb_xkb_set_map_values_behaviors_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_behaviors_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_xkb_set_behavior_iterator_t,
     >,
     xcb_xkb_set_map_values_vmods:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_map_values_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_map_values_t) -> *mut u8>,
     xcb_xkb_set_map_values_vmods_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_vmods_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_set_map_values_explicit:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_set_explicit_t>,
+    xcb_xkb_set_map_values_explicit: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_set_explicit_t,
+    >,
     xcb_xkb_set_map_values_explicit_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_explicit_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_xkb_set_explicit_iterator_t,
     >,
-    xcb_xkb_set_map_values_modmap:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_key_mod_map_t>,
+    xcb_xkb_set_map_values_modmap: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_key_mod_map_t,
+    >,
     xcb_xkb_set_map_values_modmap_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_modmap_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_xkb_key_mod_map_iterator_t,
     >,
-    xcb_xkb_set_map_values_vmodmap:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_key_v_mod_map_t>,
+    xcb_xkb_set_map_values_vmodmap: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_set_map_values_t) -> *mut xcb_xkb_key_v_mod_map_t,
+    >,
     xcb_xkb_set_map_values_vmodmap_length: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_map_request_t, s: *const xcb_xkb_set_map_values_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_map_request_t,
+            s: *const xcb_xkb_set_map_values_t,
+        ) -> c_int,
     >,
     xcb_xkb_set_map_values_vmodmap_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_map_request_t,
             s: *const xcb_xkb_set_map_values_t,
         ) -> xcb_xkb_key_v_mod_map_iterator_t,
     >,
     xcb_xkb_set_map_values_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -6911,7 +7093,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_set_map_values_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -6927,7 +7109,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_set_map_values_sizeof: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -6941,9 +7123,9 @@ pub(crate) struct XcbXkbXkb {
             present: u16,
         ) -> c_int,
     >,
-    xcb_xkb_set_map_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_set_map_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_set_map_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             present: u16,
@@ -6975,7 +7157,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_map: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             present: u16,
@@ -7007,7 +7189,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_map_aux_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             present: u16,
@@ -7039,7 +7221,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_map_aux: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             present: u16,
@@ -7071,10 +7253,11 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_map_values:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_map_request_t) -> *mut c_void>,
-    xcb_xkb_get_compat_map_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_map_request_t) -> *mut c_void>,
+    xcb_xkb_get_compat_map_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_get_compat_map: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             groups: u8,
@@ -7084,7 +7267,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_get_compat_map_cookie_t,
     >,
     xcb_xkb_get_compat_map_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             groups: u8,
@@ -7094,30 +7277,38 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_get_compat_map_cookie_t,
     >,
     xcb_xkb_get_compat_map_si_rtrn: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_compat_map_reply_t) -> *mut xcb_xkb_sym_interpret_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_compat_map_reply_t,
+        ) -> *mut xcb_xkb_sym_interpret_t,
     >,
     xcb_xkb_get_compat_map_si_rtrn_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_compat_map_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_compat_map_reply_t) -> c_int>,
     xcb_xkb_get_compat_map_si_rtrn_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_compat_map_reply_t) -> xcb_xkb_sym_interpret_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_compat_map_reply_t,
+        ) -> xcb_xkb_sym_interpret_iterator_t,
     >,
-    xcb_xkb_get_compat_map_group_rtrn:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_compat_map_reply_t) -> *mut xcb_xkb_mod_def_t>,
+    xcb_xkb_get_compat_map_group_rtrn: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_get_compat_map_reply_t) -> *mut xcb_xkb_mod_def_t,
+    >,
     xcb_xkb_get_compat_map_group_rtrn_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_compat_map_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_compat_map_reply_t) -> c_int>,
     xcb_xkb_get_compat_map_group_rtrn_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_compat_map_reply_t) -> xcb_xkb_mod_def_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_compat_map_reply_t,
+        ) -> xcb_xkb_mod_def_iterator_t,
     >,
     xcb_xkb_get_compat_map_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_compat_map_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_compat_map_reply_t,
     >,
-    xcb_xkb_set_compat_map_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_set_compat_map_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_set_compat_map_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             recompute_actions: u8,
@@ -7130,7 +7321,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_compat_map: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             recompute_actions: u8,
@@ -7143,72 +7334,85 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_compat_map_si: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_compat_map_request_t) -> *mut xcb_xkb_sym_interpret_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_compat_map_request_t,
+        ) -> *mut xcb_xkb_sym_interpret_t,
     >,
     xcb_xkb_set_compat_map_si_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_compat_map_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_compat_map_request_t) -> c_int>,
     xcb_xkb_set_compat_map_si_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_compat_map_request_t) -> xcb_xkb_sym_interpret_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_compat_map_request_t,
+        ) -> xcb_xkb_sym_interpret_iterator_t,
     >,
-    xcb_xkb_set_compat_map_group_maps:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_compat_map_request_t) -> *mut xcb_xkb_mod_def_t>,
+    xcb_xkb_set_compat_map_group_maps: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_set_compat_map_request_t) -> *mut xcb_xkb_mod_def_t,
+    >,
     xcb_xkb_set_compat_map_group_maps_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_compat_map_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_compat_map_request_t) -> c_int>,
     xcb_xkb_set_compat_map_group_maps_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_compat_map_request_t) -> xcb_xkb_mod_def_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_compat_map_request_t,
+        ) -> xcb_xkb_mod_def_iterator_t,
     >,
     xcb_xkb_get_indicator_state: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
         ) -> xcb_xkb_get_indicator_state_cookie_t,
     >,
     xcb_xkb_get_indicator_state_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
         ) -> xcb_xkb_get_indicator_state_cookie_t,
     >,
     xcb_xkb_get_indicator_state_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_indicator_state_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_indicator_state_reply_t,
     >,
-    xcb_xkb_get_indicator_map_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_get_indicator_map_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_get_indicator_map: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             which: u32,
         ) -> xcb_xkb_get_indicator_map_cookie_t,
     >,
     xcb_xkb_get_indicator_map_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             which: u32,
         ) -> xcb_xkb_get_indicator_map_cookie_t,
     >,
     xcb_xkb_get_indicator_map_maps: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_indicator_map_reply_t) -> *mut xcb_xkb_indicator_map_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_indicator_map_reply_t,
+        ) -> *mut xcb_xkb_indicator_map_t,
     >,
     xcb_xkb_get_indicator_map_maps_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_indicator_map_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_indicator_map_reply_t) -> c_int>,
     xcb_xkb_get_indicator_map_maps_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_indicator_map_reply_t) -> xcb_xkb_indicator_map_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_indicator_map_reply_t,
+        ) -> xcb_xkb_indicator_map_iterator_t,
     >,
     xcb_xkb_get_indicator_map_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_indicator_map_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_indicator_map_reply_t,
     >,
-    xcb_xkb_set_indicator_map_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_set_indicator_map_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_set_indicator_map_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             which: u32,
@@ -7216,7 +7420,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_indicator_map: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             which: u32,
@@ -7224,17 +7428,19 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_indicator_map_maps: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_indicator_map_request_t) -> *mut xcb_xkb_indicator_map_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_indicator_map_request_t,
+        ) -> *mut xcb_xkb_indicator_map_t,
     >,
     xcb_xkb_set_indicator_map_maps_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_indicator_map_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_indicator_map_request_t) -> c_int>,
     xcb_xkb_set_indicator_map_maps_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_indicator_map_request_t,
         ) -> xcb_xkb_indicator_map_iterator_t,
     >,
     xcb_xkb_get_named_indicator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             led_class: xcb_xkb_led_class_spec_t,
@@ -7243,7 +7449,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_get_named_indicator_cookie_t,
     >,
     xcb_xkb_get_named_indicator_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             led_class: xcb_xkb_led_class_spec_t,
@@ -7252,14 +7458,14 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_get_named_indicator_cookie_t,
     >,
     xcb_xkb_get_named_indicator_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_named_indicator_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_named_indicator_reply_t,
     >,
     xcb_xkb_set_named_indicator_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             led_class: xcb_xkb_led_class_spec_t,
@@ -7279,7 +7485,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_named_indicator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             led_class: xcb_xkb_led_class_spec_t,
@@ -7298,134 +7504,142 @@ pub(crate) struct XcbXkbXkb {
             map_ctrls: u32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xkb_get_names_value_list_type_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_names_value_list_type_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_names_value_list_type_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_type_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_get_names_value_list_n_levels_per_type:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut u8>,
     xcb_xkb_get_names_value_list_n_levels_per_type_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_n_levels_per_type_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_names_value_list_kt_level_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_names_value_list_kt_level_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_names_value_list_kt_level_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_kt_level_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_names_value_list_indicator_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_names_value_list_indicator_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_names_value_list_indicator_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_indicator_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_names_value_list_virtual_mod_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_names_value_list_virtual_mod_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_names_value_list_virtual_mod_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_virtual_mod_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_names_value_list_groups:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_names_value_list_groups: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_names_value_list_groups_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_groups_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_names_value_list_key_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_xkb_key_name_t>,
+    xcb_xkb_get_names_value_list_key_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_xkb_key_name_t,
+    >,
     xcb_xkb_get_names_value_list_key_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_key_names_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_xkb_key_name_iterator_t,
     >,
-    xcb_xkb_get_names_value_list_key_aliases:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_xkb_key_alias_t>,
+    xcb_xkb_get_names_value_list_key_aliases: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_xkb_key_alias_t,
+    >,
     xcb_xkb_get_names_value_list_key_aliases_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_key_aliases_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_xkb_key_alias_iterator_t,
     >,
-    xcb_xkb_get_names_value_list_radio_group_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_names_value_list_radio_group_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_names_value_list_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_names_value_list_radio_group_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_radio_group_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_names_reply_t,
             s: *const xcb_xkb_get_names_value_list_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_get_names_value_list_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             nTypes: u8,
             indicators: u32,
@@ -7439,7 +7653,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             indicators: u32,
@@ -7453,7 +7667,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_names_value_list_sizeof: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             indicators: u32,
@@ -7465,158 +7679,160 @@ pub(crate) struct XcbXkbXkb {
             which: u32,
         ) -> c_int,
     >,
-    xcb_xkb_get_names_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_get_names_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_get_names: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             which: u32,
         ) -> xcb_xkb_get_names_cookie_t,
     >,
     xcb_xkb_get_names_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             which: u32,
         ) -> xcb_xkb_get_names_cookie_t,
     >,
     xcb_xkb_get_names_value_list:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_names_reply_t) -> *mut c_void>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_names_reply_t) -> *mut c_void>,
     xcb_xkb_get_names_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_names_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_names_reply_t,
     >,
     xcb_xkb_set_names_values_type_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
     xcb_xkb_set_names_values_type_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_type_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_set_names_values_n_levels_per_type:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut u8>,
     xcb_xkb_set_names_values_n_levels_per_type_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_n_levels_per_type_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_set_names_values_kt_level_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
     xcb_xkb_set_names_values_kt_level_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_kt_level_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_set_names_values_indicator_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
     xcb_xkb_set_names_values_indicator_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_indicator_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_set_names_values_virtual_mod_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
     xcb_xkb_set_names_values_virtual_mod_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_virtual_mod_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_set_names_values_groups:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
     xcb_xkb_set_names_values_groups_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_groups_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_set_names_values_key_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_xkb_key_name_t>,
+    xcb_xkb_set_names_values_key_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_xkb_key_name_t,
+    >,
     xcb_xkb_set_names_values_key_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_key_names_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_xkb_key_name_iterator_t,
     >,
-    xcb_xkb_set_names_values_key_aliases:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_xkb_key_alias_t>,
+    xcb_xkb_set_names_values_key_aliases: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_xkb_key_alias_t,
+    >,
     xcb_xkb_set_names_values_key_aliases_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_key_aliases_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_xkb_key_alias_iterator_t,
     >,
     xcb_xkb_set_names_values_radio_group_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_set_names_values_t) -> *mut xcb_atom_t>,
     xcb_xkb_set_names_values_radio_group_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_radio_group_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_names_request_t,
             s: *const xcb_xkb_set_names_values_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_set_names_values_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             nTypes: u8,
             indicators: u32,
@@ -7630,7 +7846,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             indicators: u32,
@@ -7644,7 +7860,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_set_names_values_sizeof: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             indicators: u32,
@@ -7656,9 +7872,9 @@ pub(crate) struct XcbXkbXkb {
             which: u32,
         ) -> c_int,
     >,
-    xcb_xkb_set_names_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_set_names_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_set_names_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             virtual_mods: u16,
@@ -7678,7 +7894,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_names: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             virtual_mods: u16,
@@ -7698,7 +7914,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_names_aux_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             virtual_mods: u16,
@@ -7718,7 +7934,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_names_aux: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             virtual_mods: u16,
@@ -7738,9 +7954,9 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_names_values:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_names_request_t) -> *mut c_void>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_names_request_t) -> *mut c_void>,
     xcb_xkb_per_client_flags: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             change: u32,
@@ -7751,7 +7967,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_per_client_flags_cookie_t,
     >,
     xcb_xkb_per_client_flags_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             change: u32,
@@ -7762,192 +7978,214 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_per_client_flags_cookie_t,
     >,
     xcb_xkb_per_client_flags_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_per_client_flags_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_per_client_flags_reply_t,
     >,
-    xcb_xkb_list_components_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_list_components_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_list_components: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             max_names: u16,
         ) -> xcb_xkb_list_components_cookie_t,
     >,
     xcb_xkb_list_components_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             max_names: u16,
         ) -> xcb_xkb_list_components_cookie_t,
     >,
     xcb_xkb_list_components_keymaps_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
     xcb_xkb_list_components_keymaps_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> xcb_xkb_listing_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_list_components_reply_t,
+        ) -> xcb_xkb_listing_iterator_t,
     >,
     xcb_xkb_list_components_keycodes_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
     xcb_xkb_list_components_keycodes_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> xcb_xkb_listing_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_list_components_reply_t,
+        ) -> xcb_xkb_listing_iterator_t,
     >,
     xcb_xkb_list_components_types_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
     xcb_xkb_list_components_types_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> xcb_xkb_listing_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_list_components_reply_t,
+        ) -> xcb_xkb_listing_iterator_t,
     >,
     xcb_xkb_list_components_compat_maps_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
     xcb_xkb_list_components_compat_maps_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> xcb_xkb_listing_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_list_components_reply_t,
+        ) -> xcb_xkb_listing_iterator_t,
     >,
     xcb_xkb_list_components_symbols_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
     xcb_xkb_list_components_symbols_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> xcb_xkb_listing_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_list_components_reply_t,
+        ) -> xcb_xkb_listing_iterator_t,
     >,
     xcb_xkb_list_components_geometries_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_list_components_reply_t) -> c_int>,
     xcb_xkb_list_components_geometries_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_list_components_reply_t) -> xcb_xkb_listing_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_list_components_reply_t,
+        ) -> xcb_xkb_listing_iterator_t,
     >,
     xcb_xkb_list_components_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_list_components_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_list_components_reply_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_types_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_types_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_key_type_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_syms_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_syms_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_key_sym_map_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_acts_rtrn_count:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut u8>,
     xcb_xkb_get_kbd_by_name_replies_types_map_acts_rtrn_count_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_acts_rtrn_count_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_kbd_by_name_replies_types_map_acts_rtrn_acts:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_action_t>,
+    xcb_xkb_get_kbd_by_name_replies_types_map_acts_rtrn_acts: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_action_t,
+    >,
     xcb_xkb_get_kbd_by_name_replies_types_map_acts_rtrn_acts_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_acts_rtrn_acts_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_action_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_behaviors_rtrn: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_set_behavior_t,
+        unsafe extern "C" fn(
+            s: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_set_behavior_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_behaviors_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_behaviors_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_set_behavior_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_vmods_rtrn:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut u8>,
     xcb_xkb_get_kbd_by_name_replies_types_map_vmods_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_vmods_rtrn_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_explicit_rtrn: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_set_explicit_t,
+        unsafe extern "C" fn(
+            s: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_set_explicit_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_explicit_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_explicit_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_set_explicit_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_modmap_rtrn: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_key_mod_map_t,
+        unsafe extern "C" fn(
+            s: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_key_mod_map_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_modmap_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_modmap_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_key_mod_map_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_vmodmap_rtrn: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_key_v_mod_map_t,
+        unsafe extern "C" fn(
+            s: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_key_v_mod_map_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_vmodmap_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_vmodmap_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_key_v_mod_map_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -7963,7 +8201,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -7979,7 +8217,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map_sizeof: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             nKeySyms: u8,
@@ -7993,136 +8231,146 @@ pub(crate) struct XcbXkbXkb {
             present: u16,
         ) -> c_int,
     >,
-    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_type_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_type_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_type_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_type_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_n_levels_per_type:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut u8>,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_n_levels_per_type_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_n_levels_per_type_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_kt_level_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_kt_level_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_kt_level_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_kt_level_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_indicator_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_indicator_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_indicator_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_indicator_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_virtual_mod_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_virtual_mod_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_virtual_mod_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_virtual_mod_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_groups:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_groups: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_groups_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_groups_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_key_names: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_key_name_t,
+        unsafe extern "C" fn(
+            s: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_key_name_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_key_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_key_names_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_key_name_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_key_aliases: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_key_alias_t,
+        unsafe extern "C" fn(
+            s: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_key_alias_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_key_aliases_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_key_aliases_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_key_alias_iterator_t,
     >,
-    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_radio_group_names:
-        LazySymbol<unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t>,
+    xcb_xkb_get_kbd_by_name_replies_key_names_value_list_radio_group_names: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_atom_t,
+    >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_radio_group_names_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_radio_group_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             nTypes: u8,
             indicators: u32,
@@ -8136,7 +8384,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             indicators: u32,
@@ -8150,7 +8398,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list_sizeof: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             nTypes: u8,
             indicators: u32,
@@ -8163,82 +8411,90 @@ pub(crate) struct XcbXkbXkb {
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_types_map: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> *mut xcb_xkb_get_kbd_by_name_replies_types_map_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_compat_map_si_rtrn: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_sym_interpret_t,
+        unsafe extern "C" fn(
+            s: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_sym_interpret_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_compat_map_si_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_compat_map_si_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_sym_interpret_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_compat_map_group_rtrn: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_mod_def_t,
+        unsafe extern "C" fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_mod_def_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_compat_map_group_rtrn_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_compat_map_group_rtrn_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_mod_def_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_indicator_maps_maps: LazySymbol<
-        unsafe fn(s: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_indicator_map_t,
+        unsafe extern "C" fn(
+            s: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_indicator_map_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_indicator_maps_maps_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_indicator_maps_maps_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_reply_t,
             s: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> xcb_xkb_indicator_map_iterator_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_key_names_value_list: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_get_kbd_by_name_replies_t,
-        ) -> *mut xcb_xkb_get_kbd_by_name_replies_key_names_value_list_t,
+        )
+            -> *mut xcb_xkb_get_kbd_by_name_replies_key_names_value_list_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_geometry_label_font: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_kbd_by_name_replies_t) -> *mut xcb_xkb_counted_string_16_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_kbd_by_name_replies_t,
+        ) -> *mut xcb_xkb_counted_string_16_t,
     >,
     xcb_xkb_get_kbd_by_name_replies_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             reported: u16,
             _aux: *const xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             reported: u16,
             _aux: *mut xcb_xkb_get_kbd_by_name_replies_t,
         ) -> c_int,
     >,
     xcb_xkb_get_kbd_by_name_replies_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, reported: u16) -> c_int>,
-    xcb_xkb_get_kbd_by_name_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, reported: u16) -> c_int>,
+    xcb_xkb_get_kbd_by_name_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_get_kbd_by_name: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             need: u16,
@@ -8247,7 +8503,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_get_kbd_by_name_cookie_t,
     >,
     xcb_xkb_get_kbd_by_name_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             need: u16,
@@ -8256,17 +8512,18 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_get_kbd_by_name_cookie_t,
     >,
     xcb_xkb_get_kbd_by_name_replies:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_kbd_by_name_reply_t) -> *mut c_void>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_kbd_by_name_reply_t) -> *mut c_void>,
     xcb_xkb_get_kbd_by_name_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_kbd_by_name_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_kbd_by_name_reply_t,
     >,
-    xcb_xkb_get_device_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_get_device_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_get_device_info: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             wanted: u16,
@@ -8278,7 +8535,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_get_device_info_cookie_t,
     >,
     xcb_xkb_get_device_info_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             wanted: u16,
@@ -8289,34 +8546,42 @@ pub(crate) struct XcbXkbXkb {
             led_id: xcb_xkb_id_spec_t,
         ) -> xcb_xkb_get_device_info_cookie_t,
     >,
-    xcb_xkb_get_device_info_name:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_device_info_reply_t) -> *mut xcb_xkb_string8_t>,
+    xcb_xkb_get_device_info_name: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_get_device_info_reply_t) -> *mut xcb_xkb_string8_t,
+    >,
     xcb_xkb_get_device_info_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_device_info_reply_t) -> c_int>,
-    xcb_xkb_get_device_info_name_end:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_device_info_reply_t) -> xcb_generic_iterator_t>,
-    xcb_xkb_get_device_info_btn_actions:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_device_info_reply_t) -> *mut xcb_xkb_action_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_device_info_reply_t) -> c_int>,
+    xcb_xkb_get_device_info_name_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_get_device_info_reply_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xkb_get_device_info_btn_actions: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_get_device_info_reply_t) -> *mut xcb_xkb_action_t,
+    >,
     xcb_xkb_get_device_info_btn_actions_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_device_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_device_info_reply_t) -> c_int>,
     xcb_xkb_get_device_info_btn_actions_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_device_info_reply_t) -> xcb_xkb_action_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_device_info_reply_t,
+        ) -> xcb_xkb_action_iterator_t,
     >,
     xcb_xkb_get_device_info_leds_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_get_device_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_get_device_info_reply_t) -> c_int>,
     xcb_xkb_get_device_info_leds_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_get_device_info_reply_t) -> xcb_xkb_device_led_info_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_get_device_info_reply_t,
+        ) -> xcb_xkb_device_led_info_iterator_t,
     >,
     xcb_xkb_get_device_info_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_get_device_info_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xkb_get_device_info_reply_t,
     >,
-    xcb_xkb_set_device_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_set_device_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_set_device_info_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             first_btn: u8,
@@ -8328,7 +8593,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xkb_set_device_info: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_spec: xcb_xkb_device_spec_t,
             first_btn: u8,
@@ -8339,23 +8604,27 @@ pub(crate) struct XcbXkbXkb {
             leds: *const xcb_xkb_device_led_info_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xkb_set_device_info_btn_actions:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_device_info_request_t) -> *mut xcb_xkb_action_t>,
+    xcb_xkb_set_device_info_btn_actions: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xkb_set_device_info_request_t) -> *mut xcb_xkb_action_t,
+    >,
     xcb_xkb_set_device_info_btn_actions_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_device_info_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_device_info_request_t) -> c_int>,
     xcb_xkb_set_device_info_btn_actions_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xkb_set_device_info_request_t) -> xcb_xkb_action_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xkb_set_device_info_request_t,
+        ) -> xcb_xkb_action_iterator_t,
     >,
     xcb_xkb_set_device_info_leds_length:
-        LazySymbol<unsafe fn(r: *const xcb_xkb_set_device_info_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xkb_set_device_info_request_t) -> c_int>,
     xcb_xkb_set_device_info_leds_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xkb_set_device_info_request_t,
         ) -> xcb_xkb_device_led_info_iterator_t,
     >,
-    xcb_xkb_set_debugging_flags_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xkb_set_debugging_flags_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xkb_set_debugging_flags: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             msg_length: u16,
             affect_flags: u32,
@@ -8366,7 +8635,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_set_debugging_flags_cookie_t,
     >,
     xcb_xkb_set_debugging_flags_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             msg_length: u16,
             affect_flags: u32,
@@ -8377,7 +8646,7 @@ pub(crate) struct XcbXkbXkb {
         ) -> xcb_xkb_set_debugging_flags_cookie_t,
     >,
     xcb_xkb_set_debugging_flags_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xkb_set_debugging_flags_cookie_t,
             e: *mut *mut xcb_generic_error_t,

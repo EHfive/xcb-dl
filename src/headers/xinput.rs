@@ -5405,6 +5405,7 @@ impl Default for xcb_input_xi_query_version_reply_t {
 /// - [`Input::DeviceClassType::Valuator`](XCB_INPUT_DEVICE_CLASS_TYPE_VALUATOR)
 /// - [`Input::DeviceClassType::Scroll`](XCB_INPUT_DEVICE_CLASS_TYPE_SCROLL)
 /// - [`Input::DeviceClassType::Touch`](XCB_INPUT_DEVICE_CLASS_TYPE_TOUCH)
+/// - [`Input::DeviceClassType::Gesture`](XCB_INPUT_DEVICE_CLASS_TYPE_GESTURE)
 pub type xcb_input_device_class_type_t = u32;
 /// The `Input::DeviceClassType::Key` enum variant.
 ///
@@ -5426,6 +5427,10 @@ pub const XCB_INPUT_DEVICE_CLASS_TYPE_SCROLL: xcb_input_device_class_type_t = 3;
 ///
 /// This is a variant of [`xcb_input_device_class_type_t`].
 pub const XCB_INPUT_DEVICE_CLASS_TYPE_TOUCH: xcb_input_device_class_type_t = 8;
+/// The `Input::DeviceClassType::Gesture` enum variant.
+///
+/// This is a variant of [`xcb_input_device_class_type_t`].
+pub const XCB_INPUT_DEVICE_CLASS_TYPE_GESTURE: xcb_input_device_class_type_t = 9;
 
 /// The `Input::DeviceType` enum.
 ///
@@ -5656,6 +5661,41 @@ impl Default for xcb_input_touch_class_iterator_t {
     }
 }
 
+/// The `Input::GestureClass` struct.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_input_gesture_class_t {
+    pub type_: u16,
+    pub len: u16,
+    pub sourceid: xcb_input_device_id_t,
+    pub num_touches: u8,
+    pub pad0: u8,
+}
+
+impl Default for xcb_input_gesture_class_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
+/// An iterator over `Input::GestureClass` objects.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_input_gesture_class_iterator_t {
+    /// The value of the current iteration.
+    pub data: *mut xcb_input_gesture_class_t,
+    /// The number of elements remaining including this one.
+    pub rem: c_int,
+    /// The offset of `data`, in bytes, from the start of the containing object.
+    pub index: c_int,
+}
+
+impl Default for xcb_input_gesture_class_iterator_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
 /// The `Input::ValuatorClass` struct.
 #[derive(Copy, Clone, Debug)]
 #[repr(C)]
@@ -5796,6 +5836,22 @@ impl Default for xcb_input_device_class_data_t__touch {
     }
 }
 
+/// The type of [`xcb_input_device_class_data_t::gesture`].
+///
+/// In libxcb, this type is an anonymous struct.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_input_device_class_data_t__gesture {
+    pub num_touches: u8,
+    pub pad2: u8,
+}
+
+impl Default for xcb_input_device_class_data_t__gesture {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
 /// The `Input::data` switch.
 #[derive(Copy, Clone, Debug)]
 #[repr(C)]
@@ -5805,6 +5861,7 @@ pub struct xcb_input_device_class_data_t {
     pub valuator: xcb_input_device_class_data_t__valuator,
     pub scroll: xcb_input_device_class_data_t__scroll,
     pub touch: xcb_input_device_class_data_t__touch,
+    pub gesture: xcb_input_device_class_data_t__gesture,
 }
 
 impl Default for xcb_input_device_class_data_t {
@@ -6258,6 +6315,8 @@ pub const XCB_INPUT_GRAB_MODE_22_TOUCH: xcb_input_grab_mode_22_t = 2;
 /// - [`Input::GrabType::Enter`](XCB_INPUT_GRAB_TYPE_ENTER)
 /// - [`Input::GrabType::FocusIn`](XCB_INPUT_GRAB_TYPE_FOCUS_IN)
 /// - [`Input::GrabType::TouchBegin`](XCB_INPUT_GRAB_TYPE_TOUCH_BEGIN)
+/// - [`Input::GrabType::GesturePinchBegin`](XCB_INPUT_GRAB_TYPE_GESTURE_PINCH_BEGIN)
+/// - [`Input::GrabType::GestureSwipeBegin`](XCB_INPUT_GRAB_TYPE_GESTURE_SWIPE_BEGIN)
 pub type xcb_input_grab_type_t = u32;
 /// The `Input::GrabType::Button` enum variant.
 ///
@@ -6279,6 +6338,14 @@ pub const XCB_INPUT_GRAB_TYPE_FOCUS_IN: xcb_input_grab_type_t = 3;
 ///
 /// This is a variant of [`xcb_input_grab_type_t`].
 pub const XCB_INPUT_GRAB_TYPE_TOUCH_BEGIN: xcb_input_grab_type_t = 4;
+/// The `Input::GrabType::GesturePinchBegin` enum variant.
+///
+/// This is a variant of [`xcb_input_grab_type_t`].
+pub const XCB_INPUT_GRAB_TYPE_GESTURE_PINCH_BEGIN: xcb_input_grab_type_t = 5;
+/// The `Input::GrabType::GestureSwipeBegin` enum variant.
+///
+/// This is a variant of [`xcb_input_grab_type_t`].
+pub const XCB_INPUT_GRAB_TYPE_GESTURE_SWIPE_BEGIN: xcb_input_grab_type_t = 6;
 
 /// The `Input::ModifierMask` enum.
 ///
@@ -8083,6 +8150,160 @@ pub const XCB_INPUT_BARRIER_LEAVE: u16 = 26i32 as u16;
 /// The `Input::BarrierLeave` event.
 pub type xcb_input_barrier_leave_event_t = xcb_input_barrier_hit_event_t;
 
+/// The `Input::GesturePinchEventFlags` enum.
+///
+/// This enum has the following variants:
+///
+/// - [`Input::GesturePinchEventFlags::GesturePinchCancelled`](XCB_INPUT_GESTURE_PINCH_EVENT_FLAGS_GESTURE_PINCH_CANCELLED)
+pub type xcb_input_gesture_pinch_event_flags_t = u32;
+/// The `Input::GesturePinchEventFlags::GesturePinchCancelled` enum variant.
+///
+/// This is a variant of [`xcb_input_gesture_pinch_event_flags_t`].
+pub const XCB_INPUT_GESTURE_PINCH_EVENT_FLAGS_GESTURE_PINCH_CANCELLED:
+    xcb_input_gesture_pinch_event_flags_t = 1;
+
+/// The opcode for `Input::GesturePinchBegin` events.
+///
+/// If this value appears in [`xcb_ge_generic_event_t::event_type`], and
+/// [`xcb_ge_generic_event_t::extension`] is the opcode of the `Input` extension,
+/// then the type of the event is [`xcb_input_gesture_pinch_begin_event_t`].
+pub const XCB_INPUT_GESTURE_PINCH_BEGIN: u16 = 27i32 as u16;
+
+/// The `Input::GesturePinchBegin` event.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_input_gesture_pinch_begin_event_t {
+    pub response_type: u8,
+    pub extension: u8,
+    pub sequence: u16,
+    pub length: u32,
+    pub event_type: u16,
+    pub deviceid: xcb_input_device_id_t,
+    pub time: xcb_timestamp_t,
+    pub detail: u32,
+    pub root: xcb_window_t,
+    pub event: xcb_window_t,
+    pub child: xcb_window_t,
+    pub full_sequence: u32,
+    pub root_x: xcb_input_fp1616_t,
+    pub root_y: xcb_input_fp1616_t,
+    pub event_x: xcb_input_fp1616_t,
+    pub event_y: xcb_input_fp1616_t,
+    pub delta_x: xcb_input_fp1616_t,
+    pub delta_y: xcb_input_fp1616_t,
+    pub delta_unaccel_x: xcb_input_fp1616_t,
+    pub delta_unaccel_y: xcb_input_fp1616_t,
+    pub scale: xcb_input_fp1616_t,
+    pub delta_angle: xcb_input_fp1616_t,
+    pub sourceid: xcb_input_device_id_t,
+    pub pad0: [u8; 2],
+    pub mods: xcb_input_modifier_info_t,
+    pub group: xcb_input_group_info_t,
+    pub flags: u32,
+}
+
+impl Default for xcb_input_gesture_pinch_begin_event_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
+/// The opcode for `Input::GesturePinchUpdate` events.
+///
+/// If this value appears in [`xcb_ge_generic_event_t::event_type`], and
+/// [`xcb_ge_generic_event_t::extension`] is the opcode of the `Input` extension,
+/// then the type of the event is [`xcb_input_gesture_pinch_update_event_t`].
+pub const XCB_INPUT_GESTURE_PINCH_UPDATE: u16 = 28i32 as u16;
+
+/// The `Input::GesturePinchUpdate` event.
+pub type xcb_input_gesture_pinch_update_event_t = xcb_input_gesture_pinch_begin_event_t;
+
+/// The opcode for `Input::GesturePinchEnd` events.
+///
+/// If this value appears in [`xcb_ge_generic_event_t::event_type`], and
+/// [`xcb_ge_generic_event_t::extension`] is the opcode of the `Input` extension,
+/// then the type of the event is [`xcb_input_gesture_pinch_end_event_t`].
+pub const XCB_INPUT_GESTURE_PINCH_END: u16 = 29i32 as u16;
+
+/// The `Input::GesturePinchEnd` event.
+pub type xcb_input_gesture_pinch_end_event_t = xcb_input_gesture_pinch_begin_event_t;
+
+/// The `Input::GestureSwipeEventFlags` enum.
+///
+/// This enum has the following variants:
+///
+/// - [`Input::GestureSwipeEventFlags::GestureSwipeCancelled`](XCB_INPUT_GESTURE_SWIPE_EVENT_FLAGS_GESTURE_SWIPE_CANCELLED)
+pub type xcb_input_gesture_swipe_event_flags_t = u32;
+/// The `Input::GestureSwipeEventFlags::GestureSwipeCancelled` enum variant.
+///
+/// This is a variant of [`xcb_input_gesture_swipe_event_flags_t`].
+pub const XCB_INPUT_GESTURE_SWIPE_EVENT_FLAGS_GESTURE_SWIPE_CANCELLED:
+    xcb_input_gesture_swipe_event_flags_t = 1;
+
+/// The opcode for `Input::GestureSwipeBegin` events.
+///
+/// If this value appears in [`xcb_ge_generic_event_t::event_type`], and
+/// [`xcb_ge_generic_event_t::extension`] is the opcode of the `Input` extension,
+/// then the type of the event is [`xcb_input_gesture_swipe_begin_event_t`].
+pub const XCB_INPUT_GESTURE_SWIPE_BEGIN: u16 = 30i32 as u16;
+
+/// The `Input::GestureSwipeBegin` event.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_input_gesture_swipe_begin_event_t {
+    pub response_type: u8,
+    pub extension: u8,
+    pub sequence: u16,
+    pub length: u32,
+    pub event_type: u16,
+    pub deviceid: xcb_input_device_id_t,
+    pub time: xcb_timestamp_t,
+    pub detail: u32,
+    pub root: xcb_window_t,
+    pub event: xcb_window_t,
+    pub child: xcb_window_t,
+    pub full_sequence: u32,
+    pub root_x: xcb_input_fp1616_t,
+    pub root_y: xcb_input_fp1616_t,
+    pub event_x: xcb_input_fp1616_t,
+    pub event_y: xcb_input_fp1616_t,
+    pub delta_x: xcb_input_fp1616_t,
+    pub delta_y: xcb_input_fp1616_t,
+    pub delta_unaccel_x: xcb_input_fp1616_t,
+    pub delta_unaccel_y: xcb_input_fp1616_t,
+    pub sourceid: xcb_input_device_id_t,
+    pub pad0: [u8; 2],
+    pub mods: xcb_input_modifier_info_t,
+    pub group: xcb_input_group_info_t,
+    pub flags: u32,
+}
+
+impl Default for xcb_input_gesture_swipe_begin_event_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
+/// The opcode for `Input::GestureSwipeUpdate` events.
+///
+/// If this value appears in [`xcb_ge_generic_event_t::event_type`], and
+/// [`xcb_ge_generic_event_t::extension`] is the opcode of the `Input` extension,
+/// then the type of the event is [`xcb_input_gesture_swipe_update_event_t`].
+pub const XCB_INPUT_GESTURE_SWIPE_UPDATE: u16 = 31i32 as u16;
+
+/// The `Input::GestureSwipeUpdate` event.
+pub type xcb_input_gesture_swipe_update_event_t = xcb_input_gesture_swipe_begin_event_t;
+
+/// The opcode for `Input::GestureSwipeEnd` events.
+///
+/// If this value appears in [`xcb_ge_generic_event_t::event_type`], and
+/// [`xcb_ge_generic_event_t::extension`] is the opcode of the `Input` extension,
+/// then the type of the event is [`xcb_input_gesture_swipe_end_event_t`].
+pub const XCB_INPUT_GESTURE_SWIPE_END: u16 = 32i32 as u16;
+
+/// The `Input::GestureSwipeEnd` event.
+pub type xcb_input_gesture_swipe_end_event_t = xcb_input_gesture_swipe_begin_event_t;
+
 /// The `Input::EventForSend` eventstruct.
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -8176,6 +8397,9 @@ pub struct xcb_input_device_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_input_device_error_t {
@@ -8197,6 +8421,9 @@ pub struct xcb_input_event_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_input_event_error_t {
@@ -8218,6 +8445,9 @@ pub struct xcb_input_mode_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_input_mode_error_t {
@@ -8239,6 +8469,9 @@ pub struct xcb_input_device_busy_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_input_device_busy_error_t {
@@ -8260,6 +8493,9 @@ pub struct xcb_input_class_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_input_class_error_t {
@@ -8271,200 +8507,249 @@ impl Default for xcb_input_class_error_t {
 #[cfg(feature = "xcb_xinput")]
 pub(crate) struct XcbXinputXinput {
     xcb_input_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_input_event_class_next: LazySymbol<unsafe fn(i: *mut xcb_input_event_class_iterator_t)>,
-    xcb_input_event_class_end:
-        LazySymbol<unsafe fn(i: xcb_input_event_class_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_key_code_next: LazySymbol<unsafe fn(i: *mut xcb_input_key_code_iterator_t)>,
-    xcb_input_key_code_end:
-        LazySymbol<unsafe fn(i: xcb_input_key_code_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_device_id_next: LazySymbol<unsafe fn(i: *mut xcb_input_device_id_iterator_t)>,
-    xcb_input_device_id_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_id_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_fp1616_next: LazySymbol<unsafe fn(i: *mut xcb_input_fp1616_iterator_t)>,
+    xcb_input_event_class_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_event_class_iterator_t)>,
+    xcb_input_event_class_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_event_class_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_key_code_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_key_code_iterator_t)>,
+    xcb_input_key_code_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_key_code_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_device_id_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_id_iterator_t)>,
+    xcb_input_device_id_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_id_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_fp1616_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_fp1616_iterator_t)>,
     xcb_input_fp1616_end:
-        LazySymbol<unsafe fn(i: xcb_input_fp1616_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_fp3232_next: LazySymbol<unsafe fn(i: *mut xcb_input_fp3232_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_input_fp1616_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_input_fp3232_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_fp3232_iterator_t)>,
     xcb_input_fp3232_end:
-        LazySymbol<unsafe fn(i: xcb_input_fp3232_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_get_extension_version_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_input_fp3232_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_input_get_extension_version_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_extension_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             name_len: u16,
             name: *const c_char,
         ) -> xcb_input_get_extension_version_cookie_t,
     >,
     xcb_input_get_extension_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             name_len: u16,
             name: *const c_char,
         ) -> xcb_input_get_extension_version_cookie_t,
     >,
     xcb_input_get_extension_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_extension_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_extension_version_reply_t,
     >,
-    xcb_input_device_info_next: LazySymbol<unsafe fn(i: *mut xcb_input_device_info_iterator_t)>,
-    xcb_input_device_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_key_info_next: LazySymbol<unsafe fn(i: *mut xcb_input_key_info_iterator_t)>,
-    xcb_input_key_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_key_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_button_info_next: LazySymbol<unsafe fn(i: *mut xcb_input_button_info_iterator_t)>,
-    xcb_input_button_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_button_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_axis_info_next: LazySymbol<unsafe fn(i: *mut xcb_input_axis_info_iterator_t)>,
-    xcb_input_axis_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_axis_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_valuator_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_input_valuator_info_axes:
-        LazySymbol<unsafe fn(r: *const xcb_input_valuator_info_t) -> *mut xcb_input_axis_info_t>,
-    xcb_input_valuator_info_axes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_valuator_info_t) -> c_int>,
-    xcb_input_valuator_info_axes_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_valuator_info_t) -> xcb_input_axis_info_iterator_t,
+    xcb_input_device_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_info_iterator_t)>,
+    xcb_input_device_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_info_iterator_t) -> xcb_generic_iterator_t,
     >,
-    xcb_input_valuator_info_next: LazySymbol<unsafe fn(i: *mut xcb_input_valuator_info_iterator_t)>,
-    xcb_input_valuator_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_valuator_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_input_info_info_valuator_axes:
-        LazySymbol<unsafe fn(s: *const xcb_input_input_info_info_t) -> *mut xcb_input_axis_info_t>,
+    xcb_input_key_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_key_info_iterator_t)>,
+    xcb_input_key_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_key_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_button_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_button_info_iterator_t)>,
+    xcb_input_button_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_button_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_axis_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_axis_info_iterator_t)>,
+    xcb_input_axis_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_axis_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_valuator_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_valuator_info_axes: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_valuator_info_t) -> *mut xcb_input_axis_info_t,
+    >,
+    xcb_input_valuator_info_axes_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_valuator_info_t) -> c_int>,
+    xcb_input_valuator_info_axes_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_valuator_info_t) -> xcb_input_axis_info_iterator_t,
+    >,
+    xcb_input_valuator_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_valuator_info_iterator_t)>,
+    xcb_input_valuator_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_valuator_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_input_info_info_valuator_axes: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_input_info_info_t) -> *mut xcb_input_axis_info_t,
+    >,
     xcb_input_input_info_info_valuator_axes_length: LazySymbol<
-        unsafe fn(r: *const xcb_input_input_info_t, s: *const xcb_input_input_info_info_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_input_input_info_t,
+            s: *const xcb_input_input_info_info_t,
+        ) -> c_int,
     >,
     xcb_input_input_info_info_valuator_axes_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_input_info_t,
             s: *const xcb_input_input_info_info_t,
         ) -> xcb_input_axis_info_iterator_t,
     >,
     xcb_input_input_info_info_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             class_id: u8,
             _aux: *const xcb_input_input_info_info_t,
         ) -> c_int,
     >,
     xcb_input_input_info_info_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             class_id: u8,
             _aux: *mut xcb_input_input_info_info_t,
         ) -> c_int,
     >,
     xcb_input_input_info_info_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, class_id: u8) -> c_int>,
-    xcb_input_input_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, class_id: u8) -> c_int>,
+    xcb_input_input_info_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_input_info_info:
-        LazySymbol<unsafe fn(r: *const xcb_input_input_info_t) -> *mut c_void>,
-    xcb_input_input_info_next: LazySymbol<unsafe fn(i: *mut xcb_input_input_info_iterator_t)>,
-    xcb_input_input_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_input_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_device_name_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_input_info_t) -> *mut c_void>,
+    xcb_input_input_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_input_info_iterator_t)>,
+    xcb_input_input_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_input_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_device_name_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_device_name_string:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_name_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_name_t) -> *mut c_char>,
     xcb_input_device_name_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_name_t) -> c_int>,
-    xcb_input_device_name_string_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_name_t) -> xcb_generic_iterator_t>,
-    xcb_input_device_name_next: LazySymbol<unsafe fn(i: *mut xcb_input_device_name_iterator_t)>,
-    xcb_input_device_name_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_name_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_list_input_devices_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_input_list_input_devices:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_input_list_input_devices_cookie_t>,
-    xcb_input_list_input_devices_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_input_list_input_devices_cookie_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_name_t) -> c_int>,
+    xcb_input_device_name_string_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_device_name_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_device_name_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_name_iterator_t)>,
+    xcb_input_device_name_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_name_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_list_input_devices_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_list_input_devices: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_input_list_input_devices_cookie_t,
+    >,
+    xcb_input_list_input_devices_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_input_list_input_devices_cookie_t,
+    >,
     xcb_input_list_input_devices_devices: LazySymbol<
-        unsafe fn(r: *const xcb_input_list_input_devices_reply_t) -> *mut xcb_input_device_info_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_list_input_devices_reply_t,
+        ) -> *mut xcb_input_device_info_t,
     >,
     xcb_input_list_input_devices_devices_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_list_input_devices_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_list_input_devices_reply_t) -> c_int>,
     xcb_input_list_input_devices_devices_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_list_input_devices_reply_t,
         ) -> xcb_input_device_info_iterator_t,
     >,
     xcb_input_list_input_devices_infos_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_list_input_devices_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_list_input_devices_reply_t) -> c_int>,
     xcb_input_list_input_devices_infos_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_list_input_devices_reply_t,
         ) -> xcb_input_input_info_iterator_t,
     >,
     xcb_input_list_input_devices_names_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_list_input_devices_reply_t) -> c_int>,
-    xcb_input_list_input_devices_names_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_input_list_input_devices_reply_t) -> xcb_str_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_list_input_devices_reply_t) -> c_int>,
+    xcb_input_list_input_devices_names_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_list_input_devices_reply_t) -> xcb_str_iterator_t,
+    >,
     xcb_input_list_input_devices_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_list_input_devices_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_list_input_devices_reply_t,
     >,
     xcb_input_event_type_base_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_event_type_base_iterator_t)>,
-    xcb_input_event_type_base_end:
-        LazySymbol<unsafe fn(i: xcb_input_event_type_base_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_event_type_base_iterator_t)>,
+    xcb_input_event_type_base_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_event_type_base_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_input_class_info_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_input_class_info_iterator_t)>,
-    xcb_input_input_class_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_input_class_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_open_device_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_input_class_info_iterator_t)>,
+    xcb_input_input_class_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_input_class_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_open_device_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_open_device: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_input_open_device_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            device_id: u8,
+        ) -> xcb_input_open_device_cookie_t,
     >,
     xcb_input_open_device_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_input_open_device_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            device_id: u8,
+        ) -> xcb_input_open_device_cookie_t,
     >,
     xcb_input_open_device_class_info: LazySymbol<
-        unsafe fn(r: *const xcb_input_open_device_reply_t) -> *mut xcb_input_input_class_info_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_open_device_reply_t,
+        ) -> *mut xcb_input_input_class_info_t,
     >,
     xcb_input_open_device_class_info_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_open_device_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_open_device_reply_t) -> c_int>,
     xcb_input_open_device_class_info_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_open_device_reply_t) -> xcb_input_input_class_info_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_open_device_reply_t,
+        ) -> xcb_input_input_class_info_iterator_t,
     >,
     xcb_input_open_device_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_open_device_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_open_device_reply_t,
     >,
-    xcb_input_close_device_checked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_void_cookie_t>,
-    xcb_input_close_device:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_void_cookie_t>,
+    xcb_input_close_device_checked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_void_cookie_t,
+    >,
+    xcb_input_close_device: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_void_cookie_t,
+    >,
     xcb_input_set_device_mode: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             mode: u8,
         ) -> xcb_input_set_device_mode_cookie_t,
     >,
     xcb_input_set_device_mode_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             mode: u8,
         ) -> xcb_input_set_device_mode_cookie_t,
     >,
     xcb_input_set_device_mode_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_set_device_mode_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_set_device_mode_reply_t,
     >,
-    xcb_input_select_extension_event_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_select_extension_event_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_select_extension_event_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             num_classes: u16,
@@ -8472,7 +8757,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_select_extension_event: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             num_classes: u16,
@@ -8480,64 +8765,69 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_select_extension_event_classes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_select_extension_event_request_t,
         ) -> *mut xcb_input_event_class_t,
     >,
-    xcb_input_select_extension_event_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_select_extension_event_request_t) -> c_int>,
+    xcb_input_select_extension_event_classes_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_select_extension_event_request_t) -> c_int,
+    >,
     xcb_input_select_extension_event_classes_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_select_extension_event_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_select_extension_event_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_selected_extension_events_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_selected_extension_events: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_input_get_selected_extension_events_cookie_t,
     >,
     xcb_input_get_selected_extension_events_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_input_get_selected_extension_events_cookie_t,
     >,
     xcb_input_get_selected_extension_events_this_classes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_selected_extension_events_reply_t,
         ) -> *mut xcb_input_event_class_t,
     >,
-    xcb_input_get_selected_extension_events_this_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_selected_extension_events_reply_t) -> c_int>,
+    xcb_input_get_selected_extension_events_this_classes_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_selected_extension_events_reply_t) -> c_int,
+    >,
     xcb_input_get_selected_extension_events_this_classes_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_selected_extension_events_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_selected_extension_events_all_classes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_selected_extension_events_reply_t,
         ) -> *mut xcb_input_event_class_t,
     >,
-    xcb_input_get_selected_extension_events_all_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_selected_extension_events_reply_t) -> c_int>,
+    xcb_input_get_selected_extension_events_all_classes_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_selected_extension_events_reply_t) -> c_int,
+    >,
     xcb_input_get_selected_extension_events_all_classes_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_selected_extension_events_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_selected_extension_events_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_selected_extension_events_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_selected_extension_events_reply_t,
     >,
     xcb_input_change_device_dont_propagate_list_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_change_device_dont_propagate_list_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             num_classes: u16,
@@ -8546,7 +8836,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_device_dont_propagate_list: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             num_classes: u16,
@@ -8555,68 +8845,76 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_device_dont_propagate_list_classes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_dont_propagate_list_request_t,
         ) -> *mut xcb_input_event_class_t,
     >,
     xcb_input_change_device_dont_propagate_list_classes_length: LazySymbol<
-        unsafe fn(r: *const xcb_input_change_device_dont_propagate_list_request_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_input_change_device_dont_propagate_list_request_t,
+        ) -> c_int,
     >,
     xcb_input_change_device_dont_propagate_list_classes_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_dont_propagate_list_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_device_dont_propagate_list_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_device_dont_propagate_list: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_input_get_device_dont_propagate_list_cookie_t,
     >,
     xcb_input_get_device_dont_propagate_list_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_input_get_device_dont_propagate_list_cookie_t,
     >,
     xcb_input_get_device_dont_propagate_list_classes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_dont_propagate_list_reply_t,
         ) -> *mut xcb_input_event_class_t,
     >,
-    xcb_input_get_device_dont_propagate_list_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_device_dont_propagate_list_reply_t) -> c_int>,
+    xcb_input_get_device_dont_propagate_list_classes_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_device_dont_propagate_list_reply_t) -> c_int,
+    >,
     xcb_input_get_device_dont_propagate_list_classes_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_dont_propagate_list_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_device_dont_propagate_list_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_device_dont_propagate_list_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_device_dont_propagate_list_reply_t,
     >,
     xcb_input_device_time_coord_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, num_axes: u8) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, num_axes: u8) -> c_int>,
     xcb_input_device_time_coord_axisvalues:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_time_coord_t) -> *mut i32>,
-    xcb_input_device_time_coord_axisvalues_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_time_coord_t, num_axes: u8) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_time_coord_t) -> *mut i32>,
+    xcb_input_device_time_coord_axisvalues_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_device_time_coord_t, num_axes: u8) -> c_int,
+    >,
     xcb_input_device_time_coord_axisvalues_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_device_time_coord_t, num_axes: u8) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_device_time_coord_t,
+            num_axes: u8,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_time_coord_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_time_coord_iterator_t)>,
-    xcb_input_device_time_coord_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_time_coord_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_time_coord_iterator_t)>,
+    xcb_input_device_time_coord_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_time_coord_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_get_device_motion_events_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_device_motion_events: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             start: xcb_timestamp_t,
             stop: xcb_timestamp_t,
@@ -8624,48 +8922,49 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_get_device_motion_events_cookie_t,
     >,
     xcb_input_get_device_motion_events_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             start: xcb_timestamp_t,
             stop: xcb_timestamp_t,
             device_id: u8,
         ) -> xcb_input_get_device_motion_events_cookie_t,
     >,
-    xcb_input_get_device_motion_events_events_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_device_motion_events_reply_t) -> c_int>,
+    xcb_input_get_device_motion_events_events_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_device_motion_events_reply_t) -> c_int,
+    >,
     xcb_input_get_device_motion_events_events_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_motion_events_reply_t,
         ) -> xcb_input_device_time_coord_iterator_t,
     >,
     xcb_input_get_device_motion_events_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_device_motion_events_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_device_motion_events_reply_t,
     >,
     xcb_input_change_keyboard_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_change_keyboard_device_cookie_t,
     >,
     xcb_input_change_keyboard_device_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_change_keyboard_device_cookie_t,
     >,
     xcb_input_change_keyboard_device_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_change_keyboard_device_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_change_keyboard_device_reply_t,
     >,
     xcb_input_change_pointer_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             x_axis: u8,
             y_axis: u8,
@@ -8673,7 +8972,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_change_pointer_device_cookie_t,
     >,
     xcb_input_change_pointer_device_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             x_axis: u8,
             y_axis: u8,
@@ -8681,15 +8980,15 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_change_pointer_device_cookie_t,
     >,
     xcb_input_change_pointer_device_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_change_pointer_device_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_change_pointer_device_reply_t,
     >,
-    xcb_input_grab_device_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_grab_device_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_grab_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             time: xcb_timestamp_t,
@@ -8702,7 +9001,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_grab_device_cookie_t,
     >,
     xcb_input_grab_device_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             time: xcb_timestamp_t,
@@ -8715,29 +9014,30 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_grab_device_cookie_t,
     >,
     xcb_input_grab_device_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_grab_device_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_grab_device_reply_t,
     >,
     xcb_input_ungrab_device_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             device_id: u8,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_ungrab_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             device_id: u8,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_grab_device_key_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_grab_device_key_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_grab_device_key_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             num_classes: u16,
@@ -8752,7 +9052,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_grab_device_key: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             num_classes: u16,
@@ -8767,15 +9067,19 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_grab_device_key_classes: LazySymbol<
-        unsafe fn(r: *const xcb_input_grab_device_key_request_t) -> *mut xcb_input_event_class_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_grab_device_key_request_t,
+        ) -> *mut xcb_input_event_class_t,
     >,
     xcb_input_grab_device_key_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_grab_device_key_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_grab_device_key_request_t) -> c_int>,
     xcb_input_grab_device_key_classes_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_grab_device_key_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_grab_device_key_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_ungrab_device_key_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             modifiers: u16,
@@ -8785,7 +9089,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_ungrab_device_key: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             modifiers: u16,
@@ -8794,9 +9098,10 @@ pub(crate) struct XcbXinputXinput {
             grabbed_device: u8,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_grab_device_button_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_grab_device_button_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_grab_device_button_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             grabbed_device: u8,
@@ -8811,7 +9116,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_grab_device_button: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             grabbed_device: u8,
@@ -8826,15 +9131,19 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_grab_device_button_classes: LazySymbol<
-        unsafe fn(r: *const xcb_input_grab_device_button_request_t) -> *mut xcb_input_event_class_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_grab_device_button_request_t,
+        ) -> *mut xcb_input_event_class_t,
     >,
     xcb_input_grab_device_button_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_grab_device_button_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_grab_device_button_request_t) -> c_int>,
     xcb_input_grab_device_button_classes_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_grab_device_button_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_grab_device_button_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_ungrab_device_button_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             modifiers: u16,
@@ -8844,7 +9153,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_ungrab_device_button: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             modifiers: u16,
@@ -8854,7 +9163,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_allow_device_events_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             mode: u8,
@@ -8862,7 +9171,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_allow_device_events: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             mode: u8,
@@ -8870,20 +9179,26 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_get_device_focus: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_input_get_device_focus_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            device_id: u8,
+        ) -> xcb_input_get_device_focus_cookie_t,
     >,
     xcb_input_get_device_focus_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_input_get_device_focus_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            device_id: u8,
+        ) -> xcb_input_get_device_focus_cookie_t,
     >,
     xcb_input_get_device_focus_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_device_focus_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_device_focus_reply_t,
     >,
     xcb_input_set_device_focus_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             focus: xcb_window_t,
             time: xcb_timestamp_t,
@@ -8892,7 +9207,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_set_device_focus: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             focus: xcb_window_t,
             time: xcb_timestamp_t,
@@ -8901,177 +9216,203 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_kbd_feedback_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_kbd_feedback_state_iterator_t)>,
-    xcb_input_kbd_feedback_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_kbd_feedback_state_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_ptr_feedback_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_ptr_feedback_state_iterator_t)>,
-    xcb_input_ptr_feedback_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_ptr_feedback_state_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_integer_feedback_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_integer_feedback_state_iterator_t)>,
-    xcb_input_integer_feedback_state_end: LazySymbol<
-        unsafe fn(i: xcb_input_integer_feedback_state_iterator_t) -> xcb_generic_iterator_t,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_kbd_feedback_state_iterator_t)>,
+    xcb_input_kbd_feedback_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_kbd_feedback_state_iterator_t) -> xcb_generic_iterator_t,
     >,
-    xcb_input_string_feedback_state_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_input_string_feedback_state_keysyms:
-        LazySymbol<unsafe fn(r: *const xcb_input_string_feedback_state_t) -> *mut xcb_keysym_t>,
+    xcb_input_ptr_feedback_state_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_ptr_feedback_state_iterator_t)>,
+    xcb_input_ptr_feedback_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_ptr_feedback_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_integer_feedback_state_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_integer_feedback_state_iterator_t)>,
+    xcb_input_integer_feedback_state_end: LazySymbol<
+        unsafe extern "C" fn(
+            i: xcb_input_integer_feedback_state_iterator_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_string_feedback_state_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_string_feedback_state_keysyms: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_string_feedback_state_t) -> *mut xcb_keysym_t,
+    >,
     xcb_input_string_feedback_state_keysyms_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_string_feedback_state_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_string_feedback_state_t) -> c_int>,
     xcb_input_string_feedback_state_keysyms_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_string_feedback_state_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_input_string_feedback_state_t) -> xcb_generic_iterator_t,
     >,
     xcb_input_string_feedback_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_string_feedback_state_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_string_feedback_state_iterator_t)>,
     xcb_input_string_feedback_state_end: LazySymbol<
-        unsafe fn(i: xcb_input_string_feedback_state_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_input_string_feedback_state_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_bell_feedback_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_bell_feedback_state_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_bell_feedback_state_iterator_t)>,
     xcb_input_bell_feedback_state_end: LazySymbol<
-        unsafe fn(i: xcb_input_bell_feedback_state_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(i: xcb_input_bell_feedback_state_iterator_t) -> xcb_generic_iterator_t,
     >,
     xcb_input_led_feedback_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_led_feedback_state_iterator_t)>,
-    xcb_input_led_feedback_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_led_feedback_state_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_feedback_state_data_string_keysyms:
-        LazySymbol<unsafe fn(s: *const xcb_input_feedback_state_data_t) -> *mut xcb_keysym_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_led_feedback_state_iterator_t)>,
+    xcb_input_led_feedback_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_led_feedback_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_feedback_state_data_string_keysyms: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_feedback_state_data_t) -> *mut xcb_keysym_t,
+    >,
     xcb_input_feedback_state_data_string_keysyms_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_feedback_state_t,
             s: *const xcb_input_feedback_state_data_t,
         ) -> c_int,
     >,
     xcb_input_feedback_state_data_string_keysyms_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_feedback_state_t,
             s: *const xcb_input_feedback_state_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_feedback_state_data_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             class_id: u8,
             _aux: *const xcb_input_feedback_state_data_t,
         ) -> c_int,
     >,
     xcb_input_feedback_state_data_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             class_id: u8,
             _aux: *mut xcb_input_feedback_state_data_t,
         ) -> c_int,
     >,
     xcb_input_feedback_state_data_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, class_id: u8) -> c_int>,
-    xcb_input_feedback_state_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, class_id: u8) -> c_int>,
+    xcb_input_feedback_state_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_feedback_state_data:
-        LazySymbol<unsafe fn(r: *const xcb_input_feedback_state_t) -> *mut c_void>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_feedback_state_t) -> *mut c_void>,
     xcb_input_feedback_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_feedback_state_iterator_t)>,
-    xcb_input_feedback_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_feedback_state_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_get_feedback_control_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_feedback_state_iterator_t)>,
+    xcb_input_feedback_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_feedback_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_get_feedback_control_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_feedback_control: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_get_feedback_control_cookie_t,
     >,
     xcb_input_get_feedback_control_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_get_feedback_control_cookie_t,
     >,
     xcb_input_get_feedback_control_feedbacks_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_feedback_control_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_get_feedback_control_reply_t) -> c_int>,
     xcb_input_get_feedback_control_feedbacks_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_feedback_control_reply_t,
         ) -> xcb_input_feedback_state_iterator_t,
     >,
     xcb_input_get_feedback_control_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_feedback_control_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_feedback_control_reply_t,
     >,
     xcb_input_kbd_feedback_ctl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_kbd_feedback_ctl_iterator_t)>,
-    xcb_input_kbd_feedback_ctl_end:
-        LazySymbol<unsafe fn(i: xcb_input_kbd_feedback_ctl_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_ptr_feedback_ctl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_ptr_feedback_ctl_iterator_t)>,
-    xcb_input_ptr_feedback_ctl_end:
-        LazySymbol<unsafe fn(i: xcb_input_ptr_feedback_ctl_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_integer_feedback_ctl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_integer_feedback_ctl_iterator_t)>,
-    xcb_input_integer_feedback_ctl_end: LazySymbol<
-        unsafe fn(i: xcb_input_integer_feedback_ctl_iterator_t) -> xcb_generic_iterator_t,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_kbd_feedback_ctl_iterator_t)>,
+    xcb_input_kbd_feedback_ctl_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_kbd_feedback_ctl_iterator_t) -> xcb_generic_iterator_t,
     >,
-    xcb_input_string_feedback_ctl_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_input_string_feedback_ctl_keysyms:
-        LazySymbol<unsafe fn(r: *const xcb_input_string_feedback_ctl_t) -> *mut xcb_keysym_t>,
+    xcb_input_ptr_feedback_ctl_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_ptr_feedback_ctl_iterator_t)>,
+    xcb_input_ptr_feedback_ctl_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_ptr_feedback_ctl_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_integer_feedback_ctl_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_integer_feedback_ctl_iterator_t)>,
+    xcb_input_integer_feedback_ctl_end: LazySymbol<
+        unsafe extern "C" fn(
+            i: xcb_input_integer_feedback_ctl_iterator_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_string_feedback_ctl_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_string_feedback_ctl_keysyms: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_string_feedback_ctl_t) -> *mut xcb_keysym_t,
+    >,
     xcb_input_string_feedback_ctl_keysyms_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_string_feedback_ctl_t) -> c_int>,
-    xcb_input_string_feedback_ctl_keysyms_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_string_feedback_ctl_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_string_feedback_ctl_t) -> c_int>,
+    xcb_input_string_feedback_ctl_keysyms_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_string_feedback_ctl_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_string_feedback_ctl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_string_feedback_ctl_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_string_feedback_ctl_iterator_t)>,
     xcb_input_string_feedback_ctl_end: LazySymbol<
-        unsafe fn(i: xcb_input_string_feedback_ctl_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(i: xcb_input_string_feedback_ctl_iterator_t) -> xcb_generic_iterator_t,
     >,
     xcb_input_bell_feedback_ctl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_bell_feedback_ctl_iterator_t)>,
-    xcb_input_bell_feedback_ctl_end:
-        LazySymbol<unsafe fn(i: xcb_input_bell_feedback_ctl_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_bell_feedback_ctl_iterator_t)>,
+    xcb_input_bell_feedback_ctl_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_bell_feedback_ctl_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_led_feedback_ctl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_led_feedback_ctl_iterator_t)>,
-    xcb_input_led_feedback_ctl_end:
-        LazySymbol<unsafe fn(i: xcb_input_led_feedback_ctl_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_feedback_ctl_data_string_keysyms:
-        LazySymbol<unsafe fn(s: *const xcb_input_feedback_ctl_data_t) -> *mut xcb_keysym_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_led_feedback_ctl_iterator_t)>,
+    xcb_input_led_feedback_ctl_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_led_feedback_ctl_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_feedback_ctl_data_string_keysyms: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_feedback_ctl_data_t) -> *mut xcb_keysym_t,
+    >,
     xcb_input_feedback_ctl_data_string_keysyms_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_feedback_ctl_t,
             s: *const xcb_input_feedback_ctl_data_t,
         ) -> c_int,
     >,
     xcb_input_feedback_ctl_data_string_keysyms_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_feedback_ctl_t,
             s: *const xcb_input_feedback_ctl_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_feedback_ctl_data_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             class_id: u8,
             _aux: *const xcb_input_feedback_ctl_data_t,
         ) -> c_int,
     >,
     xcb_input_feedback_ctl_data_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             class_id: u8,
             _aux: *mut xcb_input_feedback_ctl_data_t,
         ) -> c_int,
     >,
     xcb_input_feedback_ctl_data_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, class_id: u8) -> c_int>,
-    xcb_input_feedback_ctl_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, class_id: u8) -> c_int>,
+    xcb_input_feedback_ctl_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_feedback_ctl_data:
-        LazySymbol<unsafe fn(r: *const xcb_input_feedback_ctl_t) -> *mut c_void>,
-    xcb_input_feedback_ctl_next: LazySymbol<unsafe fn(i: *mut xcb_input_feedback_ctl_iterator_t)>,
-    xcb_input_feedback_ctl_end:
-        LazySymbol<unsafe fn(i: xcb_input_feedback_ctl_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_feedback_ctl_t) -> *mut c_void>,
+    xcb_input_feedback_ctl_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_feedback_ctl_iterator_t)>,
+    xcb_input_feedback_ctl_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_feedback_ctl_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_change_feedback_control_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_change_feedback_control_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             mask: u32,
             device_id: u8,
@@ -9080,7 +9421,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_feedback_control: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             mask: u32,
             device_id: u8,
@@ -9089,13 +9430,14 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_feedback_control_feedback: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_feedback_control_request_t,
         ) -> *mut xcb_input_feedback_ctl_t,
     >,
-    xcb_input_get_device_key_mapping_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_get_device_key_mapping_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_device_key_mapping: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             first_keycode: xcb_input_key_code_t,
@@ -9103,7 +9445,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_get_device_key_mapping_cookie_t,
     >,
     xcb_input_get_device_key_mapping_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             first_keycode: xcb_input_key_code_t,
@@ -9111,24 +9453,29 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_get_device_key_mapping_cookie_t,
     >,
     xcb_input_get_device_key_mapping_keysyms: LazySymbol<
-        unsafe fn(r: *const xcb_input_get_device_key_mapping_reply_t) -> *mut xcb_keysym_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_get_device_key_mapping_reply_t,
+        ) -> *mut xcb_keysym_t,
     >,
-    xcb_input_get_device_key_mapping_keysyms_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_device_key_mapping_reply_t) -> c_int>,
+    xcb_input_get_device_key_mapping_keysyms_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_device_key_mapping_reply_t) -> c_int,
+    >,
     xcb_input_get_device_key_mapping_keysyms_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_get_device_key_mapping_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_get_device_key_mapping_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_device_key_mapping_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_device_key_mapping_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_device_key_mapping_reply_t,
     >,
     xcb_input_change_device_key_mapping_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_change_device_key_mapping_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             first_keycode: xcb_input_key_code_t,
@@ -9138,7 +9485,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_device_key_mapping: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             first_keycode: xcb_input_key_code_t,
@@ -9148,49 +9495,54 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_device_key_mapping_keysyms: LazySymbol<
-        unsafe fn(r: *const xcb_input_change_device_key_mapping_request_t) -> *mut xcb_keysym_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_change_device_key_mapping_request_t,
+        ) -> *mut xcb_keysym_t,
     >,
-    xcb_input_change_device_key_mapping_keysyms_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_change_device_key_mapping_request_t) -> c_int>,
+    xcb_input_change_device_key_mapping_keysyms_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_change_device_key_mapping_request_t) -> c_int,
+    >,
     xcb_input_change_device_key_mapping_keysyms_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_key_mapping_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_device_modifier_mapping_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_device_modifier_mapping: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_get_device_modifier_mapping_cookie_t,
     >,
     xcb_input_get_device_modifier_mapping_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_get_device_modifier_mapping_cookie_t,
     >,
-    xcb_input_get_device_modifier_mapping_keymaps:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_device_modifier_mapping_reply_t) -> *mut u8>,
-    xcb_input_get_device_modifier_mapping_keymaps_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_device_modifier_mapping_reply_t) -> c_int>,
+    xcb_input_get_device_modifier_mapping_keymaps: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_device_modifier_mapping_reply_t) -> *mut u8,
+    >,
+    xcb_input_get_device_modifier_mapping_keymaps_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_device_modifier_mapping_reply_t) -> c_int,
+    >,
     xcb_input_get_device_modifier_mapping_keymaps_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_modifier_mapping_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_device_modifier_mapping_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_device_modifier_mapping_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_device_modifier_mapping_reply_t,
     >,
     xcb_input_set_device_modifier_mapping_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_set_device_modifier_mapping: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             keycodes_per_modifier: u8,
@@ -9198,7 +9550,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_set_device_modifier_mapping_cookie_t,
     >,
     xcb_input_set_device_modifier_mapping_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             keycodes_per_modifier: u8,
@@ -9206,44 +9558,48 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_set_device_modifier_mapping_cookie_t,
     >,
     xcb_input_set_device_modifier_mapping_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_set_device_modifier_mapping_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_set_device_modifier_mapping_reply_t,
     >,
     xcb_input_get_device_button_mapping_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_device_button_mapping: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_get_device_button_mapping_cookie_t,
     >,
     xcb_input_get_device_button_mapping_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_get_device_button_mapping_cookie_t,
     >,
-    xcb_input_get_device_button_mapping_map:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_device_button_mapping_reply_t) -> *mut u8>,
-    xcb_input_get_device_button_mapping_map_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_device_button_mapping_reply_t) -> c_int>,
+    xcb_input_get_device_button_mapping_map: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_device_button_mapping_reply_t) -> *mut u8,
+    >,
+    xcb_input_get_device_button_mapping_map_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_device_button_mapping_reply_t) -> c_int,
+    >,
     xcb_input_get_device_button_mapping_map_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_get_device_button_mapping_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_get_device_button_mapping_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_device_button_mapping_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_device_button_mapping_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_device_button_mapping_reply_t,
     >,
     xcb_input_set_device_button_mapping_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_set_device_button_mapping: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             map_size: u8,
@@ -9251,7 +9607,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_set_device_button_mapping_cookie_t,
     >,
     xcb_input_set_device_button_mapping_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             map_size: u8,
@@ -9259,88 +9615,104 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_set_device_button_mapping_cookie_t,
     >,
     xcb_input_set_device_button_mapping_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_set_device_button_mapping_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_set_device_button_mapping_reply_t,
     >,
-    xcb_input_key_state_next: LazySymbol<unsafe fn(i: *mut xcb_input_key_state_iterator_t)>,
-    xcb_input_key_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_key_state_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_button_state_next: LazySymbol<unsafe fn(i: *mut xcb_input_button_state_iterator_t)>,
-    xcb_input_button_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_button_state_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_valuator_state_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_key_state_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_key_state_iterator_t)>,
+    xcb_input_key_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_key_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_button_state_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_button_state_iterator_t)>,
+    xcb_input_button_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_button_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_valuator_state_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_valuator_state_valuators:
-        LazySymbol<unsafe fn(r: *const xcb_input_valuator_state_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_valuator_state_t) -> *mut i32>,
     xcb_input_valuator_state_valuators_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_valuator_state_t) -> c_int>,
-    xcb_input_valuator_state_valuators_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_valuator_state_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_valuator_state_t) -> c_int>,
+    xcb_input_valuator_state_valuators_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_valuator_state_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_valuator_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_valuator_state_iterator_t)>,
-    xcb_input_valuator_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_valuator_state_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_valuator_state_iterator_t)>,
+    xcb_input_valuator_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_valuator_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_input_state_data_valuator_valuators:
-        LazySymbol<unsafe fn(s: *const xcb_input_input_state_data_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_input_state_data_t) -> *mut i32>,
     xcb_input_input_state_data_valuator_valuators_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_input_state_t,
             s: *const xcb_input_input_state_data_t,
         ) -> c_int,
     >,
     xcb_input_input_state_data_valuator_valuators_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_input_state_t,
             s: *const xcb_input_input_state_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_input_state_data_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             class_id: u8,
             _aux: *const xcb_input_input_state_data_t,
         ) -> c_int,
     >,
     xcb_input_input_state_data_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             class_id: u8,
             _aux: *mut xcb_input_input_state_data_t,
         ) -> c_int,
     >,
     xcb_input_input_state_data_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, class_id: u8) -> c_int>,
-    xcb_input_input_state_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, class_id: u8) -> c_int>,
+    xcb_input_input_state_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_input_state_data:
-        LazySymbol<unsafe fn(r: *const xcb_input_input_state_t) -> *mut c_void>,
-    xcb_input_input_state_next: LazySymbol<unsafe fn(i: *mut xcb_input_input_state_iterator_t)>,
-    xcb_input_input_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_input_state_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_query_device_state_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_input_state_t) -> *mut c_void>,
+    xcb_input_input_state_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_input_state_iterator_t)>,
+    xcb_input_input_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_input_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_query_device_state_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_query_device_state: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_input_query_device_state_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            device_id: u8,
+        ) -> xcb_input_query_device_state_cookie_t,
     >,
     xcb_input_query_device_state_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, device_id: u8) -> xcb_input_query_device_state_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            device_id: u8,
+        ) -> xcb_input_query_device_state_cookie_t,
     >,
     xcb_input_query_device_state_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_query_device_state_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_query_device_state_reply_t) -> c_int>,
     xcb_input_query_device_state_classes_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_query_device_state_reply_t,
         ) -> xcb_input_input_state_iterator_t,
     >,
     xcb_input_query_device_state_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_query_device_state_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_query_device_state_reply_t,
     >,
     xcb_input_device_bell_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             feedback_id: u8,
@@ -9349,7 +9721,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_device_bell: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             feedback_id: u8,
@@ -9357,9 +9729,10 @@ pub(crate) struct XcbXinputXinput {
             percent: i8,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_set_device_valuators_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_set_device_valuators_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_set_device_valuators: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             first_valuator: u8,
@@ -9368,7 +9741,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_set_device_valuators_cookie_t,
     >,
     xcb_input_set_device_valuators_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
             first_valuator: u8,
@@ -9377,215 +9750,249 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_set_device_valuators_cookie_t,
     >,
     xcb_input_set_device_valuators_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_set_device_valuators_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_set_device_valuators_reply_t,
     >,
     xcb_input_device_resolution_state_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_device_resolution_state_resolution_values:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_resolution_state_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_resolution_state_t) -> *mut u32>,
     xcb_input_device_resolution_state_resolution_values_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_resolution_state_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_resolution_state_t) -> c_int>,
     xcb_input_device_resolution_state_resolution_values_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_device_resolution_state_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_device_resolution_state_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_resolution_state_resolution_min:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_resolution_state_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_resolution_state_t) -> *mut u32>,
     xcb_input_device_resolution_state_resolution_min_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_resolution_state_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_resolution_state_t) -> c_int>,
     xcb_input_device_resolution_state_resolution_min_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_device_resolution_state_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_device_resolution_state_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_resolution_state_resolution_max:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_resolution_state_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_resolution_state_t) -> *mut u32>,
     xcb_input_device_resolution_state_resolution_max_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_resolution_state_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_resolution_state_t) -> c_int>,
     xcb_input_device_resolution_state_resolution_max_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_device_resolution_state_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_device_resolution_state_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_resolution_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_resolution_state_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_resolution_state_iterator_t)>,
     xcb_input_device_resolution_state_end: LazySymbol<
-        unsafe fn(i: xcb_input_device_resolution_state_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_input_device_resolution_state_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_abs_calib_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_abs_calib_state_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_abs_calib_state_iterator_t)>,
     xcb_input_device_abs_calib_state_end: LazySymbol<
-        unsafe fn(i: xcb_input_device_abs_calib_state_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_input_device_abs_calib_state_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_abs_area_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_abs_area_state_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_abs_area_state_iterator_t)>,
     xcb_input_device_abs_area_state_end: LazySymbol<
-        unsafe fn(i: xcb_input_device_abs_area_state_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_input_device_abs_area_state_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_core_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_core_state_iterator_t)>,
-    xcb_input_device_core_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_core_state_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_core_state_iterator_t)>,
+    xcb_input_device_core_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_core_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_device_enable_state_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_enable_state_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_enable_state_iterator_t)>,
     xcb_input_device_enable_state_end: LazySymbol<
-        unsafe fn(i: xcb_input_device_enable_state_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(i: xcb_input_device_enable_state_iterator_t) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_state_data_resolution_resolution_values:
-        LazySymbol<unsafe fn(s: *const xcb_input_device_state_data_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_device_state_data_t) -> *mut u32>,
     xcb_input_device_state_data_resolution_resolution_values_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_state_t,
             s: *const xcb_input_device_state_data_t,
         ) -> c_int,
     >,
     xcb_input_device_state_data_resolution_resolution_values_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_state_t,
             s: *const xcb_input_device_state_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_state_data_resolution_resolution_min:
-        LazySymbol<unsafe fn(s: *const xcb_input_device_state_data_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_device_state_data_t) -> *mut u32>,
     xcb_input_device_state_data_resolution_resolution_min_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_state_t,
             s: *const xcb_input_device_state_data_t,
         ) -> c_int,
     >,
     xcb_input_device_state_data_resolution_resolution_min_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_state_t,
             s: *const xcb_input_device_state_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_state_data_resolution_resolution_max:
-        LazySymbol<unsafe fn(s: *const xcb_input_device_state_data_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_device_state_data_t) -> *mut u32>,
     xcb_input_device_state_data_resolution_resolution_max_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_state_t,
             s: *const xcb_input_device_state_data_t,
         ) -> c_int,
     >,
     xcb_input_device_state_data_resolution_resolution_max_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_state_t,
             s: *const xcb_input_device_state_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_state_data_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             control_id: u16,
             _aux: *const xcb_input_device_state_data_t,
         ) -> c_int,
     >,
     xcb_input_device_state_data_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             control_id: u16,
             _aux: *mut xcb_input_device_state_data_t,
         ) -> c_int,
     >,
     xcb_input_device_state_data_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, control_id: u16) -> c_int>,
-    xcb_input_device_state_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, control_id: u16) -> c_int>,
+    xcb_input_device_state_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_device_state_data:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_state_t) -> *mut c_void>,
-    xcb_input_device_state_next: LazySymbol<unsafe fn(i: *mut xcb_input_device_state_iterator_t)>,
-    xcb_input_device_state_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_state_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_get_device_control_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_state_t) -> *mut c_void>,
+    xcb_input_device_state_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_state_iterator_t)>,
+    xcb_input_device_state_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_state_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_get_device_control_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_device_control: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             control_id: u16,
             device_id: u8,
         ) -> xcb_input_get_device_control_cookie_t,
     >,
     xcb_input_get_device_control_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             control_id: u16,
             device_id: u8,
         ) -> xcb_input_get_device_control_cookie_t,
     >,
     xcb_input_get_device_control_control: LazySymbol<
-        unsafe fn(r: *const xcb_input_get_device_control_reply_t) -> *mut xcb_input_device_state_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_get_device_control_reply_t,
+        ) -> *mut xcb_input_device_state_t,
     >,
     xcb_input_get_device_control_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_device_control_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_device_control_reply_t,
     >,
-    xcb_input_device_resolution_ctl_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_device_resolution_ctl_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_device_resolution_ctl_resolution_values:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_resolution_ctl_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_resolution_ctl_t) -> *mut u32>,
     xcb_input_device_resolution_ctl_resolution_values_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_resolution_ctl_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_resolution_ctl_t) -> c_int>,
     xcb_input_device_resolution_ctl_resolution_values_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_device_resolution_ctl_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_input_device_resolution_ctl_t) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_resolution_ctl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_resolution_ctl_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_resolution_ctl_iterator_t)>,
     xcb_input_device_resolution_ctl_end: LazySymbol<
-        unsafe fn(i: xcb_input_device_resolution_ctl_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_input_device_resolution_ctl_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_abs_calib_ctl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_abs_calib_ctl_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_abs_calib_ctl_iterator_t)>,
     xcb_input_device_abs_calib_ctl_end: LazySymbol<
-        unsafe fn(i: xcb_input_device_abs_calib_ctl_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_input_device_abs_calib_ctl_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_abs_area_ctrl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_abs_area_ctrl_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_abs_area_ctrl_iterator_t)>,
     xcb_input_device_abs_area_ctrl_end: LazySymbol<
-        unsafe fn(i: xcb_input_device_abs_area_ctrl_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_input_device_abs_area_ctrl_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_core_ctrl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_core_ctrl_iterator_t)>,
-    xcb_input_device_core_ctrl_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_core_ctrl_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_core_ctrl_iterator_t)>,
+    xcb_input_device_core_ctrl_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_core_ctrl_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_device_enable_ctrl_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_device_enable_ctrl_iterator_t)>,
-    xcb_input_device_enable_ctrl_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_enable_ctrl_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_enable_ctrl_iterator_t)>,
+    xcb_input_device_enable_ctrl_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_enable_ctrl_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_device_ctl_data_resolution_resolution_values:
-        LazySymbol<unsafe fn(s: *const xcb_input_device_ctl_data_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_device_ctl_data_t) -> *mut u32>,
     xcb_input_device_ctl_data_resolution_resolution_values_length: LazySymbol<
-        unsafe fn(r: *const xcb_input_device_ctl_t, s: *const xcb_input_device_ctl_data_t) -> c_int,
+        unsafe extern "C" fn(
+            r: *const xcb_input_device_ctl_t,
+            s: *const xcb_input_device_ctl_data_t,
+        ) -> c_int,
     >,
     xcb_input_device_ctl_data_resolution_resolution_values_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_ctl_t,
             s: *const xcb_input_device_ctl_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_ctl_data_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             control_id: u16,
             _aux: *const xcb_input_device_ctl_data_t,
         ) -> c_int,
     >,
     xcb_input_device_ctl_data_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             control_id: u16,
             _aux: *mut xcb_input_device_ctl_data_t,
         ) -> c_int,
     >,
     xcb_input_device_ctl_data_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, control_id: u16) -> c_int>,
-    xcb_input_device_ctl_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, control_id: u16) -> c_int>,
+    xcb_input_device_ctl_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_device_ctl_data:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_ctl_t) -> *mut c_void>,
-    xcb_input_device_ctl_next: LazySymbol<unsafe fn(i: *mut xcb_input_device_ctl_iterator_t)>,
-    xcb_input_device_ctl_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_ctl_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_change_device_control_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_ctl_t) -> *mut c_void>,
+    xcb_input_device_ctl_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_ctl_iterator_t)>,
+    xcb_input_device_ctl_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_ctl_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_change_device_control_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_change_device_control: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             control_id: u16,
             device_id: u8,
@@ -9593,7 +10000,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_change_device_control_cookie_t,
     >,
     xcb_input_change_device_control_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             control_id: u16,
             device_id: u8,
@@ -9601,84 +10008,91 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_change_device_control_cookie_t,
     >,
     xcb_input_change_device_control_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_change_device_control_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_change_device_control_reply_t,
     >,
-    xcb_input_list_device_properties_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_list_device_properties_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_list_device_properties: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_list_device_properties_cookie_t,
     >,
     xcb_input_list_device_properties_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device_id: u8,
         ) -> xcb_input_list_device_properties_cookie_t,
     >,
     xcb_input_list_device_properties_atoms: LazySymbol<
-        unsafe fn(r: *const xcb_input_list_device_properties_reply_t) -> *mut xcb_atom_t,
+        unsafe extern "C" fn(r: *const xcb_input_list_device_properties_reply_t) -> *mut xcb_atom_t,
     >,
-    xcb_input_list_device_properties_atoms_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_list_device_properties_reply_t) -> c_int>,
+    xcb_input_list_device_properties_atoms_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_list_device_properties_reply_t) -> c_int,
+    >,
     xcb_input_list_device_properties_atoms_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_list_device_properties_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_list_device_properties_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_list_device_properties_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_list_device_properties_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_list_device_properties_reply_t,
     >,
-    xcb_input_change_device_property_items_data_8:
-        LazySymbol<unsafe fn(s: *const xcb_input_change_device_property_items_t) -> *mut u8>,
+    xcb_input_change_device_property_items_data_8: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_change_device_property_items_t) -> *mut u8,
+    >,
     xcb_input_change_device_property_items_data_8_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_property_request_t,
             s: *const xcb_input_change_device_property_items_t,
         ) -> c_int,
     >,
     xcb_input_change_device_property_items_data_8_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_property_request_t,
             s: *const xcb_input_change_device_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_input_change_device_property_items_data_16:
-        LazySymbol<unsafe fn(s: *const xcb_input_change_device_property_items_t) -> *mut u16>,
+    xcb_input_change_device_property_items_data_16: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_change_device_property_items_t) -> *mut u16,
+    >,
     xcb_input_change_device_property_items_data_16_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_property_request_t,
             s: *const xcb_input_change_device_property_items_t,
         ) -> c_int,
     >,
     xcb_input_change_device_property_items_data_16_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_property_request_t,
             s: *const xcb_input_change_device_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_input_change_device_property_items_data_32:
-        LazySymbol<unsafe fn(s: *const xcb_input_change_device_property_items_t) -> *mut u32>,
+    xcb_input_change_device_property_items_data_32: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_change_device_property_items_t) -> *mut u32,
+    >,
     xcb_input_change_device_property_items_data_32_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_property_request_t,
             s: *const xcb_input_change_device_property_items_t,
         ) -> c_int,
     >,
     xcb_input_change_device_property_items_data_32_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_change_device_property_request_t,
             s: *const xcb_input_change_device_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_change_device_property_items_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             num_items: u32,
             format: u8,
@@ -9686,18 +10100,20 @@ pub(crate) struct XcbXinputXinput {
         ) -> c_int,
     >,
     xcb_input_change_device_property_items_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             num_items: u32,
             format: u8,
             _aux: *mut xcb_input_change_device_property_items_t,
         ) -> c_int,
     >,
-    xcb_input_change_device_property_items_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, num_items: u32, format: u8) -> c_int>,
-    xcb_input_change_device_property_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_change_device_property_items_sizeof: LazySymbol<
+        unsafe extern "C" fn(_buffer: *const c_void, num_items: u32, format: u8) -> c_int,
+    >,
+    xcb_input_change_device_property_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_change_device_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             property: xcb_atom_t,
             type_: xcb_atom_t,
@@ -9709,7 +10125,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_device_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             property: xcb_atom_t,
             type_: xcb_atom_t,
@@ -9721,7 +10137,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_device_property_aux_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             property: xcb_atom_t,
             type_: xcb_atom_t,
@@ -9733,7 +10149,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_change_device_property_aux: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             property: xcb_atom_t,
             type_: xcb_atom_t,
@@ -9744,66 +10160,70 @@ pub(crate) struct XcbXinputXinput {
             items: *const xcb_input_change_device_property_items_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_change_device_property_items:
-        LazySymbol<unsafe fn(r: *const xcb_input_change_device_property_request_t) -> *mut c_void>,
+    xcb_input_change_device_property_items: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_change_device_property_request_t) -> *mut c_void,
+    >,
     xcb_input_delete_device_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             property: xcb_atom_t,
             device_id: u8,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_delete_device_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             property: xcb_atom_t,
             device_id: u8,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_get_device_property_items_data_8:
-        LazySymbol<unsafe fn(s: *const xcb_input_get_device_property_items_t) -> *mut u8>,
+    xcb_input_get_device_property_items_data_8: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_get_device_property_items_t) -> *mut u8,
+    >,
     xcb_input_get_device_property_items_data_8_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_property_reply_t,
             s: *const xcb_input_get_device_property_items_t,
         ) -> c_int,
     >,
     xcb_input_get_device_property_items_data_8_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_property_reply_t,
             s: *const xcb_input_get_device_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_input_get_device_property_items_data_16:
-        LazySymbol<unsafe fn(s: *const xcb_input_get_device_property_items_t) -> *mut u16>,
+    xcb_input_get_device_property_items_data_16: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_get_device_property_items_t) -> *mut u16,
+    >,
     xcb_input_get_device_property_items_data_16_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_property_reply_t,
             s: *const xcb_input_get_device_property_items_t,
         ) -> c_int,
     >,
     xcb_input_get_device_property_items_data_16_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_property_reply_t,
             s: *const xcb_input_get_device_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_input_get_device_property_items_data_32:
-        LazySymbol<unsafe fn(s: *const xcb_input_get_device_property_items_t) -> *mut u32>,
+    xcb_input_get_device_property_items_data_32: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_get_device_property_items_t) -> *mut u32,
+    >,
     xcb_input_get_device_property_items_data_32_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_property_reply_t,
             s: *const xcb_input_get_device_property_items_t,
         ) -> c_int,
     >,
     xcb_input_get_device_property_items_data_32_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_get_device_property_reply_t,
             s: *const xcb_input_get_device_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_get_device_property_items_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             num_items: u32,
             format: u8,
@@ -9811,18 +10231,20 @@ pub(crate) struct XcbXinputXinput {
         ) -> c_int,
     >,
     xcb_input_get_device_property_items_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             num_items: u32,
             format: u8,
             _aux: *mut xcb_input_get_device_property_items_t,
         ) -> c_int,
     >,
-    xcb_input_get_device_property_items_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, num_items: u32, format: u8) -> c_int>,
-    xcb_input_get_device_property_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_get_device_property_items_sizeof: LazySymbol<
+        unsafe extern "C" fn(_buffer: *const c_void, num_items: u32, format: u8) -> c_int,
+    >,
+    xcb_input_get_device_property_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_get_device_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             property: xcb_atom_t,
             type_: xcb_atom_t,
@@ -9833,7 +10255,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_get_device_property_cookie_t,
     >,
     xcb_input_get_device_property_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             property: xcb_atom_t,
             type_: xcb_atom_t,
@@ -9843,52 +10265,60 @@ pub(crate) struct XcbXinputXinput {
             delete: u8,
         ) -> xcb_input_get_device_property_cookie_t,
     >,
-    xcb_input_get_device_property_items:
-        LazySymbol<unsafe fn(r: *const xcb_input_get_device_property_reply_t) -> *mut c_void>,
+    xcb_input_get_device_property_items: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_get_device_property_reply_t) -> *mut c_void,
+    >,
     xcb_input_get_device_property_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_get_device_property_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_get_device_property_reply_t,
     >,
-    xcb_input_group_info_next: LazySymbol<unsafe fn(i: *mut xcb_input_group_info_iterator_t)>,
-    xcb_input_group_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_group_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_modifier_info_next: LazySymbol<unsafe fn(i: *mut xcb_input_modifier_info_iterator_t)>,
-    xcb_input_modifier_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_modifier_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_xi_query_pointer_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_group_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_group_info_iterator_t)>,
+    xcb_input_group_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_group_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_modifier_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_modifier_info_iterator_t)>,
+    xcb_input_modifier_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_modifier_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_xi_query_pointer_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_query_pointer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_input_xi_query_pointer_cookie_t,
     >,
     xcb_input_xi_query_pointer_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_input_xi_query_pointer_cookie_t,
     >,
     xcb_input_xi_query_pointer_buttons:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_query_pointer_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_xi_query_pointer_reply_t) -> *mut u32>,
     xcb_input_xi_query_pointer_buttons_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_query_pointer_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_xi_query_pointer_reply_t) -> c_int>,
     xcb_input_xi_query_pointer_buttons_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_xi_query_pointer_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_xi_query_pointer_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_xi_query_pointer_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_query_pointer_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_query_pointer_reply_t,
     >,
     xcb_input_xi_warp_pointer_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             src_win: xcb_window_t,
             dst_win: xcb_window_t,
@@ -9902,7 +10332,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_warp_pointer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             src_win: xcb_window_t,
             dst_win: xcb_window_t,
@@ -9916,7 +10346,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_change_cursor_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             cursor: xcb_cursor_t,
@@ -9924,136 +10354,155 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_change_cursor: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             cursor: xcb_cursor_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_add_master_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_add_master_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_add_master_name:
-        LazySymbol<unsafe fn(r: *const xcb_input_add_master_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_add_master_t) -> *mut c_char>,
     xcb_input_add_master_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_add_master_t) -> c_int>,
-    xcb_input_add_master_name_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_add_master_t) -> xcb_generic_iterator_t>,
-    xcb_input_add_master_next: LazySymbol<unsafe fn(i: *mut xcb_input_add_master_iterator_t)>,
-    xcb_input_add_master_end:
-        LazySymbol<unsafe fn(i: xcb_input_add_master_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_remove_master_next: LazySymbol<unsafe fn(i: *mut xcb_input_remove_master_iterator_t)>,
-    xcb_input_remove_master_end:
-        LazySymbol<unsafe fn(i: xcb_input_remove_master_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_attach_slave_next: LazySymbol<unsafe fn(i: *mut xcb_input_attach_slave_iterator_t)>,
-    xcb_input_attach_slave_end:
-        LazySymbol<unsafe fn(i: xcb_input_attach_slave_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_detach_slave_next: LazySymbol<unsafe fn(i: *mut xcb_input_detach_slave_iterator_t)>,
-    xcb_input_detach_slave_end:
-        LazySymbol<unsafe fn(i: xcb_input_detach_slave_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_hierarchy_change_data_add_master_name:
-        LazySymbol<unsafe fn(s: *const xcb_input_hierarchy_change_data_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_add_master_t) -> c_int>,
+    xcb_input_add_master_name_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_add_master_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_add_master_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_add_master_iterator_t)>,
+    xcb_input_add_master_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_add_master_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_remove_master_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_remove_master_iterator_t)>,
+    xcb_input_remove_master_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_remove_master_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_attach_slave_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_attach_slave_iterator_t)>,
+    xcb_input_attach_slave_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_attach_slave_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_detach_slave_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_detach_slave_iterator_t)>,
+    xcb_input_detach_slave_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_detach_slave_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_hierarchy_change_data_add_master_name: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_hierarchy_change_data_t) -> *mut c_char,
+    >,
     xcb_input_hierarchy_change_data_add_master_name_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_hierarchy_change_t,
             s: *const xcb_input_hierarchy_change_data_t,
         ) -> c_int,
     >,
     xcb_input_hierarchy_change_data_add_master_name_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_hierarchy_change_t,
             s: *const xcb_input_hierarchy_change_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_hierarchy_change_data_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             type_: u16,
             _aux: *const xcb_input_hierarchy_change_data_t,
         ) -> c_int,
     >,
     xcb_input_hierarchy_change_data_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             type_: u16,
             _aux: *mut xcb_input_hierarchy_change_data_t,
         ) -> c_int,
     >,
     xcb_input_hierarchy_change_data_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, type_: u16) -> c_int>,
-    xcb_input_hierarchy_change_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, type_: u16) -> c_int>,
+    xcb_input_hierarchy_change_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_hierarchy_change_data:
-        LazySymbol<unsafe fn(r: *const xcb_input_hierarchy_change_t) -> *mut c_void>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_hierarchy_change_t) -> *mut c_void>,
     xcb_input_hierarchy_change_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_hierarchy_change_iterator_t)>,
-    xcb_input_hierarchy_change_end:
-        LazySymbol<unsafe fn(i: xcb_input_hierarchy_change_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_xi_change_hierarchy_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_hierarchy_change_iterator_t)>,
+    xcb_input_hierarchy_change_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_hierarchy_change_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_xi_change_hierarchy_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_change_hierarchy_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             num_changes: u8,
             changes: *const xcb_input_hierarchy_change_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_change_hierarchy: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             num_changes: u8,
             changes: *const xcb_input_hierarchy_change_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_xi_change_hierarchy_changes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_change_hierarchy_request_t) -> c_int>,
+    xcb_input_xi_change_hierarchy_changes_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_change_hierarchy_request_t) -> c_int,
+    >,
     xcb_input_xi_change_hierarchy_changes_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_change_hierarchy_request_t,
         ) -> xcb_input_hierarchy_change_iterator_t,
     >,
     xcb_input_xi_set_client_pointer_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_set_client_pointer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_get_client_pointer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_input_xi_get_client_pointer_cookie_t,
     >,
     xcb_input_xi_get_client_pointer_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_input_xi_get_client_pointer_cookie_t,
     >,
     xcb_input_xi_get_client_pointer_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_get_client_pointer_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_get_client_pointer_reply_t,
     >,
-    xcb_input_event_mask_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_input_event_mask_mask: LazySymbol<unsafe fn(r: *const xcb_input_event_mask_t) -> *mut u32>,
+    xcb_input_event_mask_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_event_mask_mask:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_event_mask_t) -> *mut u32>,
     xcb_input_event_mask_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_event_mask_t) -> c_int>,
-    xcb_input_event_mask_mask_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_event_mask_t) -> xcb_generic_iterator_t>,
-    xcb_input_event_mask_next: LazySymbol<unsafe fn(i: *mut xcb_input_event_mask_iterator_t)>,
-    xcb_input_event_mask_end:
-        LazySymbol<unsafe fn(i: xcb_input_event_mask_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_xi_select_events_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_event_mask_t) -> c_int>,
+    xcb_input_event_mask_mask_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_event_mask_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_event_mask_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_event_mask_iterator_t)>,
+    xcb_input_event_mask_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_event_mask_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_xi_select_events_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_select_events_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             num_mask: u16,
@@ -10061,7 +10510,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_select_events: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             num_mask: u16,
@@ -10069,177 +10518,205 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_select_events_masks_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_select_events_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_xi_select_events_request_t) -> c_int>,
     xcb_input_xi_select_events_masks_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_select_events_request_t,
         ) -> xcb_input_event_mask_iterator_t,
     >,
     xcb_input_xi_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u16,
             minor_version: u16,
         ) -> xcb_input_xi_query_version_cookie_t,
     >,
     xcb_input_xi_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u16,
             minor_version: u16,
         ) -> xcb_input_xi_query_version_cookie_t,
     >,
     xcb_input_xi_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_query_version_reply_t,
     >,
-    xcb_input_button_class_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_button_class_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_button_class_state:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_class_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_class_t) -> *mut u32>,
     xcb_input_button_class_state_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_class_t) -> c_int>,
-    xcb_input_button_class_state_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_class_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_class_t) -> c_int>,
+    xcb_input_button_class_state_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_button_class_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_button_class_labels:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_class_t) -> *mut xcb_atom_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_class_t) -> *mut xcb_atom_t>,
     xcb_input_button_class_labels_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_class_t) -> c_int>,
-    xcb_input_button_class_labels_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_class_t) -> xcb_generic_iterator_t>,
-    xcb_input_button_class_next: LazySymbol<unsafe fn(i: *mut xcb_input_button_class_iterator_t)>,
-    xcb_input_button_class_end:
-        LazySymbol<unsafe fn(i: xcb_input_button_class_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_key_class_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_input_key_class_keys: LazySymbol<unsafe fn(r: *const xcb_input_key_class_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_class_t) -> c_int>,
+    xcb_input_button_class_labels_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_button_class_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_button_class_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_button_class_iterator_t)>,
+    xcb_input_button_class_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_button_class_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_key_class_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_key_class_keys:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_key_class_t) -> *mut u32>,
     xcb_input_key_class_keys_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_class_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_key_class_t) -> c_int>,
     xcb_input_key_class_keys_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_class_t) -> xcb_generic_iterator_t>,
-    xcb_input_key_class_next: LazySymbol<unsafe fn(i: *mut xcb_input_key_class_iterator_t)>,
-    xcb_input_key_class_end:
-        LazySymbol<unsafe fn(i: xcb_input_key_class_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_scroll_class_next: LazySymbol<unsafe fn(i: *mut xcb_input_scroll_class_iterator_t)>,
-    xcb_input_scroll_class_end:
-        LazySymbol<unsafe fn(i: xcb_input_scroll_class_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_touch_class_next: LazySymbol<unsafe fn(i: *mut xcb_input_touch_class_iterator_t)>,
-    xcb_input_touch_class_end:
-        LazySymbol<unsafe fn(i: xcb_input_touch_class_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_key_class_t) -> xcb_generic_iterator_t>,
+    xcb_input_key_class_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_key_class_iterator_t)>,
+    xcb_input_key_class_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_key_class_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_scroll_class_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_scroll_class_iterator_t)>,
+    xcb_input_scroll_class_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_scroll_class_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_touch_class_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_touch_class_iterator_t)>,
+    xcb_input_touch_class_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_touch_class_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_gesture_class_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_gesture_class_iterator_t)>,
+    xcb_input_gesture_class_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_gesture_class_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_valuator_class_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_valuator_class_iterator_t)>,
-    xcb_input_valuator_class_end:
-        LazySymbol<unsafe fn(i: xcb_input_valuator_class_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_valuator_class_iterator_t)>,
+    xcb_input_valuator_class_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_valuator_class_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_device_class_data_key_keys:
-        LazySymbol<unsafe fn(s: *const xcb_input_device_class_data_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_device_class_data_t) -> *mut u32>,
     xcb_input_device_class_data_key_keys_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_class_t,
             s: *const xcb_input_device_class_data_t,
         ) -> c_int,
     >,
     xcb_input_device_class_data_key_keys_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_class_t,
             s: *const xcb_input_device_class_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_class_data_button_state:
-        LazySymbol<unsafe fn(s: *const xcb_input_device_class_data_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_device_class_data_t) -> *mut u32>,
     xcb_input_device_class_data_button_state_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_class_t,
             s: *const xcb_input_device_class_data_t,
         ) -> c_int,
     >,
     xcb_input_device_class_data_button_state_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_class_t,
             s: *const xcb_input_device_class_data_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_input_device_class_data_button_labels:
-        LazySymbol<unsafe fn(s: *const xcb_input_device_class_data_t) -> *mut xcb_atom_t>,
+    xcb_input_device_class_data_button_labels: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_device_class_data_t) -> *mut xcb_atom_t,
+    >,
     xcb_input_device_class_data_button_labels_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_class_t,
             s: *const xcb_input_device_class_data_t,
         ) -> c_int,
     >,
     xcb_input_device_class_data_button_labels_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_device_class_t,
             s: *const xcb_input_device_class_data_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_device_class_data_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             type_: u16,
             _aux: *const xcb_input_device_class_data_t,
         ) -> c_int,
     >,
     xcb_input_device_class_data_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             type_: u16,
             _aux: *mut xcb_input_device_class_data_t,
         ) -> c_int,
     >,
     xcb_input_device_class_data_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, type_: u16) -> c_int>,
-    xcb_input_device_class_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, type_: u16) -> c_int>,
+    xcb_input_device_class_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_device_class_data:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_class_t) -> *mut c_void>,
-    xcb_input_device_class_next: LazySymbol<unsafe fn(i: *mut xcb_input_device_class_iterator_t)>,
-    xcb_input_device_class_end:
-        LazySymbol<unsafe fn(i: xcb_input_device_class_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_xi_device_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_class_t) -> *mut c_void>,
+    xcb_input_device_class_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_device_class_iterator_t)>,
+    xcb_input_device_class_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_device_class_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_xi_device_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_device_info_name:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_device_info_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_xi_device_info_t) -> *mut c_char>,
     xcb_input_xi_device_info_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_device_info_t) -> c_int>,
-    xcb_input_xi_device_info_name_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_device_info_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_xi_device_info_t) -> c_int>,
+    xcb_input_xi_device_info_name_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_device_info_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_xi_device_info_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_device_info_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_xi_device_info_t) -> c_int>,
     xcb_input_xi_device_info_classes_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_xi_device_info_t) -> xcb_input_device_class_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_xi_device_info_t,
+        ) -> xcb_input_device_class_iterator_t,
     >,
     xcb_input_xi_device_info_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_xi_device_info_iterator_t)>,
-    xcb_input_xi_device_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_xi_device_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_xi_query_device_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_xi_device_info_iterator_t)>,
+    xcb_input_xi_device_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_xi_device_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_xi_query_device_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_query_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_input_xi_query_device_cookie_t,
     >,
     xcb_input_xi_query_device_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_input_xi_query_device_cookie_t,
     >,
     xcb_input_xi_query_device_infos_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_query_device_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_xi_query_device_reply_t) -> c_int>,
     xcb_input_xi_query_device_infos_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_query_device_reply_t,
         ) -> xcb_input_xi_device_info_iterator_t,
     >,
     xcb_input_xi_query_device_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_query_device_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_query_device_reply_t,
     >,
     xcb_input_xi_set_focus_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             time: xcb_timestamp_t,
@@ -10247,7 +10724,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_set_focus: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             time: xcb_timestamp_t,
@@ -10255,27 +10732,28 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_get_focus: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_input_xi_get_focus_cookie_t,
     >,
     xcb_input_xi_get_focus_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_input_xi_get_focus_cookie_t,
     >,
     xcb_input_xi_get_focus_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_get_focus_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_get_focus_reply_t,
     >,
-    xcb_input_xi_grab_device_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_xi_grab_device_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_grab_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             time: xcb_timestamp_t,
@@ -10289,7 +10767,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_xi_grab_device_cookie_t,
     >,
     xcb_input_xi_grab_device_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             time: xcb_timestamp_t,
@@ -10303,28 +10781,28 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_xi_grab_device_cookie_t,
     >,
     xcb_input_xi_grab_device_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_grab_device_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_grab_device_reply_t,
     >,
     xcb_input_xi_ungrab_device_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_ungrab_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_allow_events_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             deviceid: xcb_input_device_id_t,
@@ -10334,7 +10812,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_allow_events: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             deviceid: xcb_input_device_id_t,
@@ -10344,12 +10822,14 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_grab_modifier_info_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_grab_modifier_info_iterator_t)>,
-    xcb_input_grab_modifier_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_grab_modifier_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_xi_passive_grab_device_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_grab_modifier_info_iterator_t)>,
+    xcb_input_grab_modifier_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_grab_modifier_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_xi_passive_grab_device_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_passive_grab_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             grab_window: xcb_window_t,
@@ -10367,7 +10847,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_xi_passive_grab_device_cookie_t,
     >,
     xcb_input_xi_passive_grab_device_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             time: xcb_timestamp_t,
             grab_window: xcb_window_t,
@@ -10385,28 +10865,29 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_xi_passive_grab_device_cookie_t,
     >,
     xcb_input_xi_passive_grab_device_modifiers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_passive_grab_device_reply_t,
         ) -> *mut xcb_input_grab_modifier_info_t,
     >,
-    xcb_input_xi_passive_grab_device_modifiers_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_passive_grab_device_reply_t) -> c_int>,
+    xcb_input_xi_passive_grab_device_modifiers_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_passive_grab_device_reply_t) -> c_int,
+    >,
     xcb_input_xi_passive_grab_device_modifiers_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_passive_grab_device_reply_t,
         ) -> xcb_input_grab_modifier_info_iterator_t,
     >,
     xcb_input_xi_passive_grab_device_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_passive_grab_device_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_passive_grab_device_reply_t,
     >,
     xcb_input_xi_passive_ungrab_device_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_passive_ungrab_device_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             detail: u32,
@@ -10417,7 +10898,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_passive_ungrab_device: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             grab_window: xcb_window_t,
             detail: u32,
@@ -10427,84 +10908,94 @@ pub(crate) struct XcbXinputXinput {
             modifiers: *const u32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_xi_passive_ungrab_device_modifiers:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_passive_ungrab_device_request_t) -> *mut u32>,
-    xcb_input_xi_passive_ungrab_device_modifiers_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_passive_ungrab_device_request_t) -> c_int>,
-    xcb_input_xi_passive_ungrab_device_modifiers_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_xi_passive_ungrab_device_request_t) -> xcb_generic_iterator_t,
+    xcb_input_xi_passive_ungrab_device_modifiers: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_passive_ungrab_device_request_t) -> *mut u32,
     >,
-    xcb_input_xi_list_properties_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_xi_passive_ungrab_device_modifiers_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_passive_ungrab_device_request_t) -> c_int,
+    >,
+    xcb_input_xi_passive_ungrab_device_modifiers_end: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_input_xi_passive_ungrab_device_request_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_xi_list_properties_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_list_properties: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_input_xi_list_properties_cookie_t,
     >,
     xcb_input_xi_list_properties_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
         ) -> xcb_input_xi_list_properties_cookie_t,
     >,
-    xcb_input_xi_list_properties_properties:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_list_properties_reply_t) -> *mut xcb_atom_t>,
+    xcb_input_xi_list_properties_properties: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_list_properties_reply_t) -> *mut xcb_atom_t,
+    >,
     xcb_input_xi_list_properties_properties_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_list_properties_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_xi_list_properties_reply_t) -> c_int>,
     xcb_input_xi_list_properties_properties_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_xi_list_properties_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_xi_list_properties_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_xi_list_properties_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_list_properties_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_list_properties_reply_t,
     >,
     xcb_input_xi_change_property_items_data_8:
-        LazySymbol<unsafe fn(s: *const xcb_input_xi_change_property_items_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_xi_change_property_items_t) -> *mut u8>,
     xcb_input_xi_change_property_items_data_8_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_change_property_request_t,
             s: *const xcb_input_xi_change_property_items_t,
         ) -> c_int,
     >,
     xcb_input_xi_change_property_items_data_8_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_change_property_request_t,
             s: *const xcb_input_xi_change_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_input_xi_change_property_items_data_16:
-        LazySymbol<unsafe fn(s: *const xcb_input_xi_change_property_items_t) -> *mut u16>,
+    xcb_input_xi_change_property_items_data_16: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_xi_change_property_items_t) -> *mut u16,
+    >,
     xcb_input_xi_change_property_items_data_16_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_change_property_request_t,
             s: *const xcb_input_xi_change_property_items_t,
         ) -> c_int,
     >,
     xcb_input_xi_change_property_items_data_16_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_change_property_request_t,
             s: *const xcb_input_xi_change_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_input_xi_change_property_items_data_32:
-        LazySymbol<unsafe fn(s: *const xcb_input_xi_change_property_items_t) -> *mut u32>,
+    xcb_input_xi_change_property_items_data_32: LazySymbol<
+        unsafe extern "C" fn(s: *const xcb_input_xi_change_property_items_t) -> *mut u32,
+    >,
     xcb_input_xi_change_property_items_data_32_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_change_property_request_t,
             s: *const xcb_input_xi_change_property_items_t,
         ) -> c_int,
     >,
     xcb_input_xi_change_property_items_data_32_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_change_property_request_t,
             s: *const xcb_input_xi_change_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_xi_change_property_items_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             num_items: u32,
             format: u8,
@@ -10512,18 +11003,20 @@ pub(crate) struct XcbXinputXinput {
         ) -> c_int,
     >,
     xcb_input_xi_change_property_items_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             num_items: u32,
             format: u8,
             _aux: *mut xcb_input_xi_change_property_items_t,
         ) -> c_int,
     >,
-    xcb_input_xi_change_property_items_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, num_items: u32, format: u8) -> c_int>,
-    xcb_input_xi_change_property_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_xi_change_property_items_sizeof: LazySymbol<
+        unsafe extern "C" fn(_buffer: *const c_void, num_items: u32, format: u8) -> c_int,
+    >,
+    xcb_input_xi_change_property_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_change_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
             mode: u8,
@@ -10535,7 +11028,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_change_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
             mode: u8,
@@ -10547,7 +11040,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_change_property_aux_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
             mode: u8,
@@ -10559,7 +11052,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_change_property_aux: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
             mode: u8,
@@ -10570,66 +11063,67 @@ pub(crate) struct XcbXinputXinput {
             items: *const xcb_input_xi_change_property_items_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_input_xi_change_property_items:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_change_property_request_t) -> *mut c_void>,
+    xcb_input_xi_change_property_items: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_change_property_request_t) -> *mut c_void,
+    >,
     xcb_input_xi_delete_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
             property: xcb_atom_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_delete_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
             property: xcb_atom_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_get_property_items_data_8:
-        LazySymbol<unsafe fn(s: *const xcb_input_xi_get_property_items_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_xi_get_property_items_t) -> *mut u8>,
     xcb_input_xi_get_property_items_data_8_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_get_property_reply_t,
             s: *const xcb_input_xi_get_property_items_t,
         ) -> c_int,
     >,
     xcb_input_xi_get_property_items_data_8_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_get_property_reply_t,
             s: *const xcb_input_xi_get_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_xi_get_property_items_data_16:
-        LazySymbol<unsafe fn(s: *const xcb_input_xi_get_property_items_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_xi_get_property_items_t) -> *mut u16>,
     xcb_input_xi_get_property_items_data_16_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_get_property_reply_t,
             s: *const xcb_input_xi_get_property_items_t,
         ) -> c_int,
     >,
     xcb_input_xi_get_property_items_data_16_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_get_property_reply_t,
             s: *const xcb_input_xi_get_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_xi_get_property_items_data_32:
-        LazySymbol<unsafe fn(s: *const xcb_input_xi_get_property_items_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(s: *const xcb_input_xi_get_property_items_t) -> *mut u32>,
     xcb_input_xi_get_property_items_data_32_length: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_get_property_reply_t,
             s: *const xcb_input_xi_get_property_items_t,
         ) -> c_int,
     >,
     xcb_input_xi_get_property_items_data_32_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_get_property_reply_t,
             s: *const xcb_input_xi_get_property_items_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_input_xi_get_property_items_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             num_items: u32,
             format: u8,
@@ -10637,18 +11131,20 @@ pub(crate) struct XcbXinputXinput {
         ) -> c_int,
     >,
     xcb_input_xi_get_property_items_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             num_items: u32,
             format: u8,
             _aux: *mut xcb_input_xi_get_property_items_t,
         ) -> c_int,
     >,
-    xcb_input_xi_get_property_items_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, num_items: u32, format: u8) -> c_int>,
-    xcb_input_xi_get_property_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_xi_get_property_items_sizeof: LazySymbol<
+        unsafe extern "C" fn(_buffer: *const c_void, num_items: u32, format: u8) -> c_int,
+    >,
+    xcb_input_xi_get_property_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_get_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
             delete: u8,
@@ -10659,7 +11155,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_input_xi_get_property_cookie_t,
     >,
     xcb_input_xi_get_property_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             deviceid: xcb_input_device_id_t,
             delete: u8,
@@ -10669,260 +11165,324 @@ pub(crate) struct XcbXinputXinput {
             len: u32,
         ) -> xcb_input_xi_get_property_cookie_t,
     >,
-    xcb_input_xi_get_property_items:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_get_property_reply_t) -> *mut c_void>,
+    xcb_input_xi_get_property_items: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_get_property_reply_t) -> *mut c_void,
+    >,
     xcb_input_xi_get_property_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_get_property_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_get_property_reply_t,
     >,
-    xcb_input_xi_get_selected_events_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_xi_get_selected_events_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_get_selected_events: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_input_xi_get_selected_events_cookie_t,
     >,
     xcb_input_xi_get_selected_events_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_input_xi_get_selected_events_cookie_t,
     >,
-    xcb_input_xi_get_selected_events_masks_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_get_selected_events_reply_t) -> c_int>,
+    xcb_input_xi_get_selected_events_masks_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_get_selected_events_reply_t) -> c_int,
+    >,
     xcb_input_xi_get_selected_events_masks_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_get_selected_events_reply_t,
         ) -> xcb_input_event_mask_iterator_t,
     >,
     xcb_input_xi_get_selected_events_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_input_xi_get_selected_events_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_input_xi_get_selected_events_reply_t,
     >,
     xcb_input_barrier_release_pointer_info_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_barrier_release_pointer_info_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_barrier_release_pointer_info_iterator_t)>,
     xcb_input_barrier_release_pointer_info_end: LazySymbol<
-        unsafe fn(i: xcb_input_barrier_release_pointer_info_iterator_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            i: xcb_input_barrier_release_pointer_info_iterator_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_xi_barrier_release_pointer_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_xi_barrier_release_pointer_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             num_barriers: u32,
             barriers: *const xcb_input_barrier_release_pointer_info_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_barrier_release_pointer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             num_barriers: u32,
             barriers: *const xcb_input_barrier_release_pointer_info_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_xi_barrier_release_pointer_barriers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_barrier_release_pointer_request_t,
         ) -> *mut xcb_input_barrier_release_pointer_info_t,
     >,
-    xcb_input_xi_barrier_release_pointer_barriers_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_xi_barrier_release_pointer_request_t) -> c_int>,
+    xcb_input_xi_barrier_release_pointer_barriers_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_xi_barrier_release_pointer_request_t) -> c_int,
+    >,
     xcb_input_xi_barrier_release_pointer_barriers_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_xi_barrier_release_pointer_request_t,
         ) -> xcb_input_barrier_release_pointer_info_iterator_t,
     >,
-    xcb_input_device_changed_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_device_changed_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_device_changed_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_device_changed_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_device_changed_event_t) -> c_int>,
     xcb_input_device_changed_classes_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_device_changed_event_t) -> xcb_input_device_class_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_device_changed_event_t,
+        ) -> xcb_input_device_class_iterator_t,
     >,
-    xcb_input_key_press_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_key_press_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_key_press_button_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> *mut u32>,
     xcb_input_key_press_button_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> c_int>,
-    xcb_input_key_press_button_mask_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> c_int>,
+    xcb_input_key_press_button_mask_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_key_press_valuator_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> *mut u32>,
     xcb_input_key_press_valuator_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> c_int>,
-    xcb_input_key_press_valuator_mask_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> xcb_generic_iterator_t>,
-    xcb_input_key_press_axisvalues:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> *mut xcb_input_fp3232_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> c_int>,
+    xcb_input_key_press_valuator_mask_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_key_press_axisvalues: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> *mut xcb_input_fp3232_t,
+    >,
     xcb_input_key_press_axisvalues_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> c_int>,
-    xcb_input_key_press_axisvalues_iterator:
-        LazySymbol<unsafe fn(r: *const xcb_input_key_press_event_t) -> xcb_input_fp3232_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> c_int>,
+    xcb_input_key_press_axisvalues_iterator: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_key_press_event_t) -> xcb_input_fp3232_iterator_t,
+    >,
     xcb_input_key_release_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_key_release_event_t) -> c_int>,
-    xcb_input_button_press_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_key_release_event_t) -> c_int>,
+    xcb_input_button_press_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_button_press_button_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_press_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_press_event_t) -> *mut u32>,
     xcb_input_button_press_button_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_press_event_t) -> c_int>,
-    xcb_input_button_press_button_mask_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_press_event_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_press_event_t) -> c_int>,
+    xcb_input_button_press_button_mask_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_button_press_event_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_button_press_valuator_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_press_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_press_event_t) -> *mut u32>,
     xcb_input_button_press_valuator_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_press_event_t) -> c_int>,
-    xcb_input_button_press_valuator_mask_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_press_event_t) -> xcb_generic_iterator_t>,
-    xcb_input_button_press_axisvalues:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_press_event_t) -> *mut xcb_input_fp3232_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_press_event_t) -> c_int>,
+    xcb_input_button_press_valuator_mask_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_button_press_event_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_button_press_axisvalues: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_button_press_event_t) -> *mut xcb_input_fp3232_t,
+    >,
     xcb_input_button_press_axisvalues_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_button_press_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_button_press_event_t) -> c_int>,
     xcb_input_button_press_axisvalues_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_button_press_event_t) -> xcb_input_fp3232_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_button_press_event_t,
+        ) -> xcb_input_fp3232_iterator_t,
     >,
     xcb_input_button_release_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_button_release_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_button_release_event_t) -> c_int>,
     xcb_input_motion_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_motion_event_t) -> c_int>,
-    xcb_input_enter_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_input_enter_buttons: LazySymbol<unsafe fn(r: *const xcb_input_enter_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_motion_event_t) -> c_int>,
+    xcb_input_enter_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_enter_buttons:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_enter_event_t) -> *mut u32>,
     xcb_input_enter_buttons_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_enter_event_t) -> c_int>,
-    xcb_input_enter_buttons_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_enter_event_t) -> xcb_generic_iterator_t>,
-    xcb_input_leave_sizeof: LazySymbol<unsafe fn(buffer: *const xcb_input_leave_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_enter_event_t) -> c_int>,
+    xcb_input_enter_buttons_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_enter_event_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_leave_sizeof:
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_leave_event_t) -> c_int>,
     xcb_input_focus_in_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_focus_in_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_focus_in_event_t) -> c_int>,
     xcb_input_focus_out_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_focus_out_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_focus_out_event_t) -> c_int>,
     xcb_input_hierarchy_info_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_hierarchy_info_iterator_t)>,
-    xcb_input_hierarchy_info_end:
-        LazySymbol<unsafe fn(i: xcb_input_hierarchy_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_hierarchy_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_hierarchy_info_iterator_t)>,
+    xcb_input_hierarchy_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_hierarchy_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_hierarchy_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_hierarchy_infos: LazySymbol<
-        unsafe fn(r: *const xcb_input_hierarchy_event_t) -> *mut xcb_input_hierarchy_info_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_hierarchy_event_t,
+        ) -> *mut xcb_input_hierarchy_info_t,
     >,
     xcb_input_hierarchy_infos_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_hierarchy_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_hierarchy_event_t) -> c_int>,
     xcb_input_hierarchy_infos_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_hierarchy_event_t) -> xcb_input_hierarchy_info_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_hierarchy_event_t,
+        ) -> xcb_input_hierarchy_info_iterator_t,
     >,
-    xcb_input_raw_key_press_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_input_raw_key_press_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_raw_key_press_valuator_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_key_press_event_t) -> *mut u32>,
     xcb_input_raw_key_press_valuator_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> c_int>,
-    xcb_input_raw_key_press_valuator_mask_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> xcb_generic_iterator_t>,
-    xcb_input_raw_key_press_axisvalues:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> *mut xcb_input_fp3232_t>,
-    xcb_input_raw_key_press_axisvalues_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> c_int>,
-    xcb_input_raw_key_press_axisvalues_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> xcb_input_fp3232_iterator_t,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_key_press_event_t) -> c_int>,
+    xcb_input_raw_key_press_valuator_mask_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_raw_key_press_event_t) -> xcb_generic_iterator_t,
     >,
-    xcb_input_raw_key_press_axisvalues_raw:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> *mut xcb_input_fp3232_t>,
+    xcb_input_raw_key_press_axisvalues: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_raw_key_press_event_t) -> *mut xcb_input_fp3232_t,
+    >,
+    xcb_input_raw_key_press_axisvalues_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_key_press_event_t) -> c_int>,
+    xcb_input_raw_key_press_axisvalues_iterator: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_key_press_event_t,
+        ) -> xcb_input_fp3232_iterator_t,
+    >,
+    xcb_input_raw_key_press_axisvalues_raw: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_raw_key_press_event_t) -> *mut xcb_input_fp3232_t,
+    >,
     xcb_input_raw_key_press_axisvalues_raw_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_key_press_event_t) -> c_int>,
     xcb_input_raw_key_press_axisvalues_raw_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_key_press_event_t) -> xcb_input_fp3232_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_key_press_event_t,
+        ) -> xcb_input_fp3232_iterator_t,
     >,
     xcb_input_raw_key_release_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_raw_key_release_event_t) -> c_int>,
-    xcb_input_raw_button_press_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_raw_key_release_event_t) -> c_int>,
+    xcb_input_raw_button_press_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_raw_button_press_valuator_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_button_press_event_t) -> *mut u32>,
     xcb_input_raw_button_press_valuator_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_button_press_event_t) -> c_int>,
     xcb_input_raw_button_press_valuator_mask_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_button_press_event_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_input_raw_button_press_axisvalues: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> *mut xcb_input_fp3232_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_button_press_event_t,
+        ) -> *mut xcb_input_fp3232_t,
     >,
     xcb_input_raw_button_press_axisvalues_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_button_press_event_t) -> c_int>,
     xcb_input_raw_button_press_axisvalues_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> xcb_input_fp3232_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_button_press_event_t,
+        ) -> xcb_input_fp3232_iterator_t,
     >,
     xcb_input_raw_button_press_axisvalues_raw: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> *mut xcb_input_fp3232_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_button_press_event_t,
+        ) -> *mut xcb_input_fp3232_t,
     >,
     xcb_input_raw_button_press_axisvalues_raw_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_button_press_event_t) -> c_int>,
     xcb_input_raw_button_press_axisvalues_raw_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_button_press_event_t) -> xcb_input_fp3232_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_button_press_event_t,
+        ) -> xcb_input_fp3232_iterator_t,
     >,
-    xcb_input_raw_button_release_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_raw_button_release_event_t) -> c_int>,
+    xcb_input_raw_button_release_sizeof: LazySymbol<
+        unsafe extern "C" fn(buffer: *const xcb_input_raw_button_release_event_t) -> c_int,
+    >,
     xcb_input_raw_motion_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_raw_motion_event_t) -> c_int>,
-    xcb_input_touch_begin_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_raw_motion_event_t) -> c_int>,
+    xcb_input_touch_begin_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_touch_begin_button_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_touch_begin_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_touch_begin_event_t) -> *mut u32>,
     xcb_input_touch_begin_button_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_touch_begin_event_t) -> c_int>,
-    xcb_input_touch_begin_button_mask_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_touch_begin_event_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_touch_begin_event_t) -> c_int>,
+    xcb_input_touch_begin_button_mask_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_touch_begin_event_t) -> xcb_generic_iterator_t,
+    >,
     xcb_input_touch_begin_valuator_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_touch_begin_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_touch_begin_event_t) -> *mut u32>,
     xcb_input_touch_begin_valuator_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_touch_begin_event_t) -> c_int>,
-    xcb_input_touch_begin_valuator_mask_end:
-        LazySymbol<unsafe fn(r: *const xcb_input_touch_begin_event_t) -> xcb_generic_iterator_t>,
-    xcb_input_touch_begin_axisvalues:
-        LazySymbol<unsafe fn(r: *const xcb_input_touch_begin_event_t) -> *mut xcb_input_fp3232_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_touch_begin_event_t) -> c_int>,
+    xcb_input_touch_begin_valuator_mask_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_touch_begin_event_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_touch_begin_axisvalues: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_touch_begin_event_t) -> *mut xcb_input_fp3232_t,
+    >,
     xcb_input_touch_begin_axisvalues_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_touch_begin_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_touch_begin_event_t) -> c_int>,
     xcb_input_touch_begin_axisvalues_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_touch_begin_event_t) -> xcb_input_fp3232_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_touch_begin_event_t,
+        ) -> xcb_input_fp3232_iterator_t,
     >,
     xcb_input_touch_update_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_touch_update_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_touch_update_event_t) -> c_int>,
     xcb_input_touch_end_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_touch_end_event_t) -> c_int>,
-    xcb_input_raw_touch_begin_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_touch_end_event_t) -> c_int>,
+    xcb_input_raw_touch_begin_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_raw_touch_begin_valuator_mask:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_touch_begin_event_t) -> *mut u32>,
     xcb_input_raw_touch_begin_valuator_mask_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_touch_begin_event_t) -> c_int>,
     xcb_input_raw_touch_begin_valuator_mask_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_input_raw_touch_begin_event_t) -> xcb_generic_iterator_t,
     >,
     xcb_input_raw_touch_begin_axisvalues: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> *mut xcb_input_fp3232_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_touch_begin_event_t,
+        ) -> *mut xcb_input_fp3232_t,
     >,
     xcb_input_raw_touch_begin_axisvalues_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_touch_begin_event_t) -> c_int>,
     xcb_input_raw_touch_begin_axisvalues_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> xcb_input_fp3232_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_touch_begin_event_t,
+        ) -> xcb_input_fp3232_iterator_t,
     >,
     xcb_input_raw_touch_begin_axisvalues_raw: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> *mut xcb_input_fp3232_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_touch_begin_event_t,
+        ) -> *mut xcb_input_fp3232_t,
     >,
     xcb_input_raw_touch_begin_axisvalues_raw_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_input_raw_touch_begin_event_t) -> c_int>,
     xcb_input_raw_touch_begin_axisvalues_raw_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_input_raw_touch_begin_event_t) -> xcb_input_fp3232_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_raw_touch_begin_event_t,
+        ) -> xcb_input_fp3232_iterator_t,
     >,
-    xcb_input_raw_touch_update_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_raw_touch_update_event_t) -> c_int>,
+    xcb_input_raw_touch_update_sizeof: LazySymbol<
+        unsafe extern "C" fn(buffer: *const xcb_input_raw_touch_update_event_t) -> c_int,
+    >,
     xcb_input_raw_touch_end_sizeof:
-        LazySymbol<unsafe fn(buffer: *const xcb_input_raw_touch_end_event_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(buffer: *const xcb_input_raw_touch_end_event_t) -> c_int>,
     xcb_input_event_for_send_next:
-        LazySymbol<unsafe fn(i: *mut xcb_input_event_for_send_iterator_t)>,
-    xcb_input_event_for_send_end:
-        LazySymbol<unsafe fn(i: xcb_input_event_for_send_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_input_send_extension_event_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_input_event_for_send_iterator_t)>,
+    xcb_input_event_for_send_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_input_event_for_send_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_input_send_extension_event_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_input_send_extension_event_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination: xcb_window_t,
             device_id: u8,
@@ -10934,7 +11494,7 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_send_extension_event: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             destination: xcb_window_t,
             device_id: u8,
@@ -10946,26 +11506,30 @@ pub(crate) struct XcbXinputXinput {
         ) -> xcb_void_cookie_t,
     >,
     xcb_input_send_extension_event_events: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_send_extension_event_request_t,
         ) -> *mut xcb_input_event_for_send_t,
     >,
-    xcb_input_send_extension_event_events_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_send_extension_event_request_t) -> c_int>,
+    xcb_input_send_extension_event_events_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_send_extension_event_request_t) -> c_int,
+    >,
     xcb_input_send_extension_event_events_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_send_extension_event_request_t,
         ) -> xcb_input_event_for_send_iterator_t,
     >,
     xcb_input_send_extension_event_classes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_input_send_extension_event_request_t,
         ) -> *mut xcb_input_event_class_t,
     >,
-    xcb_input_send_extension_event_classes_length:
-        LazySymbol<unsafe fn(r: *const xcb_input_send_extension_event_request_t) -> c_int>,
+    xcb_input_send_extension_event_classes_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_input_send_extension_event_request_t) -> c_int,
+    >,
     xcb_input_send_extension_event_classes_end: LazySymbol<
-        unsafe fn(r: *const xcb_input_send_extension_event_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_input_send_extension_event_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
 }
 
@@ -19066,6 +19630,33 @@ impl XcbXinput {
         has_sym!(self, xcb_input_touch_class_end)
     }
 
+    /// Advances a `xcb_input_gesture_class_iterator_t` iterator by 1 element.
+    #[inline]
+    pub unsafe fn xcb_input_gesture_class_next(&self, i: *mut xcb_input_gesture_class_iterator_t) {
+        sym!(self, xcb_input_gesture_class_next)(i)
+    }
+
+    /// Returns `true` iff the symbol `xcb_input_gesture_class_next` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_input_gesture_class_next(&self) -> bool {
+        has_sym!(self, xcb_input_gesture_class_next)
+    }
+
+    /// Returns a `xcb_generic_iterator_t` pointing just past the end of a `xcb_input_gesture_class_iterator_t`.
+    #[inline]
+    pub unsafe fn xcb_input_gesture_class_end(
+        &self,
+        i: xcb_input_gesture_class_iterator_t,
+    ) -> xcb_generic_iterator_t {
+        sym!(self, xcb_input_gesture_class_end)(i)
+    }
+
+    /// Returns `true` iff the symbol `xcb_input_gesture_class_end` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_input_gesture_class_end(&self) -> bool {
+        has_sym!(self, xcb_input_gesture_class_end)
+    }
+
     /// Advances a `xcb_input_valuator_class_iterator_t` iterator by 1 element.
     #[inline]
     pub unsafe fn xcb_input_valuator_class_next(
@@ -23239,6 +23830,8 @@ mod test {
         assert!(lib.has_xcb_input_scroll_class_end());
         assert!(lib.has_xcb_input_touch_class_next());
         assert!(lib.has_xcb_input_touch_class_end());
+        assert!(lib.has_xcb_input_gesture_class_next());
+        assert!(lib.has_xcb_input_gesture_class_end());
         assert!(lib.has_xcb_input_valuator_class_next());
         assert!(lib.has_xcb_input_valuator_class_end());
         assert!(lib.has_xcb_input_device_class_data_key_keys());

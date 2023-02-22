@@ -73,7 +73,7 @@ pub(crate) struct XcbXcbext {
     >,
     xcb_send_fd: LazySymbol<unsafe fn(c: *mut xcb_connection_t, fd: c_int)>,
     xcb_take_socket: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             return_socket: extern "C" fn(closure: *mut c_void),
             closure: *mut c_void,

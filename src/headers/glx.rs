@@ -5879,39 +5879,42 @@ impl Default for xcb_glx_get_query_objectuiv_arb_reply_t {
 #[cfg(feature = "xcb_glx")]
 pub(crate) struct XcbGlxGlx {
     xcb_glx_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_glx_pixmap_next: LazySymbol<unsafe fn(i: *mut xcb_glx_pixmap_iterator_t)>,
+    xcb_glx_pixmap_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_pixmap_iterator_t)>,
     xcb_glx_pixmap_end:
-        LazySymbol<unsafe fn(i: xcb_glx_pixmap_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_context_next: LazySymbol<unsafe fn(i: *mut xcb_glx_context_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_pixmap_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_context_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_context_iterator_t)>,
     xcb_glx_context_end:
-        LazySymbol<unsafe fn(i: xcb_glx_context_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_pbuffer_next: LazySymbol<unsafe fn(i: *mut xcb_glx_pbuffer_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_context_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_pbuffer_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_pbuffer_iterator_t)>,
     xcb_glx_pbuffer_end:
-        LazySymbol<unsafe fn(i: xcb_glx_pbuffer_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_window_next: LazySymbol<unsafe fn(i: *mut xcb_glx_window_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_pbuffer_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_window_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_window_iterator_t)>,
     xcb_glx_window_end:
-        LazySymbol<unsafe fn(i: xcb_glx_window_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_fbconfig_next: LazySymbol<unsafe fn(i: *mut xcb_glx_fbconfig_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_window_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_fbconfig_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_fbconfig_iterator_t)>,
     xcb_glx_fbconfig_end:
-        LazySymbol<unsafe fn(i: xcb_glx_fbconfig_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_drawable_next: LazySymbol<unsafe fn(i: *mut xcb_glx_drawable_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_fbconfig_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_drawable_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_drawable_iterator_t)>,
     xcb_glx_drawable_end:
-        LazySymbol<unsafe fn(i: xcb_glx_drawable_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_float32_next: LazySymbol<unsafe fn(i: *mut xcb_glx_float32_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_drawable_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_float32_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_float32_iterator_t)>,
     xcb_glx_float32_end:
-        LazySymbol<unsafe fn(i: xcb_glx_float32_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_float64_next: LazySymbol<unsafe fn(i: *mut xcb_glx_float64_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_float32_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_float64_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_float64_iterator_t)>,
     xcb_glx_float64_end:
-        LazySymbol<unsafe fn(i: xcb_glx_float64_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_bool32_next: LazySymbol<unsafe fn(i: *mut xcb_glx_bool32_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_float64_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_bool32_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_bool32_iterator_t)>,
     xcb_glx_bool32_end:
-        LazySymbol<unsafe fn(i: xcb_glx_bool32_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_context_tag_next: LazySymbol<unsafe fn(i: *mut xcb_glx_context_tag_iterator_t)>,
-    xcb_glx_context_tag_end:
-        LazySymbol<unsafe fn(i: xcb_glx_context_tag_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_glx_render_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void, data_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_glx_bool32_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_glx_context_tag_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_glx_context_tag_iterator_t)>,
+    xcb_glx_context_tag_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_glx_context_tag_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_glx_render_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, data_len: u32) -> c_int>,
     xcb_glx_render_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             data_len: u32,
@@ -5919,20 +5922,23 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_render: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             data_len: u32,
             data: *const u8,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_render_data: LazySymbol<unsafe fn(r: *const xcb_glx_render_request_t) -> *mut u8>,
-    xcb_glx_render_data_length: LazySymbol<unsafe fn(r: *const xcb_glx_render_request_t) -> c_int>,
-    xcb_glx_render_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_render_request_t) -> xcb_generic_iterator_t>,
-    xcb_glx_render_large_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_render_data:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_render_request_t) -> *mut u8>,
+    xcb_glx_render_data_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_render_request_t) -> c_int>,
+    xcb_glx_render_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_render_request_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_glx_render_large_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_render_large_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             request_num: u16,
@@ -5942,7 +5948,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_render_large: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             request_num: u16,
@@ -5952,13 +5958,14 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_render_large_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_render_large_request_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_render_large_request_t) -> *mut u8>,
     xcb_glx_render_large_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_render_large_request_t) -> c_int>,
-    xcb_glx_render_large_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_render_large_request_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_render_large_request_t) -> c_int>,
+    xcb_glx_render_large_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_render_large_request_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_create_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
             visual: xcb_visualid_t,
@@ -5968,7 +5975,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
             visual: xcb_visualid_t,
@@ -5978,13 +5985,19 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_destroy_context_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, context: xcb_glx_context_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            context: xcb_glx_context_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_glx_destroy_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, context: xcb_glx_context_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            context: xcb_glx_context_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_glx_make_current: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_glx_drawable_t,
             context: xcb_glx_context_t,
@@ -5992,7 +6005,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_make_current_cookie_t,
     >,
     xcb_glx_make_current_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_glx_drawable_t,
             context: xcb_glx_context_t,
@@ -6000,78 +6013,78 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_make_current_cookie_t,
     >,
     xcb_glx_make_current_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_make_current_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_make_current_reply_t,
     >,
     xcb_glx_is_direct: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
         ) -> xcb_glx_is_direct_cookie_t,
     >,
     xcb_glx_is_direct_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
         ) -> xcb_glx_is_direct_cookie_t,
     >,
     xcb_glx_is_direct_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_is_direct_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_is_direct_reply_t,
     >,
     xcb_glx_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
         ) -> xcb_glx_query_version_cookie_t,
     >,
     xcb_glx_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
         ) -> xcb_glx_query_version_cookie_t,
     >,
     xcb_glx_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_query_version_reply_t,
     >,
     xcb_glx_wait_gl_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_wait_gl: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_wait_x_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_wait_x: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_copy_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             src: xcb_glx_context_t,
             dest: xcb_glx_context_t,
@@ -6080,7 +6093,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_copy_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             src: xcb_glx_context_t,
             dest: xcb_glx_context_t,
@@ -6089,21 +6102,21 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_swap_buffers_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             drawable: xcb_glx_drawable_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_swap_buffers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             drawable: xcb_glx_drawable_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_use_x_font_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             font: xcb_font_t,
@@ -6113,7 +6126,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_use_x_font: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             font: xcb_font_t,
@@ -6123,7 +6136,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_glx_pixmap_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             visual: xcb_visualid_t,
@@ -6132,7 +6145,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_glx_pixmap: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             visual: xcb_visualid_t,
@@ -6140,37 +6153,52 @@ pub(crate) struct XcbGlxGlx {
             glx_pixmap: xcb_glx_pixmap_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_get_visual_configs_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_visual_configs_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_visual_configs: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, screen: u32) -> xcb_glx_get_visual_configs_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            screen: u32,
+        ) -> xcb_glx_get_visual_configs_cookie_t,
     >,
     xcb_glx_get_visual_configs_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, screen: u32) -> xcb_glx_get_visual_configs_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            screen: u32,
+        ) -> xcb_glx_get_visual_configs_cookie_t,
     >,
     xcb_glx_get_visual_configs_property_list:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_visual_configs_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_visual_configs_reply_t) -> *mut u32>,
     xcb_glx_get_visual_configs_property_list_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_visual_configs_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_visual_configs_reply_t) -> c_int>,
     xcb_glx_get_visual_configs_property_list_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_visual_configs_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_visual_configs_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_visual_configs_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_visual_configs_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_visual_configs_reply_t,
     >,
     xcb_glx_destroy_glx_pixmap_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, glx_pixmap: xcb_glx_pixmap_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            glx_pixmap: xcb_glx_pixmap_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_glx_destroy_glx_pixmap: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, glx_pixmap: xcb_glx_pixmap_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            glx_pixmap: xcb_glx_pixmap_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_glx_vendor_private_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, data_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, data_len: u32) -> c_int>,
     xcb_glx_vendor_private_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             vendor_code: u32,
             context_tag: xcb_glx_context_tag_t,
@@ -6179,7 +6207,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_vendor_private: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             vendor_code: u32,
             context_tag: xcb_glx_context_tag_t,
@@ -6188,15 +6216,16 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_vendor_private_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_vendor_private_request_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_vendor_private_request_t) -> *mut u8>,
     xcb_glx_vendor_private_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_vendor_private_request_t) -> c_int>,
-    xcb_glx_vendor_private_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_vendor_private_request_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_vendor_private_request_t) -> c_int>,
+    xcb_glx_vendor_private_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_vendor_private_request_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_vendor_private_with_reply_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, data_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, data_len: u32) -> c_int>,
     xcb_glx_vendor_private_with_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             vendor_code: u32,
             context_tag: xcb_glx_context_tag_t,
@@ -6205,7 +6234,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_vendor_private_with_reply_cookie_t,
     >,
     xcb_glx_vendor_private_with_reply_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             vendor_code: u32,
             context_tag: xcb_glx_context_tag_t,
@@ -6213,71 +6242,79 @@ pub(crate) struct XcbGlxGlx {
             data: *const u8,
         ) -> xcb_glx_vendor_private_with_reply_cookie_t,
     >,
-    xcb_glx_vendor_private_with_reply_data_2:
-        LazySymbol<unsafe fn(r: *const xcb_glx_vendor_private_with_reply_reply_t) -> *mut u8>,
-    xcb_glx_vendor_private_with_reply_data_2_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_vendor_private_with_reply_reply_t) -> c_int>,
+    xcb_glx_vendor_private_with_reply_data_2: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_vendor_private_with_reply_reply_t) -> *mut u8,
+    >,
+    xcb_glx_vendor_private_with_reply_data_2_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_vendor_private_with_reply_reply_t) -> c_int,
+    >,
     xcb_glx_vendor_private_with_reply_data_2_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_vendor_private_with_reply_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_vendor_private_with_reply_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_vendor_private_with_reply_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_vendor_private_with_reply_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_vendor_private_with_reply_reply_t,
     >,
     xcb_glx_query_extensions_string: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
         ) -> xcb_glx_query_extensions_string_cookie_t,
     >,
     xcb_glx_query_extensions_string_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
         ) -> xcb_glx_query_extensions_string_cookie_t,
     >,
     xcb_glx_query_extensions_string_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_query_extensions_string_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_query_extensions_string_reply_t,
     >,
-    xcb_glx_query_server_string_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_query_server_string_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_query_server_string: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             name: u32,
         ) -> xcb_glx_query_server_string_cookie_t,
     >,
     xcb_glx_query_server_string_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             name: u32,
         ) -> xcb_glx_query_server_string_cookie_t,
     >,
-    xcb_glx_query_server_string_string:
-        LazySymbol<unsafe fn(r: *const xcb_glx_query_server_string_reply_t) -> *mut c_char>,
+    xcb_glx_query_server_string_string: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_query_server_string_reply_t) -> *mut c_char,
+    >,
     xcb_glx_query_server_string_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_query_server_string_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_query_server_string_reply_t) -> c_int>,
     xcb_glx_query_server_string_string_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_query_server_string_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_query_server_string_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_query_server_string_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_query_server_string_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_query_server_string_reply_t,
     >,
-    xcb_glx_client_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_client_info_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_client_info_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
@@ -6286,7 +6323,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_client_info: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
@@ -6295,34 +6332,43 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_client_info_string:
-        LazySymbol<unsafe fn(r: *const xcb_glx_client_info_request_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_client_info_request_t) -> *mut c_char>,
     xcb_glx_client_info_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_client_info_request_t) -> c_int>,
-    xcb_glx_client_info_string_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_client_info_request_t) -> xcb_generic_iterator_t>,
-    xcb_glx_get_fb_configs_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_client_info_request_t) -> c_int>,
+    xcb_glx_client_info_string_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_client_info_request_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_glx_get_fb_configs_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_fb_configs: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, screen: u32) -> xcb_glx_get_fb_configs_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            screen: u32,
+        ) -> xcb_glx_get_fb_configs_cookie_t,
     >,
     xcb_glx_get_fb_configs_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, screen: u32) -> xcb_glx_get_fb_configs_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            screen: u32,
+        ) -> xcb_glx_get_fb_configs_cookie_t,
     >,
     xcb_glx_get_fb_configs_property_list:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_fb_configs_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_fb_configs_reply_t) -> *mut u32>,
     xcb_glx_get_fb_configs_property_list_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_fb_configs_reply_t) -> c_int>,
-    xcb_glx_get_fb_configs_property_list_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_fb_configs_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_fb_configs_reply_t) -> c_int>,
+    xcb_glx_get_fb_configs_property_list_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_fb_configs_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_fb_configs_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_fb_configs_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_fb_configs_reply_t,
     >,
-    xcb_glx_create_pixmap_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_create_pixmap_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_create_pixmap_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6333,7 +6379,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_pixmap: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6344,19 +6390,26 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_pixmap_attribs:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_pixmap_request_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_create_pixmap_request_t) -> *mut u32>,
     xcb_glx_create_pixmap_attribs_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_pixmap_request_t) -> c_int>,
-    xcb_glx_create_pixmap_attribs_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_pixmap_request_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_create_pixmap_request_t) -> c_int>,
+    xcb_glx_create_pixmap_attribs_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_create_pixmap_request_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_destroy_pixmap_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, glx_pixmap: xcb_glx_pixmap_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            glx_pixmap: xcb_glx_pixmap_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_glx_destroy_pixmap: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, glx_pixmap: xcb_glx_pixmap_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            glx_pixmap: xcb_glx_pixmap_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_new_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6367,7 +6420,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_new_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6377,34 +6430,35 @@ pub(crate) struct XcbGlxGlx {
             is_direct: u8,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_query_context_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_query_context_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_query_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
         ) -> xcb_glx_query_context_cookie_t,
     >,
     xcb_glx_query_context_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
         ) -> xcb_glx_query_context_cookie_t,
     >,
     xcb_glx_query_context_attribs:
-        LazySymbol<unsafe fn(r: *const xcb_glx_query_context_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_query_context_reply_t) -> *mut u32>,
     xcb_glx_query_context_attribs_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_query_context_reply_t) -> c_int>,
-    xcb_glx_query_context_attribs_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_query_context_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_query_context_reply_t) -> c_int>,
+    xcb_glx_query_context_attribs_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_query_context_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_query_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_query_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_query_context_reply_t,
     >,
     xcb_glx_make_context_current: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             old_context_tag: xcb_glx_context_tag_t,
             drawable: xcb_glx_drawable_t,
@@ -6413,7 +6467,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_make_context_current_cookie_t,
     >,
     xcb_glx_make_context_current_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             old_context_tag: xcb_glx_context_tag_t,
             drawable: xcb_glx_drawable_t,
@@ -6422,15 +6476,16 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_make_context_current_cookie_t,
     >,
     xcb_glx_make_context_current_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_make_context_current_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_make_context_current_reply_t,
     >,
-    xcb_glx_create_pbuffer_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_create_pbuffer_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_create_pbuffer_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6440,7 +6495,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_pbuffer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6450,48 +6505,60 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_pbuffer_attribs:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_pbuffer_request_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_create_pbuffer_request_t) -> *mut u32>,
     xcb_glx_create_pbuffer_attribs_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_pbuffer_request_t) -> c_int>,
-    xcb_glx_create_pbuffer_attribs_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_pbuffer_request_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_create_pbuffer_request_t) -> c_int>,
+    xcb_glx_create_pbuffer_attribs_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_create_pbuffer_request_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_destroy_pbuffer_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, pbuffer: xcb_glx_pbuffer_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            pbuffer: xcb_glx_pbuffer_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_glx_destroy_pbuffer: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, pbuffer: xcb_glx_pbuffer_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            pbuffer: xcb_glx_pbuffer_t,
+        ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_get_drawable_attributes_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_drawable_attributes_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_drawable_attributes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_glx_drawable_t,
         ) -> xcb_glx_get_drawable_attributes_cookie_t,
     >,
     xcb_glx_get_drawable_attributes_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_glx_drawable_t,
         ) -> xcb_glx_get_drawable_attributes_cookie_t,
     >,
-    xcb_glx_get_drawable_attributes_attribs:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_drawable_attributes_reply_t) -> *mut u32>,
-    xcb_glx_get_drawable_attributes_attribs_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_drawable_attributes_reply_t) -> c_int>,
+    xcb_glx_get_drawable_attributes_attribs: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_drawable_attributes_reply_t) -> *mut u32,
+    >,
+    xcb_glx_get_drawable_attributes_attribs_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_drawable_attributes_reply_t) -> c_int,
+    >,
     xcb_glx_get_drawable_attributes_attribs_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_drawable_attributes_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_drawable_attributes_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_drawable_attributes_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_drawable_attributes_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_drawable_attributes_reply_t,
     >,
     xcb_glx_change_drawable_attributes_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_change_drawable_attributes_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_glx_drawable_t,
             num_attribs: u32,
@@ -6499,23 +6566,27 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_change_drawable_attributes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_glx_drawable_t,
             num_attribs: u32,
             attribs: *const u32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_change_drawable_attributes_attribs:
-        LazySymbol<unsafe fn(r: *const xcb_glx_change_drawable_attributes_request_t) -> *mut u32>,
-    xcb_glx_change_drawable_attributes_attribs_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_change_drawable_attributes_request_t) -> c_int>,
-    xcb_glx_change_drawable_attributes_attribs_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_change_drawable_attributes_request_t) -> xcb_generic_iterator_t,
+    xcb_glx_change_drawable_attributes_attribs: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_change_drawable_attributes_request_t) -> *mut u32,
     >,
-    xcb_glx_create_window_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_change_drawable_attributes_attribs_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_change_drawable_attributes_request_t) -> c_int,
+    >,
+    xcb_glx_change_drawable_attributes_attribs_end: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_glx_change_drawable_attributes_request_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_glx_create_window_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_create_window_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6526,7 +6597,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_window: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             screen: u32,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6537,20 +6608,28 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_window_attribs:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_window_request_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_create_window_request_t) -> *mut u32>,
     xcb_glx_create_window_attribs_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_window_request_t) -> c_int>,
-    xcb_glx_create_window_attribs_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_window_request_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_create_window_request_t) -> c_int>,
+    xcb_glx_create_window_attribs_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_create_window_request_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_delete_window_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, glxwindow: xcb_glx_window_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            glxwindow: xcb_glx_window_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_glx_delete_window: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, glxwindow: xcb_glx_window_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            glxwindow: xcb_glx_window_t,
+        ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_set_client_info_arb_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_set_client_info_arb_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_set_client_info_arb_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
@@ -6563,7 +6642,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_set_client_info_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
@@ -6575,31 +6654,40 @@ pub(crate) struct XcbGlxGlx {
             glx_extension_string: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_set_client_info_arb_gl_versions:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> *mut u32>,
+    xcb_glx_set_client_info_arb_gl_versions: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_set_client_info_arb_request_t) -> *mut u32,
+    >,
     xcb_glx_set_client_info_arb_gl_versions_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_set_client_info_arb_request_t) -> c_int>,
     xcb_glx_set_client_info_arb_gl_versions_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_set_client_info_arb_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_glx_set_client_info_arb_gl_extension_string:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> *mut c_char>,
+    xcb_glx_set_client_info_arb_gl_extension_string: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_set_client_info_arb_request_t) -> *mut c_char,
+    >,
     xcb_glx_set_client_info_arb_gl_extension_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_set_client_info_arb_request_t) -> c_int>,
     xcb_glx_set_client_info_arb_gl_extension_string_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_set_client_info_arb_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_glx_set_client_info_arb_glx_extension_string:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> *mut c_char>,
+    xcb_glx_set_client_info_arb_glx_extension_string: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_set_client_info_arb_request_t) -> *mut c_char,
+    >,
     xcb_glx_set_client_info_arb_glx_extension_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_set_client_info_arb_request_t) -> c_int>,
     xcb_glx_set_client_info_arb_glx_extension_string_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_set_client_info_arb_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_set_client_info_arb_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_create_context_attribs_arb_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_create_context_attribs_arb_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6611,7 +6699,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_create_context_attribs_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context: xcb_glx_context_t,
             fbconfig: xcb_glx_fbconfig_t,
@@ -6622,16 +6710,21 @@ pub(crate) struct XcbGlxGlx {
             attribs: *const u32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_create_context_attribs_arb_attribs:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_context_attribs_arb_request_t) -> *mut u32>,
-    xcb_glx_create_context_attribs_arb_attribs_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_create_context_attribs_arb_request_t) -> c_int>,
-    xcb_glx_create_context_attribs_arb_attribs_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_create_context_attribs_arb_request_t) -> xcb_generic_iterator_t,
+    xcb_glx_create_context_attribs_arb_attribs: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_create_context_attribs_arb_request_t) -> *mut u32,
     >,
-    xcb_glx_set_client_info_2arb_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_create_context_attribs_arb_attribs_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_create_context_attribs_arb_request_t) -> c_int,
+    >,
+    xcb_glx_create_context_attribs_arb_attribs_end: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_glx_create_context_attribs_arb_request_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_glx_set_client_info_2arb_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_set_client_info_2arb_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
@@ -6644,7 +6737,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_set_client_info_2arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
@@ -6656,29 +6749,38 @@ pub(crate) struct XcbGlxGlx {
             glx_extension_string: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_set_client_info_2arb_gl_versions:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> *mut u32>,
+    xcb_glx_set_client_info_2arb_gl_versions: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> *mut u32,
+    >,
     xcb_glx_set_client_info_2arb_gl_versions_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> c_int>,
     xcb_glx_set_client_info_2arb_gl_versions_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_set_client_info_2arb_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_glx_set_client_info_2arb_gl_extension_string:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> *mut c_char>,
+    xcb_glx_set_client_info_2arb_gl_extension_string: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> *mut c_char,
+    >,
     xcb_glx_set_client_info_2arb_gl_extension_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> c_int>,
     xcb_glx_set_client_info_2arb_gl_extension_string_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_set_client_info_2arb_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_glx_set_client_info_2arb_glx_extension_string:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> *mut c_char>,
+    xcb_glx_set_client_info_2arb_glx_extension_string: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> *mut c_char,
+    >,
     xcb_glx_set_client_info_2arb_glx_extension_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> c_int>,
     xcb_glx_set_client_info_2arb_glx_extension_string_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_set_client_info_2arb_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_set_client_info_2arb_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_new_list_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             list: u32,
@@ -6686,7 +6788,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_new_list: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             list: u32,
@@ -6694,19 +6796,19 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_end_list_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_end_list: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_delete_lists_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             list: u32,
@@ -6714,7 +6816,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_delete_lists: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             list: u32,
@@ -6722,28 +6824,28 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_gen_lists: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             range: i32,
         ) -> xcb_glx_gen_lists_cookie_t,
     >,
     xcb_glx_gen_lists_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             range: i32,
         ) -> xcb_glx_gen_lists_cookie_t,
     >,
     xcb_glx_gen_lists_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_gen_lists_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_gen_lists_reply_t,
     >,
     xcb_glx_feedback_buffer_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             size: i32,
@@ -6751,7 +6853,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_feedback_buffer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             size: i32,
@@ -6759,68 +6861,69 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_select_buffer_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             size: i32,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_select_buffer: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             size: i32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_render_mode_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_render_mode_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_render_mode: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             mode: u32,
         ) -> xcb_glx_render_mode_cookie_t,
     >,
     xcb_glx_render_mode_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             mode: u32,
         ) -> xcb_glx_render_mode_cookie_t,
     >,
     xcb_glx_render_mode_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_render_mode_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_render_mode_reply_t) -> *mut u32>,
     xcb_glx_render_mode_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_render_mode_reply_t) -> c_int>,
-    xcb_glx_render_mode_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_render_mode_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_render_mode_reply_t) -> c_int>,
+    xcb_glx_render_mode_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_render_mode_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_render_mode_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_render_mode_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_render_mode_reply_t,
     >,
     xcb_glx_finish: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_glx_finish_cookie_t,
     >,
     xcb_glx_finish_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_glx_finish_cookie_t,
     >,
     xcb_glx_finish_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_finish_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_finish_reply_t,
     >,
     xcb_glx_pixel_storef_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
@@ -6828,7 +6931,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_pixel_storef: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
@@ -6836,7 +6939,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_pixel_storei_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
@@ -6844,16 +6947,16 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_pixel_storei: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
             datum: i32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_read_pixels_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_read_pixels_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_read_pixels: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             x: i32,
@@ -6867,7 +6970,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_read_pixels_cookie_t,
     >,
     xcb_glx_read_pixels_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             x: i32,
@@ -6881,180 +6984,190 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_read_pixels_cookie_t,
     >,
     xcb_glx_read_pixels_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_read_pixels_reply_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_read_pixels_reply_t) -> *mut u8>,
     xcb_glx_read_pixels_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_read_pixels_reply_t) -> c_int>,
-    xcb_glx_read_pixels_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_read_pixels_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_read_pixels_reply_t) -> c_int>,
+    xcb_glx_read_pixels_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_read_pixels_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_read_pixels_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_read_pixels_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_read_pixels_reply_t,
     >,
-    xcb_glx_get_booleanv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_booleanv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_booleanv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: i32,
         ) -> xcb_glx_get_booleanv_cookie_t,
     >,
     xcb_glx_get_booleanv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: i32,
         ) -> xcb_glx_get_booleanv_cookie_t,
     >,
     xcb_glx_get_booleanv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_booleanv_reply_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_booleanv_reply_t) -> *mut u8>,
     xcb_glx_get_booleanv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_booleanv_reply_t) -> c_int>,
-    xcb_glx_get_booleanv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_booleanv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_booleanv_reply_t) -> c_int>,
+    xcb_glx_get_booleanv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_booleanv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_booleanv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_booleanv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_booleanv_reply_t,
     >,
-    xcb_glx_get_clip_plane_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_clip_plane_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_clip_plane: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             plane: i32,
         ) -> xcb_glx_get_clip_plane_cookie_t,
     >,
     xcb_glx_get_clip_plane_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             plane: i32,
         ) -> xcb_glx_get_clip_plane_cookie_t,
     >,
-    xcb_glx_get_clip_plane_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_clip_plane_reply_t) -> *mut xcb_glx_float64_t>,
+    xcb_glx_get_clip_plane_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_clip_plane_reply_t) -> *mut xcb_glx_float64_t,
+    >,
     xcb_glx_get_clip_plane_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_clip_plane_reply_t) -> c_int>,
-    xcb_glx_get_clip_plane_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_clip_plane_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_clip_plane_reply_t) -> c_int>,
+    xcb_glx_get_clip_plane_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_clip_plane_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_clip_plane_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_clip_plane_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_clip_plane_reply_t,
     >,
-    xcb_glx_get_doublev_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_doublev_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_doublev: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
         ) -> xcb_glx_get_doublev_cookie_t,
     >,
     xcb_glx_get_doublev_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
         ) -> xcb_glx_get_doublev_cookie_t,
     >,
-    xcb_glx_get_doublev_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_doublev_reply_t) -> *mut xcb_glx_float64_t>,
+    xcb_glx_get_doublev_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_doublev_reply_t) -> *mut xcb_glx_float64_t,
+    >,
     xcb_glx_get_doublev_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_doublev_reply_t) -> c_int>,
-    xcb_glx_get_doublev_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_doublev_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_doublev_reply_t) -> c_int>,
+    xcb_glx_get_doublev_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_doublev_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_doublev_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_doublev_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_doublev_reply_t,
     >,
     xcb_glx_get_error: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_glx_get_error_cookie_t,
     >,
     xcb_glx_get_error_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_glx_get_error_cookie_t,
     >,
     xcb_glx_get_error_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_error_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_error_reply_t,
     >,
-    xcb_glx_get_floatv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_floatv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_floatv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
         ) -> xcb_glx_get_floatv_cookie_t,
     >,
     xcb_glx_get_floatv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
         ) -> xcb_glx_get_floatv_cookie_t,
     >,
-    xcb_glx_get_floatv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_floatv_reply_t) -> *mut xcb_glx_float32_t>,
+    xcb_glx_get_floatv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_floatv_reply_t) -> *mut xcb_glx_float32_t,
+    >,
     xcb_glx_get_floatv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_floatv_reply_t) -> c_int>,
-    xcb_glx_get_floatv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_floatv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_floatv_reply_t) -> c_int>,
+    xcb_glx_get_floatv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_floatv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_floatv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_floatv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_floatv_reply_t,
     >,
-    xcb_glx_get_integerv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_integerv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_integerv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
         ) -> xcb_glx_get_integerv_cookie_t,
     >,
     xcb_glx_get_integerv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             pname: u32,
         ) -> xcb_glx_get_integerv_cookie_t,
     >,
     xcb_glx_get_integerv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_integerv_reply_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_integerv_reply_t) -> *mut i32>,
     xcb_glx_get_integerv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_integerv_reply_t) -> c_int>,
-    xcb_glx_get_integerv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_integerv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_integerv_reply_t) -> c_int>,
+    xcb_glx_get_integerv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_integerv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_integerv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_integerv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_integerv_reply_t,
     >,
-    xcb_glx_get_lightfv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_lightfv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_lightfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             light: u32,
@@ -7062,29 +7175,31 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_lightfv_cookie_t,
     >,
     xcb_glx_get_lightfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             light: u32,
             pname: u32,
         ) -> xcb_glx_get_lightfv_cookie_t,
     >,
-    xcb_glx_get_lightfv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_lightfv_reply_t) -> *mut xcb_glx_float32_t>,
+    xcb_glx_get_lightfv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_lightfv_reply_t) -> *mut xcb_glx_float32_t,
+    >,
     xcb_glx_get_lightfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_lightfv_reply_t) -> c_int>,
-    xcb_glx_get_lightfv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_lightfv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_lightfv_reply_t) -> c_int>,
+    xcb_glx_get_lightfv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_lightfv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_lightfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_lightfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_lightfv_reply_t,
     >,
-    xcb_glx_get_lightiv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_lightiv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_lightiv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             light: u32,
@@ -7092,7 +7207,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_lightiv_cookie_t,
     >,
     xcb_glx_get_lightiv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             light: u32,
@@ -7100,21 +7215,22 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_lightiv_cookie_t,
     >,
     xcb_glx_get_lightiv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_lightiv_reply_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_lightiv_reply_t) -> *mut i32>,
     xcb_glx_get_lightiv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_lightiv_reply_t) -> c_int>,
-    xcb_glx_get_lightiv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_lightiv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_lightiv_reply_t) -> c_int>,
+    xcb_glx_get_lightiv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_lightiv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_lightiv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_lightiv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_lightiv_reply_t,
     >,
-    xcb_glx_get_mapdv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_mapdv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_mapdv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7122,29 +7238,31 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_mapdv_cookie_t,
     >,
     xcb_glx_get_mapdv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             query: u32,
         ) -> xcb_glx_get_mapdv_cookie_t,
     >,
-    xcb_glx_get_mapdv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_mapdv_reply_t) -> *mut xcb_glx_float64_t>,
+    xcb_glx_get_mapdv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_mapdv_reply_t) -> *mut xcb_glx_float64_t,
+    >,
     xcb_glx_get_mapdv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_mapdv_reply_t) -> c_int>,
-    xcb_glx_get_mapdv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_mapdv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_mapdv_reply_t) -> c_int>,
+    xcb_glx_get_mapdv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_mapdv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_mapdv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_mapdv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_mapdv_reply_t,
     >,
-    xcb_glx_get_mapfv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_mapfv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_mapfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7152,29 +7270,31 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_mapfv_cookie_t,
     >,
     xcb_glx_get_mapfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             query: u32,
         ) -> xcb_glx_get_mapfv_cookie_t,
     >,
-    xcb_glx_get_mapfv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_mapfv_reply_t) -> *mut xcb_glx_float32_t>,
+    xcb_glx_get_mapfv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_mapfv_reply_t) -> *mut xcb_glx_float32_t,
+    >,
     xcb_glx_get_mapfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_mapfv_reply_t) -> c_int>,
-    xcb_glx_get_mapfv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_mapfv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_mapfv_reply_t) -> c_int>,
+    xcb_glx_get_mapfv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_mapfv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_mapfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_mapfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_mapfv_reply_t,
     >,
-    xcb_glx_get_mapiv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_mapiv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_mapiv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7182,28 +7302,31 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_mapiv_cookie_t,
     >,
     xcb_glx_get_mapiv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             query: u32,
         ) -> xcb_glx_get_mapiv_cookie_t,
     >,
-    xcb_glx_get_mapiv_data: LazySymbol<unsafe fn(r: *const xcb_glx_get_mapiv_reply_t) -> *mut i32>,
+    xcb_glx_get_mapiv_data:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_mapiv_reply_t) -> *mut i32>,
     xcb_glx_get_mapiv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_mapiv_reply_t) -> c_int>,
-    xcb_glx_get_mapiv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_mapiv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_mapiv_reply_t) -> c_int>,
+    xcb_glx_get_mapiv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_mapiv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_mapiv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_mapiv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_mapiv_reply_t,
     >,
-    xcb_glx_get_materialfv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_materialfv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_materialfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             face: u32,
@@ -7211,29 +7334,32 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_materialfv_cookie_t,
     >,
     xcb_glx_get_materialfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             face: u32,
             pname: u32,
         ) -> xcb_glx_get_materialfv_cookie_t,
     >,
-    xcb_glx_get_materialfv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_materialfv_reply_t) -> *mut xcb_glx_float32_t>,
+    xcb_glx_get_materialfv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_materialfv_reply_t) -> *mut xcb_glx_float32_t,
+    >,
     xcb_glx_get_materialfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_materialfv_reply_t) -> c_int>,
-    xcb_glx_get_materialfv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_materialfv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_materialfv_reply_t) -> c_int>,
+    xcb_glx_get_materialfv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_materialfv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_materialfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_materialfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_materialfv_reply_t,
     >,
-    xcb_glx_get_materialiv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_materialiv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_materialiv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             face: u32,
@@ -7241,7 +7367,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_materialiv_cookie_t,
     >,
     xcb_glx_get_materialiv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             face: u32,
@@ -7249,162 +7375,174 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_materialiv_cookie_t,
     >,
     xcb_glx_get_materialiv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_materialiv_reply_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_materialiv_reply_t) -> *mut i32>,
     xcb_glx_get_materialiv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_materialiv_reply_t) -> c_int>,
-    xcb_glx_get_materialiv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_materialiv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_materialiv_reply_t) -> c_int>,
+    xcb_glx_get_materialiv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_materialiv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_materialiv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_materialiv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_materialiv_reply_t,
     >,
-    xcb_glx_get_pixel_mapfv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_pixel_mapfv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_pixel_mapfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             map: u32,
         ) -> xcb_glx_get_pixel_mapfv_cookie_t,
     >,
     xcb_glx_get_pixel_mapfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             map: u32,
         ) -> xcb_glx_get_pixel_mapfv_cookie_t,
     >,
-    xcb_glx_get_pixel_mapfv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapfv_reply_t) -> *mut xcb_glx_float32_t>,
+    xcb_glx_get_pixel_mapfv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapfv_reply_t) -> *mut xcb_glx_float32_t,
+    >,
     xcb_glx_get_pixel_mapfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapfv_reply_t) -> c_int>,
-    xcb_glx_get_pixel_mapfv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapfv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapfv_reply_t) -> c_int>,
+    xcb_glx_get_pixel_mapfv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapfv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_pixel_mapfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_pixel_mapfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_pixel_mapfv_reply_t,
     >,
-    xcb_glx_get_pixel_mapuiv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_pixel_mapuiv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_pixel_mapuiv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             map: u32,
         ) -> xcb_glx_get_pixel_mapuiv_cookie_t,
     >,
     xcb_glx_get_pixel_mapuiv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             map: u32,
         ) -> xcb_glx_get_pixel_mapuiv_cookie_t,
     >,
     xcb_glx_get_pixel_mapuiv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapuiv_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapuiv_reply_t) -> *mut u32>,
     xcb_glx_get_pixel_mapuiv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapuiv_reply_t) -> c_int>,
-    xcb_glx_get_pixel_mapuiv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapuiv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapuiv_reply_t) -> c_int>,
+    xcb_glx_get_pixel_mapuiv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapuiv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_pixel_mapuiv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_pixel_mapuiv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_pixel_mapuiv_reply_t,
     >,
-    xcb_glx_get_pixel_mapusv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_pixel_mapusv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_pixel_mapusv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             map: u32,
         ) -> xcb_glx_get_pixel_mapusv_cookie_t,
     >,
     xcb_glx_get_pixel_mapusv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             map: u32,
         ) -> xcb_glx_get_pixel_mapusv_cookie_t,
     >,
     xcb_glx_get_pixel_mapusv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapusv_reply_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapusv_reply_t) -> *mut u16>,
     xcb_glx_get_pixel_mapusv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapusv_reply_t) -> c_int>,
-    xcb_glx_get_pixel_mapusv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_pixel_mapusv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapusv_reply_t) -> c_int>,
+    xcb_glx_get_pixel_mapusv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_pixel_mapusv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_pixel_mapusv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_pixel_mapusv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_pixel_mapusv_reply_t,
     >,
-    xcb_glx_get_polygon_stipple_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_polygon_stipple_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_polygon_stipple: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             lsb_first: u8,
         ) -> xcb_glx_get_polygon_stipple_cookie_t,
     >,
     xcb_glx_get_polygon_stipple_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             lsb_first: u8,
         ) -> xcb_glx_get_polygon_stipple_cookie_t,
     >,
     xcb_glx_get_polygon_stipple_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_polygon_stipple_reply_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_polygon_stipple_reply_t) -> *mut u8>,
     xcb_glx_get_polygon_stipple_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_polygon_stipple_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_polygon_stipple_reply_t) -> c_int>,
     xcb_glx_get_polygon_stipple_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_polygon_stipple_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_polygon_stipple_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_polygon_stipple_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_polygon_stipple_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_polygon_stipple_reply_t,
     >,
-    xcb_glx_get_string_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_string_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_string: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             name: u32,
         ) -> xcb_glx_get_string_cookie_t,
     >,
     xcb_glx_get_string_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             name: u32,
         ) -> xcb_glx_get_string_cookie_t,
     >,
     xcb_glx_get_string_string:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_string_reply_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_string_reply_t) -> *mut c_char>,
     xcb_glx_get_string_string_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_string_reply_t) -> c_int>,
-    xcb_glx_get_string_string_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_string_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_string_reply_t) -> c_int>,
+    xcb_glx_get_string_string_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_string_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_string_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_string_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_string_reply_t,
     >,
-    xcb_glx_get_tex_envfv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_tex_envfv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_envfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7412,29 +7550,31 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_envfv_cookie_t,
     >,
     xcb_glx_get_tex_envfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             pname: u32,
         ) -> xcb_glx_get_tex_envfv_cookie_t,
     >,
-    xcb_glx_get_tex_envfv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_envfv_reply_t) -> *mut xcb_glx_float32_t>,
+    xcb_glx_get_tex_envfv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_envfv_reply_t) -> *mut xcb_glx_float32_t,
+    >,
     xcb_glx_get_tex_envfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_envfv_reply_t) -> c_int>,
-    xcb_glx_get_tex_envfv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_envfv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_envfv_reply_t) -> c_int>,
+    xcb_glx_get_tex_envfv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_envfv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_tex_envfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_envfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_envfv_reply_t,
     >,
-    xcb_glx_get_tex_enviv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_tex_enviv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_enviv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7442,7 +7582,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_enviv_cookie_t,
     >,
     xcb_glx_get_tex_enviv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7450,21 +7590,22 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_enviv_cookie_t,
     >,
     xcb_glx_get_tex_enviv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_enviv_reply_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_enviv_reply_t) -> *mut i32>,
     xcb_glx_get_tex_enviv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_enviv_reply_t) -> c_int>,
-    xcb_glx_get_tex_enviv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_enviv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_enviv_reply_t) -> c_int>,
+    xcb_glx_get_tex_enviv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_enviv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_tex_enviv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_enviv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_enviv_reply_t,
     >,
-    xcb_glx_get_tex_gendv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_tex_gendv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_gendv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             coord: u32,
@@ -7472,29 +7613,31 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_gendv_cookie_t,
     >,
     xcb_glx_get_tex_gendv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             coord: u32,
             pname: u32,
         ) -> xcb_glx_get_tex_gendv_cookie_t,
     >,
-    xcb_glx_get_tex_gendv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_gendv_reply_t) -> *mut xcb_glx_float64_t>,
+    xcb_glx_get_tex_gendv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_gendv_reply_t) -> *mut xcb_glx_float64_t,
+    >,
     xcb_glx_get_tex_gendv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_gendv_reply_t) -> c_int>,
-    xcb_glx_get_tex_gendv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_gendv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_gendv_reply_t) -> c_int>,
+    xcb_glx_get_tex_gendv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_gendv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_tex_gendv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_gendv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_gendv_reply_t,
     >,
-    xcb_glx_get_tex_genfv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_tex_genfv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_genfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             coord: u32,
@@ -7502,29 +7645,31 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_genfv_cookie_t,
     >,
     xcb_glx_get_tex_genfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             coord: u32,
             pname: u32,
         ) -> xcb_glx_get_tex_genfv_cookie_t,
     >,
-    xcb_glx_get_tex_genfv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_genfv_reply_t) -> *mut xcb_glx_float32_t>,
+    xcb_glx_get_tex_genfv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_genfv_reply_t) -> *mut xcb_glx_float32_t,
+    >,
     xcb_glx_get_tex_genfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_genfv_reply_t) -> c_int>,
-    xcb_glx_get_tex_genfv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_genfv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_genfv_reply_t) -> c_int>,
+    xcb_glx_get_tex_genfv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_genfv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_tex_genfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_genfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_genfv_reply_t,
     >,
-    xcb_glx_get_tex_geniv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_tex_geniv_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_geniv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             coord: u32,
@@ -7532,7 +7677,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_geniv_cookie_t,
     >,
     xcb_glx_get_tex_geniv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             coord: u32,
@@ -7540,21 +7685,22 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_geniv_cookie_t,
     >,
     xcb_glx_get_tex_geniv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_geniv_reply_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_geniv_reply_t) -> *mut i32>,
     xcb_glx_get_tex_geniv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_geniv_reply_t) -> c_int>,
-    xcb_glx_get_tex_geniv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_geniv_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_geniv_reply_t) -> c_int>,
+    xcb_glx_get_tex_geniv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_geniv_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_tex_geniv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_geniv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_geniv_reply_t,
     >,
-    xcb_glx_get_tex_image_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_tex_image_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_image: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7565,7 +7711,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_image_cookie_t,
     >,
     xcb_glx_get_tex_image_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7576,21 +7722,23 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_image_cookie_t,
     >,
     xcb_glx_get_tex_image_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_image_reply_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_image_reply_t) -> *mut u8>,
     xcb_glx_get_tex_image_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_image_reply_t) -> c_int>,
-    xcb_glx_get_tex_image_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_image_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_image_reply_t) -> c_int>,
+    xcb_glx_get_tex_image_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_image_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_tex_image_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_image_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_image_reply_t,
     >,
-    xcb_glx_get_tex_parameterfv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_tex_parameterfv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_parameterfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7598,7 +7746,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_parameterfv_cookie_t,
     >,
     xcb_glx_get_tex_parameterfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7606,23 +7754,28 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_parameterfv_cookie_t,
     >,
     xcb_glx_get_tex_parameterfv_data: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_tex_parameterfv_reply_t) -> *mut xcb_glx_float32_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_tex_parameterfv_reply_t,
+        ) -> *mut xcb_glx_float32_t,
     >,
     xcb_glx_get_tex_parameterfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_parameterfv_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_parameterfv_reply_t) -> c_int>,
     xcb_glx_get_tex_parameterfv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_tex_parameterfv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_tex_parameterfv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_tex_parameterfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_parameterfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_parameterfv_reply_t,
     >,
-    xcb_glx_get_tex_parameteriv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_tex_parameteriv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_parameteriv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7630,7 +7783,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_parameteriv_cookie_t,
     >,
     xcb_glx_get_tex_parameteriv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7638,23 +7791,25 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_parameteriv_cookie_t,
     >,
     xcb_glx_get_tex_parameteriv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_parameteriv_reply_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_parameteriv_reply_t) -> *mut i32>,
     xcb_glx_get_tex_parameteriv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_parameteriv_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_tex_parameteriv_reply_t) -> c_int>,
     xcb_glx_get_tex_parameteriv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_tex_parameteriv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_tex_parameteriv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_tex_parameteriv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_parameteriv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_parameteriv_reply_t,
     >,
     xcb_glx_get_tex_level_parameterfv_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_level_parameterfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7663,7 +7818,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_level_parameterfv_cookie_t,
     >,
     xcb_glx_get_tex_level_parameterfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7672,24 +7827,29 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_level_parameterfv_cookie_t,
     >,
     xcb_glx_get_tex_level_parameterfv_data: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_tex_level_parameterfv_reply_t) -> *mut xcb_glx_float32_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_tex_level_parameterfv_reply_t,
+        ) -> *mut xcb_glx_float32_t,
     >,
-    xcb_glx_get_tex_level_parameterfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_level_parameterfv_reply_t) -> c_int>,
+    xcb_glx_get_tex_level_parameterfv_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_level_parameterfv_reply_t) -> c_int,
+    >,
     xcb_glx_get_tex_level_parameterfv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_tex_level_parameterfv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_tex_level_parameterfv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_tex_level_parameterfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_level_parameterfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_level_parameterfv_reply_t,
     >,
     xcb_glx_get_tex_level_parameteriv_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_tex_level_parameteriv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7698,7 +7858,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_tex_level_parameteriv_cookie_t,
     >,
     xcb_glx_get_tex_level_parameteriv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7706,77 +7866,82 @@ pub(crate) struct XcbGlxGlx {
             pname: u32,
         ) -> xcb_glx_get_tex_level_parameteriv_cookie_t,
     >,
-    xcb_glx_get_tex_level_parameteriv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_level_parameteriv_reply_t) -> *mut i32>,
-    xcb_glx_get_tex_level_parameteriv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_tex_level_parameteriv_reply_t) -> c_int>,
+    xcb_glx_get_tex_level_parameteriv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_level_parameteriv_reply_t) -> *mut i32,
+    >,
+    xcb_glx_get_tex_level_parameteriv_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_tex_level_parameteriv_reply_t) -> c_int,
+    >,
     xcb_glx_get_tex_level_parameteriv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_tex_level_parameteriv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_tex_level_parameteriv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_tex_level_parameteriv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_tex_level_parameteriv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_tex_level_parameteriv_reply_t,
     >,
     xcb_glx_is_enabled: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             capability: u32,
         ) -> xcb_glx_is_enabled_cookie_t,
     >,
     xcb_glx_is_enabled_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             capability: u32,
         ) -> xcb_glx_is_enabled_cookie_t,
     >,
     xcb_glx_is_enabled_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_is_enabled_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_is_enabled_reply_t,
     >,
     xcb_glx_is_list: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             list: u32,
         ) -> xcb_glx_is_list_cookie_t,
     >,
     xcb_glx_is_list_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             list: u32,
         ) -> xcb_glx_is_list_cookie_t,
     >,
     xcb_glx_is_list_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_is_list_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_is_list_reply_t,
     >,
     xcb_glx_flush_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_flush: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_are_textures_resident_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_are_textures_resident_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_are_textures_resident: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
@@ -7784,30 +7949,34 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_are_textures_resident_cookie_t,
     >,
     xcb_glx_are_textures_resident_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
             textures: *const u32,
         ) -> xcb_glx_are_textures_resident_cookie_t,
     >,
-    xcb_glx_are_textures_resident_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_are_textures_resident_reply_t) -> *mut u8>,
+    xcb_glx_are_textures_resident_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_are_textures_resident_reply_t) -> *mut u8,
+    >,
     xcb_glx_are_textures_resident_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_are_textures_resident_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_are_textures_resident_reply_t) -> c_int>,
     xcb_glx_are_textures_resident_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_are_textures_resident_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_are_textures_resident_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_are_textures_resident_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_are_textures_resident_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_are_textures_resident_reply_t,
     >,
-    xcb_glx_delete_textures_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_delete_textures_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_delete_textures_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
@@ -7815,7 +7984,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_delete_textures: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
@@ -7823,64 +7992,66 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_delete_textures_textures:
-        LazySymbol<unsafe fn(r: *const xcb_glx_delete_textures_request_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_delete_textures_request_t) -> *mut u32>,
     xcb_glx_delete_textures_textures_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_delete_textures_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_delete_textures_request_t) -> c_int>,
     xcb_glx_delete_textures_textures_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_delete_textures_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_glx_delete_textures_request_t) -> xcb_generic_iterator_t,
     >,
-    xcb_glx_gen_textures_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_gen_textures_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_gen_textures: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
         ) -> xcb_glx_gen_textures_cookie_t,
     >,
     xcb_glx_gen_textures_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
         ) -> xcb_glx_gen_textures_cookie_t,
     >,
     xcb_glx_gen_textures_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_gen_textures_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_gen_textures_reply_t) -> *mut u32>,
     xcb_glx_gen_textures_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_gen_textures_reply_t) -> c_int>,
-    xcb_glx_gen_textures_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_gen_textures_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_gen_textures_reply_t) -> c_int>,
+    xcb_glx_gen_textures_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_gen_textures_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_gen_textures_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_gen_textures_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_gen_textures_reply_t,
     >,
     xcb_glx_is_texture: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             texture: u32,
         ) -> xcb_glx_is_texture_cookie_t,
     >,
     xcb_glx_is_texture_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             texture: u32,
         ) -> xcb_glx_is_texture_cookie_t,
     >,
     xcb_glx_is_texture_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_is_texture_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_is_texture_reply_t,
     >,
-    xcb_glx_get_color_table_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_color_table_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_color_table: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7890,7 +8061,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_color_table_cookie_t,
     >,
     xcb_glx_get_color_table_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7900,22 +8071,23 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_color_table_cookie_t,
     >,
     xcb_glx_get_color_table_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_color_table_reply_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_color_table_reply_t) -> *mut u8>,
     xcb_glx_get_color_table_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_color_table_reply_t) -> c_int>,
-    xcb_glx_get_color_table_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_color_table_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_color_table_reply_t) -> c_int>,
+    xcb_glx_get_color_table_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_color_table_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_color_table_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_color_table_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_color_table_reply_t,
     >,
     xcb_glx_get_color_table_parameterfv_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_color_table_parameterfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7923,7 +8095,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_color_table_parameterfv_cookie_t,
     >,
     xcb_glx_get_color_table_parameterfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7931,24 +8103,29 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_color_table_parameterfv_cookie_t,
     >,
     xcb_glx_get_color_table_parameterfv_data: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_color_table_parameterfv_reply_t) -> *mut xcb_glx_float32_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_color_table_parameterfv_reply_t,
+        ) -> *mut xcb_glx_float32_t,
     >,
-    xcb_glx_get_color_table_parameterfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_color_table_parameterfv_reply_t) -> c_int>,
+    xcb_glx_get_color_table_parameterfv_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_color_table_parameterfv_reply_t) -> c_int,
+    >,
     xcb_glx_get_color_table_parameterfv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_color_table_parameterfv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_color_table_parameterfv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_color_table_parameterfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_color_table_parameterfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_color_table_parameterfv_reply_t,
     >,
     xcb_glx_get_color_table_parameteriv_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_color_table_parameteriv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7956,30 +8133,35 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_color_table_parameteriv_cookie_t,
     >,
     xcb_glx_get_color_table_parameteriv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             pname: u32,
         ) -> xcb_glx_get_color_table_parameteriv_cookie_t,
     >,
-    xcb_glx_get_color_table_parameteriv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_color_table_parameteriv_reply_t) -> *mut i32>,
-    xcb_glx_get_color_table_parameteriv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_color_table_parameteriv_reply_t) -> c_int>,
+    xcb_glx_get_color_table_parameteriv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_color_table_parameteriv_reply_t) -> *mut i32,
+    >,
+    xcb_glx_get_color_table_parameteriv_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_color_table_parameteriv_reply_t) -> c_int,
+    >,
     xcb_glx_get_color_table_parameteriv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_color_table_parameteriv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_color_table_parameteriv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_color_table_parameteriv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_color_table_parameteriv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_color_table_parameteriv_reply_t,
     >,
-    xcb_glx_get_convolution_filter_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_convolution_filter_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_convolution_filter: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7989,7 +8171,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_convolution_filter_cookie_t,
     >,
     xcb_glx_get_convolution_filter_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -7998,24 +8180,27 @@ pub(crate) struct XcbGlxGlx {
             swap_bytes: u8,
         ) -> xcb_glx_get_convolution_filter_cookie_t,
     >,
-    xcb_glx_get_convolution_filter_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_convolution_filter_reply_t) -> *mut u8>,
+    xcb_glx_get_convolution_filter_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_convolution_filter_reply_t) -> *mut u8,
+    >,
     xcb_glx_get_convolution_filter_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_convolution_filter_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_convolution_filter_reply_t) -> c_int>,
     xcb_glx_get_convolution_filter_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_convolution_filter_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_convolution_filter_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_convolution_filter_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_convolution_filter_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_convolution_filter_reply_t,
     >,
     xcb_glx_get_convolution_parameterfv_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_convolution_parameterfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8023,7 +8208,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_convolution_parameterfv_cookie_t,
     >,
     xcb_glx_get_convolution_parameterfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8031,24 +8216,29 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_convolution_parameterfv_cookie_t,
     >,
     xcb_glx_get_convolution_parameterfv_data: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_convolution_parameterfv_reply_t) -> *mut xcb_glx_float32_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_convolution_parameterfv_reply_t,
+        ) -> *mut xcb_glx_float32_t,
     >,
-    xcb_glx_get_convolution_parameterfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_convolution_parameterfv_reply_t) -> c_int>,
+    xcb_glx_get_convolution_parameterfv_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_convolution_parameterfv_reply_t) -> c_int,
+    >,
     xcb_glx_get_convolution_parameterfv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_convolution_parameterfv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_convolution_parameterfv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_convolution_parameterfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_convolution_parameterfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_convolution_parameterfv_reply_t,
     >,
     xcb_glx_get_convolution_parameteriv_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_convolution_parameteriv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8056,30 +8246,35 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_convolution_parameteriv_cookie_t,
     >,
     xcb_glx_get_convolution_parameteriv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             pname: u32,
         ) -> xcb_glx_get_convolution_parameteriv_cookie_t,
     >,
-    xcb_glx_get_convolution_parameteriv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_convolution_parameteriv_reply_t) -> *mut i32>,
-    xcb_glx_get_convolution_parameteriv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_convolution_parameteriv_reply_t) -> c_int>,
+    xcb_glx_get_convolution_parameteriv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_convolution_parameteriv_reply_t) -> *mut i32,
+    >,
+    xcb_glx_get_convolution_parameteriv_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_convolution_parameteriv_reply_t) -> c_int,
+    >,
     xcb_glx_get_convolution_parameteriv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_convolution_parameteriv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_convolution_parameteriv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_convolution_parameteriv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_convolution_parameteriv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_convolution_parameteriv_reply_t,
     >,
-    xcb_glx_get_separable_filter_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_separable_filter_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_separable_filter: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8089,7 +8284,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_separable_filter_cookie_t,
     >,
     xcb_glx_get_separable_filter_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8099,22 +8294,24 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_separable_filter_cookie_t,
     >,
     xcb_glx_get_separable_filter_rows_and_cols:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_separable_filter_reply_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_separable_filter_reply_t) -> *mut u8>,
     xcb_glx_get_separable_filter_rows_and_cols_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_separable_filter_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_separable_filter_reply_t) -> c_int>,
     xcb_glx_get_separable_filter_rows_and_cols_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_separable_filter_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_separable_filter_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_separable_filter_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_separable_filter_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_separable_filter_reply_t,
     >,
-    xcb_glx_get_histogram_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_histogram_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_histogram: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8125,7 +8322,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_histogram_cookie_t,
     >,
     xcb_glx_get_histogram_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8136,22 +8333,23 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_histogram_cookie_t,
     >,
     xcb_glx_get_histogram_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_histogram_reply_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_histogram_reply_t) -> *mut u8>,
     xcb_glx_get_histogram_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_histogram_reply_t) -> c_int>,
-    xcb_glx_get_histogram_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_histogram_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_histogram_reply_t) -> c_int>,
+    xcb_glx_get_histogram_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_histogram_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_histogram_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_histogram_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_histogram_reply_t,
     >,
     xcb_glx_get_histogram_parameterfv_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_histogram_parameterfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8159,7 +8357,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_histogram_parameterfv_cookie_t,
     >,
     xcb_glx_get_histogram_parameterfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8167,24 +8365,29 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_histogram_parameterfv_cookie_t,
     >,
     xcb_glx_get_histogram_parameterfv_data: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_histogram_parameterfv_reply_t) -> *mut xcb_glx_float32_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_histogram_parameterfv_reply_t,
+        ) -> *mut xcb_glx_float32_t,
     >,
-    xcb_glx_get_histogram_parameterfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_histogram_parameterfv_reply_t) -> c_int>,
+    xcb_glx_get_histogram_parameterfv_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_histogram_parameterfv_reply_t) -> c_int,
+    >,
     xcb_glx_get_histogram_parameterfv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_histogram_parameterfv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_histogram_parameterfv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_histogram_parameterfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_histogram_parameterfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_histogram_parameterfv_reply_t,
     >,
     xcb_glx_get_histogram_parameteriv_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_histogram_parameteriv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8192,30 +8395,34 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_histogram_parameteriv_cookie_t,
     >,
     xcb_glx_get_histogram_parameteriv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             pname: u32,
         ) -> xcb_glx_get_histogram_parameteriv_cookie_t,
     >,
-    xcb_glx_get_histogram_parameteriv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_histogram_parameteriv_reply_t) -> *mut i32>,
-    xcb_glx_get_histogram_parameteriv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_histogram_parameteriv_reply_t) -> c_int>,
+    xcb_glx_get_histogram_parameteriv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_histogram_parameteriv_reply_t) -> *mut i32,
+    >,
+    xcb_glx_get_histogram_parameteriv_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_histogram_parameteriv_reply_t) -> c_int,
+    >,
     xcb_glx_get_histogram_parameteriv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_histogram_parameteriv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_histogram_parameteriv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_histogram_parameteriv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_histogram_parameteriv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_histogram_parameteriv_reply_t,
     >,
-    xcb_glx_get_minmax_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_minmax_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_minmax: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8226,7 +8433,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_minmax_cookie_t,
     >,
     xcb_glx_get_minmax_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8236,21 +8443,24 @@ pub(crate) struct XcbGlxGlx {
             reset: u8,
         ) -> xcb_glx_get_minmax_cookie_t,
     >,
-    xcb_glx_get_minmax_data: LazySymbol<unsafe fn(r: *const xcb_glx_get_minmax_reply_t) -> *mut u8>,
+    xcb_glx_get_minmax_data:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_minmax_reply_t) -> *mut u8>,
     xcb_glx_get_minmax_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_minmax_reply_t) -> c_int>,
-    xcb_glx_get_minmax_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_minmax_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_minmax_reply_t) -> c_int>,
+    xcb_glx_get_minmax_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_minmax_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_minmax_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_minmax_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_minmax_reply_t,
     >,
-    xcb_glx_get_minmax_parameterfv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_minmax_parameterfv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_minmax_parameterfv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8258,7 +8468,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_minmax_parameterfv_cookie_t,
     >,
     xcb_glx_get_minmax_parameterfv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8266,23 +8476,28 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_minmax_parameterfv_cookie_t,
     >,
     xcb_glx_get_minmax_parameterfv_data: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_minmax_parameterfv_reply_t) -> *mut xcb_glx_float32_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_minmax_parameterfv_reply_t,
+        ) -> *mut xcb_glx_float32_t,
     >,
     xcb_glx_get_minmax_parameterfv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_minmax_parameterfv_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_minmax_parameterfv_reply_t) -> c_int>,
     xcb_glx_get_minmax_parameterfv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_minmax_parameterfv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_minmax_parameterfv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_minmax_parameterfv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_minmax_parameterfv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_minmax_parameterfv_reply_t,
     >,
-    xcb_glx_get_minmax_parameteriv_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_minmax_parameteriv_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_minmax_parameteriv: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8290,31 +8505,34 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_minmax_parameteriv_cookie_t,
     >,
     xcb_glx_get_minmax_parameteriv_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             pname: u32,
         ) -> xcb_glx_get_minmax_parameteriv_cookie_t,
     >,
-    xcb_glx_get_minmax_parameteriv_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_minmax_parameteriv_reply_t) -> *mut i32>,
+    xcb_glx_get_minmax_parameteriv_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_minmax_parameteriv_reply_t) -> *mut i32,
+    >,
     xcb_glx_get_minmax_parameteriv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_minmax_parameteriv_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_minmax_parameteriv_reply_t) -> c_int>,
     xcb_glx_get_minmax_parameteriv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_minmax_parameteriv_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_minmax_parameteriv_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_minmax_parameteriv_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_minmax_parameteriv_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_minmax_parameteriv_reply_t,
     >,
     xcb_glx_get_compressed_tex_image_arb_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_compressed_tex_image_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8322,30 +8540,35 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_compressed_tex_image_arb_cookie_t,
     >,
     xcb_glx_get_compressed_tex_image_arb_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
             level: i32,
         ) -> xcb_glx_get_compressed_tex_image_arb_cookie_t,
     >,
-    xcb_glx_get_compressed_tex_image_arb_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_compressed_tex_image_arb_reply_t) -> *mut u8>,
-    xcb_glx_get_compressed_tex_image_arb_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_compressed_tex_image_arb_reply_t) -> c_int>,
+    xcb_glx_get_compressed_tex_image_arb_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_compressed_tex_image_arb_reply_t) -> *mut u8,
+    >,
+    xcb_glx_get_compressed_tex_image_arb_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_compressed_tex_image_arb_reply_t) -> c_int,
+    >,
     xcb_glx_get_compressed_tex_image_arb_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_compressed_tex_image_arb_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_compressed_tex_image_arb_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_compressed_tex_image_arb_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_compressed_tex_image_arb_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_compressed_tex_image_arb_reply_t,
     >,
-    xcb_glx_delete_queries_arb_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_delete_queries_arb_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_delete_queries_arb_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
@@ -8353,72 +8576,78 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_void_cookie_t,
     >,
     xcb_glx_delete_queries_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
             ids: *const u32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_glx_delete_queries_arb_ids:
-        LazySymbol<unsafe fn(r: *const xcb_glx_delete_queries_arb_request_t) -> *mut u32>,
-    xcb_glx_delete_queries_arb_ids_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_delete_queries_arb_request_t) -> c_int>,
-    xcb_glx_delete_queries_arb_ids_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_delete_queries_arb_request_t) -> xcb_generic_iterator_t,
+    xcb_glx_delete_queries_arb_ids: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_delete_queries_arb_request_t) -> *mut u32,
     >,
-    xcb_glx_gen_queries_arb_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_delete_queries_arb_ids_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_delete_queries_arb_request_t) -> c_int>,
+    xcb_glx_delete_queries_arb_ids_end: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_glx_delete_queries_arb_request_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_glx_gen_queries_arb_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_gen_queries_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
         ) -> xcb_glx_gen_queries_arb_cookie_t,
     >,
     xcb_glx_gen_queries_arb_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             n: i32,
         ) -> xcb_glx_gen_queries_arb_cookie_t,
     >,
     xcb_glx_gen_queries_arb_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_gen_queries_arb_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_gen_queries_arb_reply_t) -> *mut u32>,
     xcb_glx_gen_queries_arb_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_gen_queries_arb_reply_t) -> c_int>,
-    xcb_glx_gen_queries_arb_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_gen_queries_arb_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_gen_queries_arb_reply_t) -> c_int>,
+    xcb_glx_gen_queries_arb_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_gen_queries_arb_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_gen_queries_arb_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_gen_queries_arb_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_gen_queries_arb_reply_t,
     >,
     xcb_glx_is_query_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             id: u32,
         ) -> xcb_glx_is_query_arb_cookie_t,
     >,
     xcb_glx_is_query_arb_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             id: u32,
         ) -> xcb_glx_is_query_arb_cookie_t,
     >,
     xcb_glx_is_query_arb_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_is_query_arb_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_is_query_arb_reply_t,
     >,
-    xcb_glx_get_queryiv_arb_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_queryiv_arb_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_queryiv_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8426,7 +8655,7 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_queryiv_arb_cookie_t,
     >,
     xcb_glx_get_queryiv_arb_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             target: u32,
@@ -8434,21 +8663,23 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_queryiv_arb_cookie_t,
     >,
     xcb_glx_get_queryiv_arb_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_queryiv_arb_reply_t) -> *mut i32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_queryiv_arb_reply_t) -> *mut i32>,
     xcb_glx_get_queryiv_arb_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_queryiv_arb_reply_t) -> c_int>,
-    xcb_glx_get_queryiv_arb_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_queryiv_arb_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_queryiv_arb_reply_t) -> c_int>,
+    xcb_glx_get_queryiv_arb_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_queryiv_arb_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_glx_get_queryiv_arb_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_queryiv_arb_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_queryiv_arb_reply_t,
     >,
-    xcb_glx_get_query_objectiv_arb_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_query_objectiv_arb_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_query_objectiv_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             id: u32,
@@ -8456,30 +8687,34 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_query_objectiv_arb_cookie_t,
     >,
     xcb_glx_get_query_objectiv_arb_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             id: u32,
             pname: u32,
         ) -> xcb_glx_get_query_objectiv_arb_cookie_t,
     >,
-    xcb_glx_get_query_objectiv_arb_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_query_objectiv_arb_reply_t) -> *mut i32>,
+    xcb_glx_get_query_objectiv_arb_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_query_objectiv_arb_reply_t) -> *mut i32,
+    >,
     xcb_glx_get_query_objectiv_arb_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_query_objectiv_arb_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_glx_get_query_objectiv_arb_reply_t) -> c_int>,
     xcb_glx_get_query_objectiv_arb_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_query_objectiv_arb_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_query_objectiv_arb_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_query_objectiv_arb_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_query_objectiv_arb_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_glx_get_query_objectiv_arb_reply_t,
     >,
-    xcb_glx_get_query_objectuiv_arb_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_glx_get_query_objectuiv_arb_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_glx_get_query_objectuiv_arb: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             id: u32,
@@ -8487,22 +8722,26 @@ pub(crate) struct XcbGlxGlx {
         ) -> xcb_glx_get_query_objectuiv_arb_cookie_t,
     >,
     xcb_glx_get_query_objectuiv_arb_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_tag: xcb_glx_context_tag_t,
             id: u32,
             pname: u32,
         ) -> xcb_glx_get_query_objectuiv_arb_cookie_t,
     >,
-    xcb_glx_get_query_objectuiv_arb_data:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_query_objectuiv_arb_reply_t) -> *mut u32>,
-    xcb_glx_get_query_objectuiv_arb_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_glx_get_query_objectuiv_arb_reply_t) -> c_int>,
+    xcb_glx_get_query_objectuiv_arb_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_query_objectuiv_arb_reply_t) -> *mut u32,
+    >,
+    xcb_glx_get_query_objectuiv_arb_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_glx_get_query_objectuiv_arb_reply_t) -> c_int,
+    >,
     xcb_glx_get_query_objectuiv_arb_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_glx_get_query_objectuiv_arb_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_glx_get_query_objectuiv_arb_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_glx_get_query_objectuiv_arb_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_glx_get_query_objectuiv_arb_cookie_t,
             e: *mut *mut xcb_generic_error_t,

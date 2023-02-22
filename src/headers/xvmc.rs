@@ -575,62 +575,72 @@ impl Default for xcb_xvmc_list_subpicture_types_reply_t {
 #[cfg(feature = "xcb_xvmc")]
 pub(crate) struct XcbXvmcXvmc {
     xcb_xvmc_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_xvmc_context_next: LazySymbol<unsafe fn(i: *mut xcb_xvmc_context_iterator_t)>,
+    xcb_xvmc_context_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xvmc_context_iterator_t)>,
     xcb_xvmc_context_end:
-        LazySymbol<unsafe fn(i: xcb_xvmc_context_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xvmc_surface_next: LazySymbol<unsafe fn(i: *mut xcb_xvmc_surface_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xvmc_context_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xvmc_surface_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xvmc_surface_iterator_t)>,
     xcb_xvmc_surface_end:
-        LazySymbol<unsafe fn(i: xcb_xvmc_surface_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xvmc_subpicture_next: LazySymbol<unsafe fn(i: *mut xcb_xvmc_subpicture_iterator_t)>,
-    xcb_xvmc_subpicture_end:
-        LazySymbol<unsafe fn(i: xcb_xvmc_subpicture_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xvmc_surface_info_next: LazySymbol<unsafe fn(i: *mut xcb_xvmc_surface_info_iterator_t)>,
-    xcb_xvmc_surface_info_end:
-        LazySymbol<unsafe fn(i: xcb_xvmc_surface_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_xvmc_query_version:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_xvmc_query_version_cookie_t>,
-    xcb_xvmc_query_version_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_xvmc_query_version_cookie_t>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xvmc_surface_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xvmc_subpicture_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xvmc_subpicture_iterator_t)>,
+    xcb_xvmc_subpicture_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xvmc_subpicture_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xvmc_surface_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xvmc_surface_info_iterator_t)>,
+    xcb_xvmc_surface_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xvmc_surface_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_xvmc_query_version: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_xvmc_query_version_cookie_t,
+    >,
+    xcb_xvmc_query_version_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_xvmc_query_version_cookie_t,
+    >,
     xcb_xvmc_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xvmc_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xvmc_query_version_reply_t,
     >,
-    xcb_xvmc_list_surface_types_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xvmc_list_surface_types_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xvmc_list_surface_types: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port_id: xcb_xv_port_t,
         ) -> xcb_xvmc_list_surface_types_cookie_t,
     >,
     xcb_xvmc_list_surface_types_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port_id: xcb_xv_port_t,
         ) -> xcb_xvmc_list_surface_types_cookie_t,
     >,
     xcb_xvmc_list_surface_types_surfaces: LazySymbol<
-        unsafe fn(r: *const xcb_xvmc_list_surface_types_reply_t) -> *mut xcb_xvmc_surface_info_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xvmc_list_surface_types_reply_t,
+        ) -> *mut xcb_xvmc_surface_info_t,
     >,
     xcb_xvmc_list_surface_types_surfaces_length:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_list_surface_types_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xvmc_list_surface_types_reply_t) -> c_int>,
     xcb_xvmc_list_surface_types_surfaces_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xvmc_list_surface_types_reply_t,
         ) -> xcb_xvmc_surface_info_iterator_t,
     >,
     xcb_xvmc_list_surface_types_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xvmc_list_surface_types_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xvmc_list_surface_types_reply_t,
     >,
-    xcb_xvmc_create_context_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xvmc_create_context_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xvmc_create_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_id: xcb_xvmc_context_t,
             port_id: xcb_xv_port_t,
@@ -641,7 +651,7 @@ pub(crate) struct XcbXvmcXvmc {
         ) -> xcb_xvmc_create_context_cookie_t,
     >,
     xcb_xvmc_create_context_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_id: xcb_xvmc_context_t,
             port_id: xcb_xv_port_t,
@@ -652,61 +662,77 @@ pub(crate) struct XcbXvmcXvmc {
         ) -> xcb_xvmc_create_context_cookie_t,
     >,
     xcb_xvmc_create_context_priv_data:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_create_context_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xvmc_create_context_reply_t) -> *mut u32>,
     xcb_xvmc_create_context_priv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_create_context_reply_t) -> c_int>,
-    xcb_xvmc_create_context_priv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_create_context_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xvmc_create_context_reply_t) -> c_int>,
+    xcb_xvmc_create_context_priv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xvmc_create_context_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xvmc_create_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xvmc_create_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xvmc_create_context_reply_t,
     >,
     xcb_xvmc_destroy_context_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, context_id: xcb_xvmc_context_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            context_id: xcb_xvmc_context_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_xvmc_destroy_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, context_id: xcb_xvmc_context_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            context_id: xcb_xvmc_context_t,
+        ) -> xcb_void_cookie_t,
     >,
-    xcb_xvmc_create_surface_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xvmc_create_surface_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xvmc_create_surface: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             surface_id: xcb_xvmc_surface_t,
             context_id: xcb_xvmc_context_t,
         ) -> xcb_xvmc_create_surface_cookie_t,
     >,
     xcb_xvmc_create_surface_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             surface_id: xcb_xvmc_surface_t,
             context_id: xcb_xvmc_context_t,
         ) -> xcb_xvmc_create_surface_cookie_t,
     >,
     xcb_xvmc_create_surface_priv_data:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_create_surface_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xvmc_create_surface_reply_t) -> *mut u32>,
     xcb_xvmc_create_surface_priv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_create_surface_reply_t) -> c_int>,
-    xcb_xvmc_create_surface_priv_data_end:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_create_surface_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xvmc_create_surface_reply_t) -> c_int>,
+    xcb_xvmc_create_surface_priv_data_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xvmc_create_surface_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xvmc_create_surface_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xvmc_create_surface_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xvmc_create_surface_reply_t,
     >,
     xcb_xvmc_destroy_surface_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, surface_id: xcb_xvmc_surface_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            surface_id: xcb_xvmc_surface_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_xvmc_destroy_surface: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, surface_id: xcb_xvmc_surface_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            surface_id: xcb_xvmc_surface_t,
+        ) -> xcb_void_cookie_t,
     >,
-    xcb_xvmc_create_subpicture_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xvmc_create_subpicture_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xvmc_create_subpicture: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             subpicture_id: xcb_xvmc_subpicture_t,
             context: xcb_xvmc_context_t,
@@ -716,7 +742,7 @@ pub(crate) struct XcbXvmcXvmc {
         ) -> xcb_xvmc_create_subpicture_cookie_t,
     >,
     xcb_xvmc_create_subpicture_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             subpicture_id: xcb_xvmc_subpicture_t,
             context: xcb_xvmc_context_t,
@@ -726,60 +752,63 @@ pub(crate) struct XcbXvmcXvmc {
         ) -> xcb_xvmc_create_subpicture_cookie_t,
     >,
     xcb_xvmc_create_subpicture_priv_data:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_create_subpicture_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xvmc_create_subpicture_reply_t) -> *mut u32>,
     xcb_xvmc_create_subpicture_priv_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_create_subpicture_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xvmc_create_subpicture_reply_t) -> c_int>,
     xcb_xvmc_create_subpicture_priv_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_xvmc_create_subpicture_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xvmc_create_subpicture_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xvmc_create_subpicture_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xvmc_create_subpicture_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xvmc_create_subpicture_reply_t,
     >,
     xcb_xvmc_destroy_subpicture_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             subpicture_id: xcb_xvmc_subpicture_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xvmc_destroy_subpicture: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             subpicture_id: xcb_xvmc_subpicture_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xvmc_list_subpicture_types_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xvmc_list_subpicture_types_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xvmc_list_subpicture_types: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port_id: xcb_xv_port_t,
             surface_id: xcb_xvmc_surface_t,
         ) -> xcb_xvmc_list_subpicture_types_cookie_t,
     >,
     xcb_xvmc_list_subpicture_types_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             port_id: xcb_xv_port_t,
             surface_id: xcb_xvmc_surface_t,
         ) -> xcb_xvmc_list_subpicture_types_cookie_t,
     >,
     xcb_xvmc_list_subpicture_types_types: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xvmc_list_subpicture_types_reply_t,
         ) -> *mut xcb_xv_image_format_info_t,
     >,
     xcb_xvmc_list_subpicture_types_types_length:
-        LazySymbol<unsafe fn(r: *const xcb_xvmc_list_subpicture_types_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xvmc_list_subpicture_types_reply_t) -> c_int>,
     xcb_xvmc_list_subpicture_types_types_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_xvmc_list_subpicture_types_reply_t,
         ) -> xcb_xv_image_format_info_iterator_t,
     >,
     xcb_xvmc_list_subpicture_types_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xvmc_list_subpicture_types_cookie_t,
             e: *mut *mut xcb_generic_error_t,

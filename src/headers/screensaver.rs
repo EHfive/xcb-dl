@@ -364,78 +364,79 @@ impl Default for xcb_screensaver_notify_event_t {
 pub(crate) struct XcbScreensaverScreensaver {
     xcb_screensaver_id: LazySymbol<*mut xcb_extension_t>,
     xcb_screensaver_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u8,
             client_minor_version: u8,
         ) -> xcb_screensaver_query_version_cookie_t,
     >,
     xcb_screensaver_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u8,
             client_minor_version: u8,
         ) -> xcb_screensaver_query_version_cookie_t,
     >,
     xcb_screensaver_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_screensaver_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_screensaver_query_version_reply_t,
     >,
     xcb_screensaver_query_info: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
         ) -> xcb_screensaver_query_info_cookie_t,
     >,
     xcb_screensaver_query_info_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
         ) -> xcb_screensaver_query_info_cookie_t,
     >,
     xcb_screensaver_query_info_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_screensaver_query_info_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_screensaver_query_info_reply_t,
     >,
     xcb_screensaver_select_input_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             event_mask: u32,
         ) -> xcb_void_cookie_t,
     >,
     xcb_screensaver_select_input: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             event_mask: u32,
         ) -> xcb_void_cookie_t,
     >,
     xcb_screensaver_set_attributes_value_list_serialize: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *mut *mut c_void,
             value_mask: u32,
             _aux: *const xcb_screensaver_set_attributes_value_list_t,
         ) -> c_int,
     >,
     xcb_screensaver_set_attributes_value_list_unpack: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             _buffer: *const c_void,
             value_mask: u32,
             _aux: *mut xcb_screensaver_set_attributes_value_list_t,
         ) -> c_int,
     >,
     xcb_screensaver_set_attributes_value_list_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, value_mask: u32) -> c_int>,
-    xcb_screensaver_set_attributes_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, value_mask: u32) -> c_int>,
+    xcb_screensaver_set_attributes_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_screensaver_set_attributes_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             x: i16,
@@ -451,7 +452,7 @@ pub(crate) struct XcbScreensaverScreensaver {
         ) -> xcb_void_cookie_t,
     >,
     xcb_screensaver_set_attributes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             x: i16,
@@ -467,7 +468,7 @@ pub(crate) struct XcbScreensaverScreensaver {
         ) -> xcb_void_cookie_t,
     >,
     xcb_screensaver_set_attributes_aux_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             x: i16,
@@ -483,7 +484,7 @@ pub(crate) struct XcbScreensaverScreensaver {
         ) -> xcb_void_cookie_t,
     >,
     xcb_screensaver_set_attributes_aux: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             x: i16,
@@ -498,18 +499,27 @@ pub(crate) struct XcbScreensaverScreensaver {
             value_list: *const xcb_screensaver_set_attributes_value_list_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_screensaver_set_attributes_value_list:
-        LazySymbol<unsafe fn(r: *const xcb_screensaver_set_attributes_request_t) -> *mut c_void>,
+    xcb_screensaver_set_attributes_value_list: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_screensaver_set_attributes_request_t) -> *mut c_void,
+    >,
     xcb_screensaver_unset_attributes_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, drawable: xcb_drawable_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            drawable: xcb_drawable_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_screensaver_unset_attributes: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, drawable: xcb_drawable_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            drawable: xcb_drawable_t,
+        ) -> xcb_void_cookie_t,
     >,
-    xcb_screensaver_suspend_checked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t, suspend: u32) -> xcb_void_cookie_t>,
-    xcb_screensaver_suspend:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t, suspend: u32) -> xcb_void_cookie_t>,
+    xcb_screensaver_suspend_checked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, suspend: u32) -> xcb_void_cookie_t,
+    >,
+    xcb_screensaver_suspend: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, suspend: u32) -> xcb_void_cookie_t,
+    >,
 }
 
 macro_rules! sym {

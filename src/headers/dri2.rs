@@ -1009,110 +1009,129 @@ impl Default for xcb_dri2_invalidate_buffers_event_t {
 #[cfg(feature = "xcb_dri2")]
 pub(crate) struct XcbDri2Dri2 {
     xcb_dri2_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_dri2_dri2_buffer_next: LazySymbol<unsafe fn(i: *mut xcb_dri2_dri2_buffer_iterator_t)>,
-    xcb_dri2_dri2_buffer_end:
-        LazySymbol<unsafe fn(i: xcb_dri2_dri2_buffer_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_dri2_attach_format_next: LazySymbol<unsafe fn(i: *mut xcb_dri2_attach_format_iterator_t)>,
-    xcb_dri2_attach_format_end:
-        LazySymbol<unsafe fn(i: xcb_dri2_attach_format_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_dri2_dri2_buffer_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_dri2_dri2_buffer_iterator_t)>,
+    xcb_dri2_dri2_buffer_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_dri2_dri2_buffer_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_dri2_attach_format_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_dri2_attach_format_iterator_t)>,
+    xcb_dri2_attach_format_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_dri2_attach_format_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_dri2_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
         ) -> xcb_dri2_query_version_cookie_t,
     >,
     xcb_dri2_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
         ) -> xcb_dri2_query_version_cookie_t,
     >,
     xcb_dri2_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_query_version_reply_t,
     >,
-    xcb_dri2_connect_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_dri2_connect_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_dri2_connect: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             driver_type: u32,
         ) -> xcb_dri2_connect_cookie_t,
     >,
     xcb_dri2_connect_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             driver_type: u32,
         ) -> xcb_dri2_connect_cookie_t,
     >,
     xcb_dri2_connect_driver_name:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> *mut c_char>,
     xcb_dri2_connect_driver_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> c_int>,
-    xcb_dri2_connect_driver_name_end:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> c_int>,
+    xcb_dri2_connect_driver_name_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_dri2_connect_alignment_pad:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> *mut c_void>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> *mut c_void>,
     xcb_dri2_connect_alignment_pad_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> c_int>,
-    xcb_dri2_connect_alignment_pad_end:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> c_int>,
+    xcb_dri2_connect_alignment_pad_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_dri2_connect_device_name:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> *mut c_char>,
     xcb_dri2_connect_device_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> c_int>,
-    xcb_dri2_connect_device_name_end:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_connect_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> c_int>,
+    xcb_dri2_connect_device_name_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri2_connect_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_dri2_connect_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_connect_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_connect_reply_t,
     >,
     xcb_dri2_authenticate: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             magic: u32,
         ) -> xcb_dri2_authenticate_cookie_t,
     >,
     xcb_dri2_authenticate_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             magic: u32,
         ) -> xcb_dri2_authenticate_cookie_t,
     >,
     xcb_dri2_authenticate_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_authenticate_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_authenticate_reply_t,
     >,
     xcb_dri2_create_drawable_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, drawable: xcb_drawable_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            drawable: xcb_drawable_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_dri2_create_drawable: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, drawable: xcb_drawable_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            drawable: xcb_drawable_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_dri2_destroy_drawable_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, drawable: xcb_drawable_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            drawable: xcb_drawable_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_dri2_destroy_drawable: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, drawable: xcb_drawable_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            drawable: xcb_drawable_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_dri2_get_buffers_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, attachments_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, attachments_len: u32) -> c_int>,
     xcb_dri2_get_buffers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             count: u32,
@@ -1121,7 +1140,7 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_get_buffers_cookie_t,
     >,
     xcb_dri2_get_buffers_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             count: u32,
@@ -1130,22 +1149,24 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_get_buffers_cookie_t,
     >,
     xcb_dri2_get_buffers_buffers: LazySymbol<
-        unsafe fn(r: *const xcb_dri2_get_buffers_reply_t) -> *mut xcb_dri2_dri2_buffer_t,
+        unsafe extern "C" fn(r: *const xcb_dri2_get_buffers_reply_t) -> *mut xcb_dri2_dri2_buffer_t,
     >,
     xcb_dri2_get_buffers_buffers_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_get_buffers_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_dri2_get_buffers_reply_t) -> c_int>,
     xcb_dri2_get_buffers_buffers_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_dri2_get_buffers_reply_t) -> xcb_dri2_dri2_buffer_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_dri2_get_buffers_reply_t,
+        ) -> xcb_dri2_dri2_buffer_iterator_t,
     >,
     xcb_dri2_get_buffers_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_get_buffers_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_get_buffers_reply_t,
     >,
     xcb_dri2_copy_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             region: u32,
@@ -1154,7 +1175,7 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_copy_region_cookie_t,
     >,
     xcb_dri2_copy_region_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             region: u32,
@@ -1163,16 +1184,16 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_copy_region_cookie_t,
     >,
     xcb_dri2_copy_region_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_copy_region_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_copy_region_reply_t,
     >,
     xcb_dri2_get_buffers_with_format_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, attachments_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, attachments_len: u32) -> c_int>,
     xcb_dri2_get_buffers_with_format: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             count: u32,
@@ -1181,7 +1202,7 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_get_buffers_with_format_cookie_t,
     >,
     xcb_dri2_get_buffers_with_format_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             count: u32,
@@ -1190,26 +1211,27 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_get_buffers_with_format_cookie_t,
     >,
     xcb_dri2_get_buffers_with_format_buffers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_dri2_get_buffers_with_format_reply_t,
         ) -> *mut xcb_dri2_dri2_buffer_t,
     >,
-    xcb_dri2_get_buffers_with_format_buffers_length:
-        LazySymbol<unsafe fn(r: *const xcb_dri2_get_buffers_with_format_reply_t) -> c_int>,
+    xcb_dri2_get_buffers_with_format_buffers_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_dri2_get_buffers_with_format_reply_t) -> c_int,
+    >,
     xcb_dri2_get_buffers_with_format_buffers_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_dri2_get_buffers_with_format_reply_t,
         ) -> xcb_dri2_dri2_buffer_iterator_t,
     >,
     xcb_dri2_get_buffers_with_format_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_get_buffers_with_format_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_get_buffers_with_format_reply_t,
     >,
     xcb_dri2_swap_buffers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             target_msc_hi: u32,
@@ -1221,7 +1243,7 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_swap_buffers_cookie_t,
     >,
     xcb_dri2_swap_buffers_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             target_msc_hi: u32,
@@ -1233,27 +1255,33 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_swap_buffers_cookie_t,
     >,
     xcb_dri2_swap_buffers_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_swap_buffers_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_swap_buffers_reply_t,
     >,
     xcb_dri2_get_msc: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, drawable: xcb_drawable_t) -> xcb_dri2_get_msc_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            drawable: xcb_drawable_t,
+        ) -> xcb_dri2_get_msc_cookie_t,
     >,
     xcb_dri2_get_msc_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, drawable: xcb_drawable_t) -> xcb_dri2_get_msc_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            drawable: xcb_drawable_t,
+        ) -> xcb_dri2_get_msc_cookie_t,
     >,
     xcb_dri2_get_msc_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_get_msc_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_get_msc_reply_t,
     >,
     xcb_dri2_wait_msc: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             target_msc_hi: u32,
@@ -1265,7 +1293,7 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_wait_msc_cookie_t,
     >,
     xcb_dri2_wait_msc_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             target_msc_hi: u32,
@@ -1277,14 +1305,14 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_wait_msc_cookie_t,
     >,
     xcb_dri2_wait_msc_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_wait_msc_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_wait_msc_reply_t,
     >,
     xcb_dri2_wait_sbc: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             target_sbc_hi: u32,
@@ -1292,7 +1320,7 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_wait_sbc_cookie_t,
     >,
     xcb_dri2_wait_sbc_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             target_sbc_hi: u32,
@@ -1300,42 +1328,42 @@ pub(crate) struct XcbDri2Dri2 {
         ) -> xcb_dri2_wait_sbc_cookie_t,
     >,
     xcb_dri2_wait_sbc_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_wait_sbc_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_dri2_wait_sbc_reply_t,
     >,
     xcb_dri2_swap_interval_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             interval: u32,
         ) -> xcb_void_cookie_t,
     >,
     xcb_dri2_swap_interval: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             interval: u32,
         ) -> xcb_void_cookie_t,
     >,
     xcb_dri2_get_param: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             param: u32,
         ) -> xcb_dri2_get_param_cookie_t,
     >,
     xcb_dri2_get_param_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             drawable: xcb_drawable_t,
             param: u32,
         ) -> xcb_dri2_get_param_cookie_t,
     >,
     xcb_dri2_get_param_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_dri2_get_param_cookie_t,
             e: *mut *mut xcb_generic_error_t,

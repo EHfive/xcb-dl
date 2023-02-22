@@ -419,6 +419,9 @@ pub struct xcb_xfixes_bad_region_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_xfixes_bad_region_error_t {
@@ -1325,32 +1328,129 @@ impl Default for xcb_xfixes_delete_pointer_barrier_request_t {
     }
 }
 
+/// The `XFixes::ClientDisconnectFlags` enum.
+///
+/// This enum has the following variants:
+///
+/// - [`XFixes::ClientDisconnectFlags::Default`](XCB_XFIXES_CLIENT_DISCONNECT_FLAGS_DEFAULT)
+/// - [`XFixes::ClientDisconnectFlags::Terminate`](XCB_XFIXES_CLIENT_DISCONNECT_FLAGS_TERMINATE)
+pub type xcb_xfixes_client_disconnect_flags_t = u32;
+/// The `XFixes::ClientDisconnectFlags::Default` enum variant.
+///
+/// This is a variant of [`xcb_xfixes_client_disconnect_flags_t`].
+pub const XCB_XFIXES_CLIENT_DISCONNECT_FLAGS_DEFAULT: xcb_xfixes_client_disconnect_flags_t = 0;
+/// The `XFixes::ClientDisconnectFlags::Terminate` enum variant.
+///
+/// This is a variant of [`xcb_xfixes_client_disconnect_flags_t`].
+pub const XCB_XFIXES_CLIENT_DISCONNECT_FLAGS_TERMINATE: xcb_xfixes_client_disconnect_flags_t = 1;
+
+/// The opcode for `XFixes::SetClientDisconnectMode` requests.
+///
+/// If this value appears in [`xcb_protocol_request_t::opcode`], and
+/// [`xcb_protocol_request_t::ext`] is [`XcbXfixes::xcb_xfixes_id()`], then the type of the request is
+/// [`xcb_xfixes_set_client_disconnect_mode_request_t`].
+pub const XCB_XFIXES_SET_CLIENT_DISCONNECT_MODE: u8 = 33i32 as u8;
+
+/// The `XFixes::SetClientDisconnectMode` request.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_xfixes_set_client_disconnect_mode_request_t {
+    pub major_opcode: u8,
+    pub minor_opcode: u8,
+    pub length: u16,
+    pub disconnect_mode: u32,
+}
+
+impl Default for xcb_xfixes_set_client_disconnect_mode_request_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
+/// The cookie for the reply to a `XFixes::GetClientDisconnectMode` request.
+///
+/// Pass this cookie to [`xcb_xfixes_get_client_disconnect_mode_reply`] to retrieve the reply.
+///
+/// [`xcb_xfixes_get_client_disconnect_mode_reply`]: XcbXfixes::xcb_xfixes_get_client_disconnect_mode_reply
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_xfixes_get_client_disconnect_mode_cookie_t {
+    /// The sequence number of the request.
+    pub sequence: c_uint,
+}
+
+impl Default for xcb_xfixes_get_client_disconnect_mode_cookie_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
+/// The opcode for `XFixes::GetClientDisconnectMode` requests.
+///
+/// If this value appears in [`xcb_protocol_request_t::opcode`], and
+/// [`xcb_protocol_request_t::ext`] is [`XcbXfixes::xcb_xfixes_id()`], then the type of the request is
+/// [`xcb_xfixes_get_client_disconnect_mode_request_t`].
+pub const XCB_XFIXES_GET_CLIENT_DISCONNECT_MODE: u8 = 34i32 as u8;
+
+/// The `XFixes::GetClientDisconnectMode` request.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_xfixes_get_client_disconnect_mode_request_t {
+    pub major_opcode: u8,
+    pub minor_opcode: u8,
+    pub length: u16,
+}
+
+impl Default for xcb_xfixes_get_client_disconnect_mode_request_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
+/// The `XFixes::GetClientDisconnectMode` reply.
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
+pub struct xcb_xfixes_get_client_disconnect_mode_reply_t {
+    pub response_type: u8,
+    pub pad0: u8,
+    pub sequence: u16,
+    pub length: u32,
+    pub disconnect_mode: u32,
+    pub pad1: [u8; 20],
+}
+
+impl Default for xcb_xfixes_get_client_disconnect_mode_reply_t {
+    fn default() -> Self {
+        unsafe { std::mem::MaybeUninit::zeroed().assume_init() }
+    }
+}
+
 #[cfg(feature = "xcb_xfixes")]
 pub(crate) struct XcbXfixesXfixes {
     xcb_xfixes_id: LazySymbol<*mut xcb_extension_t>,
     xcb_xfixes_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u32,
             client_minor_version: u32,
         ) -> xcb_xfixes_query_version_cookie_t,
     >,
     xcb_xfixes_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major_version: u32,
             client_minor_version: u32,
         ) -> xcb_xfixes_query_version_cookie_t,
     >,
     xcb_xfixes_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xfixes_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xfixes_query_version_reply_t,
     >,
     xcb_xfixes_change_save_set_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             mode: u8,
             target: u8,
@@ -1359,7 +1459,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_change_save_set: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             mode: u8,
             target: u8,
@@ -1368,7 +1468,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_select_selection_input_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             selection: xcb_atom_t,
@@ -1376,7 +1476,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_select_selection_input: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             selection: xcb_atom_t,
@@ -1384,45 +1484,50 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_select_cursor_input_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             event_mask: u32,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_select_cursor_input: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             event_mask: u32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_get_cursor_image_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_xfixes_get_cursor_image:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_xfixes_get_cursor_image_cookie_t>,
-    xcb_xfixes_get_cursor_image_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_xfixes_get_cursor_image_cookie_t>,
+    xcb_xfixes_get_cursor_image_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_xfixes_get_cursor_image: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_xfixes_get_cursor_image_cookie_t,
+    >,
+    xcb_xfixes_get_cursor_image_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_xfixes_get_cursor_image_cookie_t,
+    >,
     xcb_xfixes_get_cursor_image_cursor_image:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_get_cursor_image_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xfixes_get_cursor_image_reply_t) -> *mut u32>,
     xcb_xfixes_get_cursor_image_cursor_image_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_get_cursor_image_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xfixes_get_cursor_image_reply_t) -> c_int>,
     xcb_xfixes_get_cursor_image_cursor_image_end: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_get_cursor_image_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xfixes_get_cursor_image_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xfixes_get_cursor_image_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xfixes_get_cursor_image_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xfixes_get_cursor_image_reply_t,
     >,
-    xcb_xfixes_region_next: LazySymbol<unsafe fn(i: *mut xcb_xfixes_region_iterator_t)>,
+    xcb_xfixes_region_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_xfixes_region_iterator_t)>,
     xcb_xfixes_region_end:
-        LazySymbol<unsafe fn(i: xcb_xfixes_region_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_xfixes_region_iterator_t) -> xcb_generic_iterator_t>,
     xcb_xfixes_create_region_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, rectangles_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, rectangles_len: u32) -> c_int>,
     xcb_xfixes_create_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             rectangles_len: u32,
@@ -1430,36 +1535,39 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             rectangles_len: u32,
             rectangles: *const xcb_rectangle_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_create_region_rectangles:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_create_region_request_t) -> *mut xcb_rectangle_t>,
+    xcb_xfixes_create_region_rectangles: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_create_region_request_t) -> *mut xcb_rectangle_t,
+    >,
     xcb_xfixes_create_region_rectangles_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_create_region_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xfixes_create_region_request_t) -> c_int>,
     xcb_xfixes_create_region_rectangles_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_create_region_request_t) -> xcb_rectangle_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xfixes_create_region_request_t,
+        ) -> xcb_rectangle_iterator_t,
     >,
     xcb_xfixes_create_region_from_bitmap_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             bitmap: xcb_pixmap_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_region_from_bitmap: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             bitmap: xcb_pixmap_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_region_from_window_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             window: xcb_window_t,
@@ -1467,7 +1575,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_region_from_window: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             window: xcb_window_t,
@@ -1475,43 +1583,49 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_region_from_gc_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             gc: xcb_gcontext_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_region_from_gc: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             gc: xcb_gcontext_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_region_from_picture_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             picture: xcb_render_picture_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_region_from_picture: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             picture: xcb_render_picture_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_destroy_region_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, region: xcb_xfixes_region_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            region: xcb_xfixes_region_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_destroy_region: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, region: xcb_xfixes_region_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            region: xcb_xfixes_region_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_set_region_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, rectangles_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, rectangles_len: u32) -> c_int>,
     xcb_xfixes_set_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             rectangles_len: u32,
@@ -1519,36 +1633,37 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_set_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             rectangles_len: u32,
             rectangles: *const xcb_rectangle_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_set_region_rectangles:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_set_region_request_t) -> *mut xcb_rectangle_t>,
+    xcb_xfixes_set_region_rectangles: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_set_region_request_t) -> *mut xcb_rectangle_t,
+    >,
     xcb_xfixes_set_region_rectangles_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_set_region_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xfixes_set_region_request_t) -> c_int>,
     xcb_xfixes_set_region_rectangles_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_set_region_request_t) -> xcb_rectangle_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_xfixes_set_region_request_t) -> xcb_rectangle_iterator_t,
     >,
     xcb_xfixes_copy_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_xfixes_region_t,
             destination: xcb_xfixes_region_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_copy_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_xfixes_region_t,
             destination: xcb_xfixes_region_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_union_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source1: xcb_xfixes_region_t,
             source2: xcb_xfixes_region_t,
@@ -1556,7 +1671,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_union_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source1: xcb_xfixes_region_t,
             source2: xcb_xfixes_region_t,
@@ -1564,7 +1679,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_intersect_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source1: xcb_xfixes_region_t,
             source2: xcb_xfixes_region_t,
@@ -1572,7 +1687,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_intersect_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source1: xcb_xfixes_region_t,
             source2: xcb_xfixes_region_t,
@@ -1580,7 +1695,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_subtract_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source1: xcb_xfixes_region_t,
             source2: xcb_xfixes_region_t,
@@ -1588,7 +1703,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_subtract_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source1: xcb_xfixes_region_t,
             source2: xcb_xfixes_region_t,
@@ -1596,7 +1711,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_invert_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_xfixes_region_t,
             bounds: xcb_rectangle_t,
@@ -1604,7 +1719,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_invert_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_xfixes_region_t,
             bounds: xcb_rectangle_t,
@@ -1612,7 +1727,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_translate_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             dx: i16,
@@ -1620,7 +1735,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_translate_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
             dx: i16,
@@ -1628,48 +1743,50 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_region_extents_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_xfixes_region_t,
             destination: xcb_xfixes_region_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_region_extents: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_xfixes_region_t,
             destination: xcb_xfixes_region_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_fetch_region_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xfixes_fetch_region_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xfixes_fetch_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
         ) -> xcb_xfixes_fetch_region_cookie_t,
     >,
     xcb_xfixes_fetch_region_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             region: xcb_xfixes_region_t,
         ) -> xcb_xfixes_fetch_region_cookie_t,
     >,
-    xcb_xfixes_fetch_region_rectangles:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_fetch_region_reply_t) -> *mut xcb_rectangle_t>,
+    xcb_xfixes_fetch_region_rectangles: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_fetch_region_reply_t) -> *mut xcb_rectangle_t,
+    >,
     xcb_xfixes_fetch_region_rectangles_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_fetch_region_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xfixes_fetch_region_reply_t) -> c_int>,
     xcb_xfixes_fetch_region_rectangles_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_fetch_region_reply_t) -> xcb_rectangle_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_xfixes_fetch_region_reply_t) -> xcb_rectangle_iterator_t,
     >,
     xcb_xfixes_fetch_region_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xfixes_fetch_region_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xfixes_fetch_region_reply_t,
     >,
     xcb_xfixes_set_gc_clip_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             gc: xcb_gcontext_t,
             region: xcb_xfixes_region_t,
@@ -1678,7 +1795,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_set_gc_clip_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             gc: xcb_gcontext_t,
             region: xcb_xfixes_region_t,
@@ -1687,7 +1804,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_set_window_shape_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             dest: xcb_window_t,
             dest_kind: xcb_shape_kind_t,
@@ -1697,7 +1814,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_set_window_shape_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             dest: xcb_window_t,
             dest_kind: xcb_shape_kind_t,
@@ -1707,7 +1824,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_set_picture_clip_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             picture: xcb_render_picture_t,
             region: xcb_xfixes_region_t,
@@ -1716,7 +1833,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_set_picture_clip_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             picture: xcb_render_picture_t,
             region: xcb_xfixes_region_t,
@@ -1724,9 +1841,10 @@ pub(crate) struct XcbXfixesXfixes {
             y_origin: i16,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_set_cursor_name_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xfixes_set_cursor_name_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xfixes_set_cursor_name_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cursor: xcb_cursor_t,
             nbytes: u16,
@@ -1734,94 +1852,113 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_set_cursor_name: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cursor: xcb_cursor_t,
             nbytes: u16,
             name: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_set_cursor_name_name:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_set_cursor_name_request_t) -> *mut c_char>,
-    xcb_xfixes_set_cursor_name_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_set_cursor_name_request_t) -> c_int>,
-    xcb_xfixes_set_cursor_name_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_set_cursor_name_request_t) -> xcb_generic_iterator_t,
+    xcb_xfixes_set_cursor_name_name: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_set_cursor_name_request_t) -> *mut c_char,
     >,
-    xcb_xfixes_get_cursor_name_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xfixes_set_cursor_name_name_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xfixes_set_cursor_name_request_t) -> c_int>,
+    xcb_xfixes_set_cursor_name_name_end: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_xfixes_set_cursor_name_request_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_xfixes_get_cursor_name_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xfixes_get_cursor_name: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cursor: xcb_cursor_t,
         ) -> xcb_xfixes_get_cursor_name_cookie_t,
     >,
     xcb_xfixes_get_cursor_name_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cursor: xcb_cursor_t,
         ) -> xcb_xfixes_get_cursor_name_cookie_t,
     >,
-    xcb_xfixes_get_cursor_name_name:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_get_cursor_name_reply_t) -> *mut c_char>,
+    xcb_xfixes_get_cursor_name_name: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_get_cursor_name_reply_t) -> *mut c_char,
+    >,
     xcb_xfixes_get_cursor_name_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_get_cursor_name_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_xfixes_get_cursor_name_reply_t) -> c_int>,
     xcb_xfixes_get_cursor_name_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_get_cursor_name_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xfixes_get_cursor_name_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xfixes_get_cursor_name_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xfixes_get_cursor_name_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xfixes_get_cursor_name_reply_t,
     >,
     xcb_xfixes_get_cursor_image_and_name_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xfixes_get_cursor_image_and_name: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_xfixes_get_cursor_image_and_name_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_xfixes_get_cursor_image_and_name_cookie_t,
     >,
     xcb_xfixes_get_cursor_image_and_name_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_xfixes_get_cursor_image_and_name_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_xfixes_get_cursor_image_and_name_cookie_t,
     >,
-    xcb_xfixes_get_cursor_image_and_name_cursor_image:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> *mut u32>,
-    xcb_xfixes_get_cursor_image_and_name_cursor_image_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> c_int>,
+    xcb_xfixes_get_cursor_image_and_name_cursor_image: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> *mut u32,
+    >,
+    xcb_xfixes_get_cursor_image_and_name_cursor_image_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> c_int,
+    >,
     xcb_xfixes_get_cursor_image_and_name_cursor_image_end: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xfixes_get_cursor_image_and_name_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xfixes_get_cursor_image_and_name_name: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> *mut c_char,
     >,
-    xcb_xfixes_get_cursor_image_and_name_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> c_int>,
+    xcb_xfixes_get_cursor_image_and_name_name_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> c_int,
+    >,
     xcb_xfixes_get_cursor_image_and_name_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_get_cursor_image_and_name_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xfixes_get_cursor_image_and_name_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xfixes_get_cursor_image_and_name_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_xfixes_get_cursor_image_and_name_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_xfixes_get_cursor_image_and_name_reply_t,
     >,
     xcb_xfixes_change_cursor_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_cursor_t,
             destination: xcb_cursor_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_change_cursor: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_cursor_t,
             destination: xcb_cursor_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_change_cursor_by_name_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_xfixes_change_cursor_by_name_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xfixes_change_cursor_by_name_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             src: xcb_cursor_t,
             nbytes: u16,
@@ -1829,22 +1966,26 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_change_cursor_by_name: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             src: xcb_cursor_t,
             nbytes: u16,
             name: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_change_cursor_by_name_name:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_change_cursor_by_name_request_t) -> *mut c_char>,
-    xcb_xfixes_change_cursor_by_name_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_change_cursor_by_name_request_t) -> c_int>,
+    xcb_xfixes_change_cursor_by_name_name: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_change_cursor_by_name_request_t) -> *mut c_char,
+    >,
+    xcb_xfixes_change_cursor_by_name_name_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_change_cursor_by_name_request_t) -> c_int,
+    >,
     xcb_xfixes_change_cursor_by_name_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_change_cursor_by_name_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xfixes_change_cursor_by_name_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xfixes_expand_region_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_xfixes_region_t,
             destination: xcb_xfixes_region_t,
@@ -1855,7 +1996,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_expand_region: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             source: xcb_xfixes_region_t,
             destination: xcb_xfixes_region_t,
@@ -1865,21 +2006,27 @@ pub(crate) struct XcbXfixesXfixes {
             bottom: u16,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_hide_cursor_checked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_void_cookie_t>,
-    xcb_xfixes_hide_cursor:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_void_cookie_t>,
-    xcb_xfixes_show_cursor_checked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_void_cookie_t>,
-    xcb_xfixes_show_cursor:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_void_cookie_t>,
-    xcb_xfixes_barrier_next: LazySymbol<unsafe fn(i: *mut xcb_xfixes_barrier_iterator_t)>,
-    xcb_xfixes_barrier_end:
-        LazySymbol<unsafe fn(i: xcb_xfixes_barrier_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_xfixes_hide_cursor_checked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_void_cookie_t,
+    >,
+    xcb_xfixes_hide_cursor: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_void_cookie_t,
+    >,
+    xcb_xfixes_show_cursor_checked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_void_cookie_t,
+    >,
+    xcb_xfixes_show_cursor: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, window: xcb_window_t) -> xcb_void_cookie_t,
+    >,
+    xcb_xfixes_barrier_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_xfixes_barrier_iterator_t)>,
+    xcb_xfixes_barrier_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_xfixes_barrier_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_xfixes_create_pointer_barrier_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_xfixes_create_pointer_barrier_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             barrier: xcb_xfixes_barrier_t,
             window: xcb_window_t,
@@ -1893,7 +2040,7 @@ pub(crate) struct XcbXfixesXfixes {
         ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_create_pointer_barrier: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             barrier: xcb_xfixes_barrier_t,
             window: xcb_window_t,
@@ -1906,18 +2053,51 @@ pub(crate) struct XcbXfixesXfixes {
             devices: *const u16,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_xfixes_create_pointer_barrier_devices:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_create_pointer_barrier_request_t) -> *mut u16>,
-    xcb_xfixes_create_pointer_barrier_devices_length:
-        LazySymbol<unsafe fn(r: *const xcb_xfixes_create_pointer_barrier_request_t) -> c_int>,
+    xcb_xfixes_create_pointer_barrier_devices: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_create_pointer_barrier_request_t) -> *mut u16,
+    >,
+    xcb_xfixes_create_pointer_barrier_devices_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_xfixes_create_pointer_barrier_request_t) -> c_int,
+    >,
     xcb_xfixes_create_pointer_barrier_devices_end: LazySymbol<
-        unsafe fn(r: *const xcb_xfixes_create_pointer_barrier_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_xfixes_create_pointer_barrier_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_xfixes_delete_pointer_barrier_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, barrier: xcb_xfixes_barrier_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            barrier: xcb_xfixes_barrier_t,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_xfixes_delete_pointer_barrier: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, barrier: xcb_xfixes_barrier_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            barrier: xcb_xfixes_barrier_t,
+        ) -> xcb_void_cookie_t,
+    >,
+    xcb_xfixes_set_client_disconnect_mode_checked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, disconnect_mode: u32) -> xcb_void_cookie_t,
+    >,
+    xcb_xfixes_set_client_disconnect_mode: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t, disconnect_mode: u32) -> xcb_void_cookie_t,
+    >,
+    xcb_xfixes_get_client_disconnect_mode: LazySymbol<
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_xfixes_get_client_disconnect_mode_cookie_t,
+    >,
+    xcb_xfixes_get_client_disconnect_mode_unchecked: LazySymbol<
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_xfixes_get_client_disconnect_mode_cookie_t,
+    >,
+    xcb_xfixes_get_client_disconnect_mode_reply: LazySymbol<
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            cookie: xcb_xfixes_get_client_disconnect_mode_cookie_t,
+            e: *mut *mut xcb_generic_error_t,
+        ) -> *mut xcb_xfixes_get_client_disconnect_mode_reply_t,
     >,
 }
 
@@ -4110,6 +4290,103 @@ impl XcbXfixes {
     pub fn has_xcb_xfixes_delete_pointer_barrier(&self) -> bool {
         has_sym!(self, xcb_xfixes_delete_pointer_barrier)
     }
+
+    /// Sends a `XFixes::SetClientDisconnectMode` request (checked).
+    ///
+    /// This request generates a reply. You must either discard it with
+    /// [`discard_reply`] or retrieve it with [`xcb_request_check`].
+    ///
+    /// [`discard_reply`]: crate::Xcb::xcb_discard_reply
+    /// [`xcb_request_check`]: crate::Xcb::xcb_request_check
+    #[inline]
+    pub unsafe fn xcb_xfixes_set_client_disconnect_mode_checked(
+        &self,
+        c: *mut xcb_connection_t,
+        disconnect_mode: u32,
+    ) -> xcb_void_cookie_t {
+        sym!(self, xcb_xfixes_set_client_disconnect_mode_checked)(c, disconnect_mode)
+    }
+
+    /// Returns `true` iff the symbol `xcb_xfixes_set_client_disconnect_mode_checked` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_xfixes_set_client_disconnect_mode_checked(&self) -> bool {
+        has_sym!(self, xcb_xfixes_set_client_disconnect_mode_checked)
+    }
+
+    /// Sends a `XFixes::SetClientDisconnectMode` request (unchecked).
+    #[inline]
+    pub unsafe fn xcb_xfixes_set_client_disconnect_mode(
+        &self,
+        c: *mut xcb_connection_t,
+        disconnect_mode: u32,
+    ) -> xcb_void_cookie_t {
+        sym!(self, xcb_xfixes_set_client_disconnect_mode)(c, disconnect_mode)
+    }
+
+    /// Returns `true` iff the symbol `xcb_xfixes_set_client_disconnect_mode` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_xfixes_set_client_disconnect_mode(&self) -> bool {
+        has_sym!(self, xcb_xfixes_set_client_disconnect_mode)
+    }
+
+    /// Sends a `XFixes::GetClientDisconnectMode` request (checked).
+    ///
+    /// This request generates a reply. You must either discard it with
+    /// [`discard_reply`] or retrieve it with [`xcb_xfixes_get_client_disconnect_mode_reply`].
+    ///
+    /// [`discard_reply`]: crate::Xcb::xcb_discard_reply
+    /// [`xcb_xfixes_get_client_disconnect_mode_reply`]: Self::xcb_xfixes_get_client_disconnect_mode_reply
+    #[inline]
+    pub unsafe fn xcb_xfixes_get_client_disconnect_mode(
+        &self,
+        c: *mut xcb_connection_t,
+    ) -> xcb_xfixes_get_client_disconnect_mode_cookie_t {
+        sym!(self, xcb_xfixes_get_client_disconnect_mode)(c)
+    }
+
+    /// Returns `true` iff the symbol `xcb_xfixes_get_client_disconnect_mode` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_xfixes_get_client_disconnect_mode(&self) -> bool {
+        has_sym!(self, xcb_xfixes_get_client_disconnect_mode)
+    }
+
+    /// Sends a `XFixes::GetClientDisconnectMode` request (unchecked).
+    ///
+    /// This request generates a reply. You must either discard it with
+    /// [`discard_reply`] or retrieve it with [`xcb_xfixes_get_client_disconnect_mode_reply`].
+    ///
+    /// [`discard_reply`]: crate::Xcb::xcb_discard_reply
+    /// [`xcb_xfixes_get_client_disconnect_mode_reply`]: Self::xcb_xfixes_get_client_disconnect_mode_reply
+    #[inline]
+    pub unsafe fn xcb_xfixes_get_client_disconnect_mode_unchecked(
+        &self,
+        c: *mut xcb_connection_t,
+    ) -> xcb_xfixes_get_client_disconnect_mode_cookie_t {
+        sym!(self, xcb_xfixes_get_client_disconnect_mode_unchecked)(c)
+    }
+
+    /// Returns `true` iff the symbol `xcb_xfixes_get_client_disconnect_mode_unchecked` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_xfixes_get_client_disconnect_mode_unchecked(&self) -> bool {
+        has_sym!(self, xcb_xfixes_get_client_disconnect_mode_unchecked)
+    }
+
+    /// Waits for the reply to a `XFixes::GetClientDisconnectMode` request.
+    #[inline]
+    pub unsafe fn xcb_xfixes_get_client_disconnect_mode_reply(
+        &self,
+        c: *mut xcb_connection_t,
+        cookie: xcb_xfixes_get_client_disconnect_mode_cookie_t,
+        e: *mut *mut xcb_generic_error_t,
+    ) -> *mut xcb_xfixes_get_client_disconnect_mode_reply_t {
+        sym!(self, xcb_xfixes_get_client_disconnect_mode_reply)(c, cookie, e)
+    }
+
+    /// Returns `true` iff the symbol `xcb_xfixes_get_client_disconnect_mode_reply` could be loaded.
+    #[cfg(feature = "has_symbol")]
+    pub fn has_xcb_xfixes_get_client_disconnect_mode_reply(&self) -> bool {
+        has_sym!(self, xcb_xfixes_get_client_disconnect_mode_reply)
+    }
 }
 
 #[cfg(feature = "xcb_xfixes")]
@@ -4233,5 +4510,10 @@ mod test {
         assert!(lib.has_xcb_xfixes_create_pointer_barrier_devices_end());
         assert!(lib.has_xcb_xfixes_delete_pointer_barrier_checked());
         assert!(lib.has_xcb_xfixes_delete_pointer_barrier());
+        assert!(lib.has_xcb_xfixes_set_client_disconnect_mode_checked());
+        assert!(lib.has_xcb_xfixes_set_client_disconnect_mode());
+        assert!(lib.has_xcb_xfixes_get_client_disconnect_mode());
+        assert!(lib.has_xcb_xfixes_get_client_disconnect_mode_unchecked());
+        assert!(lib.has_xcb_xfixes_get_client_disconnect_mode_reply());
     }
 }

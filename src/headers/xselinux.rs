@@ -1244,80 +1244,91 @@ impl Default for xcb_selinux_get_client_context_reply_t {
 pub(crate) struct XcbXselinuxXselinux {
     xcb_selinux_id: LazySymbol<*mut xcb_extension_t>,
     xcb_selinux_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major: u8,
             client_minor: u8,
         ) -> xcb_selinux_query_version_cookie_t,
     >,
     xcb_selinux_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             client_major: u8,
             client_minor: u8,
         ) -> xcb_selinux_query_version_cookie_t,
     >,
     xcb_selinux_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_query_version_reply_t,
     >,
     xcb_selinux_set_device_create_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_set_device_create_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_device_create_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_device_create_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_set_device_create_context_request_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_set_device_create_context_request_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_set_device_create_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_set_device_create_context_request_t) -> c_int>,
+    xcb_selinux_set_device_create_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_set_device_create_context_request_t) -> c_int,
+    >,
     xcb_selinux_set_device_create_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_set_device_create_context_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_device_create_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_device_create_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_device_create_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_device_create_context_cookie_t,
     >,
     xcb_selinux_get_device_create_context_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_device_create_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_device_create_context_cookie_t,
     >,
     xcb_selinux_get_device_create_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_device_create_context_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_device_create_context_reply_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_get_device_create_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_device_create_context_reply_t) -> c_int>,
+    xcb_selinux_get_device_create_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_device_create_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_device_create_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_get_device_create_context_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_device_create_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_device_create_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_device_create_context_reply_t,
     >,
-    xcb_selinux_set_device_context_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_selinux_set_device_context_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_set_device_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device: u32,
             context_len: u32,
@@ -1325,527 +1336,621 @@ pub(crate) struct XcbXselinuxXselinux {
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_device_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             device: u32,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_selinux_set_device_context_context:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_set_device_context_request_t) -> *mut c_char>,
-    xcb_selinux_set_device_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_set_device_context_request_t) -> c_int>,
-    xcb_selinux_set_device_context_context_end: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_set_device_context_request_t) -> xcb_generic_iterator_t,
+    xcb_selinux_set_device_context_context: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_set_device_context_request_t) -> *mut c_char,
     >,
-    xcb_selinux_get_device_context_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_selinux_set_device_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_set_device_context_request_t) -> c_int,
+    >,
+    xcb_selinux_set_device_context_context_end: LazySymbol<
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_set_device_context_request_t,
+        ) -> xcb_generic_iterator_t,
+    >,
+    xcb_selinux_get_device_context_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_device_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, device: u32) -> xcb_selinux_get_device_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            device: u32,
+        ) -> xcb_selinux_get_device_context_cookie_t,
     >,
     xcb_selinux_get_device_context_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, device: u32) -> xcb_selinux_get_device_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            device: u32,
+        ) -> xcb_selinux_get_device_context_cookie_t,
     >,
-    xcb_selinux_get_device_context_context:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_device_context_reply_t) -> *mut c_char>,
+    xcb_selinux_get_device_context_context: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_device_context_reply_t) -> *mut c_char,
+    >,
     xcb_selinux_get_device_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_device_context_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_get_device_context_reply_t) -> c_int>,
     xcb_selinux_get_device_context_context_end: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_device_context_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_device_context_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_device_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_device_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_device_context_reply_t,
     >,
     xcb_selinux_set_window_create_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_set_window_create_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_window_create_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_window_create_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_set_window_create_context_request_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_set_window_create_context_request_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_set_window_create_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_set_window_create_context_request_t) -> c_int>,
+    xcb_selinux_set_window_create_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_set_window_create_context_request_t) -> c_int,
+    >,
     xcb_selinux_set_window_create_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_set_window_create_context_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_window_create_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_window_create_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_window_create_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_window_create_context_cookie_t,
     >,
     xcb_selinux_get_window_create_context_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_window_create_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_window_create_context_cookie_t,
     >,
     xcb_selinux_get_window_create_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_window_create_context_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_window_create_context_reply_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_get_window_create_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_window_create_context_reply_t) -> c_int>,
+    xcb_selinux_get_window_create_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_window_create_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_window_create_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_get_window_create_context_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_window_create_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_window_create_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_window_create_context_reply_t,
     >,
-    xcb_selinux_get_window_context_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_selinux_get_window_context_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_window_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_selinux_get_window_context_cookie_t,
     >,
     xcb_selinux_get_window_context_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_selinux_get_window_context_cookie_t,
     >,
-    xcb_selinux_get_window_context_context:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_window_context_reply_t) -> *mut c_char>,
+    xcb_selinux_get_window_context_context: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_window_context_reply_t) -> *mut c_char,
+    >,
     xcb_selinux_get_window_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_window_context_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_get_window_context_reply_t) -> c_int>,
     xcb_selinux_get_window_context_context_end: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_window_context_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_window_context_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_window_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_window_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_window_context_reply_t,
     >,
-    xcb_selinux_list_item_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_selinux_list_item_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_list_item_object_context:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_list_item_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_list_item_t) -> *mut c_char>,
     xcb_selinux_list_item_object_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_list_item_t) -> c_int>,
-    xcb_selinux_list_item_object_context_end:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_list_item_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_list_item_t) -> c_int>,
+    xcb_selinux_list_item_object_context_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_list_item_t) -> xcb_generic_iterator_t,
+    >,
     xcb_selinux_list_item_data_context:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_list_item_t) -> *mut c_char>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_list_item_t) -> *mut c_char>,
     xcb_selinux_list_item_data_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_list_item_t) -> c_int>,
-    xcb_selinux_list_item_data_context_end:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_list_item_t) -> xcb_generic_iterator_t>,
-    xcb_selinux_list_item_next: LazySymbol<unsafe fn(i: *mut xcb_selinux_list_item_iterator_t)>,
-    xcb_selinux_list_item_end:
-        LazySymbol<unsafe fn(i: xcb_selinux_list_item_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_list_item_t) -> c_int>,
+    xcb_selinux_list_item_data_context_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_list_item_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_selinux_list_item_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_selinux_list_item_iterator_t)>,
+    xcb_selinux_list_item_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_selinux_list_item_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_selinux_set_property_create_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_set_property_create_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_property_create_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_property_create_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_set_property_create_context_request_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_set_property_create_context_request_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_set_property_create_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_set_property_create_context_request_t) -> c_int>,
+    xcb_selinux_set_property_create_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_set_property_create_context_request_t) -> c_int,
+    >,
     xcb_selinux_set_property_create_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_set_property_create_context_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_property_create_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_property_create_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_property_create_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_property_create_context_cookie_t,
     >,
     xcb_selinux_get_property_create_context_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_property_create_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_property_create_context_cookie_t,
     >,
     xcb_selinux_get_property_create_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_property_create_context_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_property_create_context_reply_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_get_property_create_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_property_create_context_reply_t) -> c_int>,
+    xcb_selinux_get_property_create_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_property_create_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_property_create_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_get_property_create_context_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_property_create_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_property_create_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_property_create_context_reply_t,
     >,
     xcb_selinux_set_property_use_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_set_property_use_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_property_use_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_property_use_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_set_property_use_context_request_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_set_property_use_context_request_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_set_property_use_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_set_property_use_context_request_t) -> c_int>,
+    xcb_selinux_set_property_use_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_set_property_use_context_request_t) -> c_int,
+    >,
     xcb_selinux_set_property_use_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_set_property_use_context_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_property_use_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_property_use_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_property_use_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_property_use_context_cookie_t,
     >,
     xcb_selinux_get_property_use_context_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_property_use_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_property_use_context_cookie_t,
     >,
     xcb_selinux_get_property_use_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_property_use_context_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(r: *const xcb_selinux_get_property_use_context_reply_t) -> *mut c_char,
     >,
-    xcb_selinux_get_property_use_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_property_use_context_reply_t) -> c_int>,
+    xcb_selinux_get_property_use_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_property_use_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_property_use_context_context_end: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_property_use_context_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_property_use_context_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_property_use_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_property_use_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_property_use_context_reply_t,
     >,
-    xcb_selinux_get_property_context_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_selinux_get_property_context_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_property_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             property: xcb_atom_t,
         ) -> xcb_selinux_get_property_context_cookie_t,
     >,
     xcb_selinux_get_property_context_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             property: xcb_atom_t,
         ) -> xcb_selinux_get_property_context_cookie_t,
     >,
-    xcb_selinux_get_property_context_context:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_property_context_reply_t) -> *mut c_char>,
-    xcb_selinux_get_property_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_property_context_reply_t) -> c_int>,
+    xcb_selinux_get_property_context_context: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_property_context_reply_t) -> *mut c_char,
+    >,
+    xcb_selinux_get_property_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_property_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_property_context_context_end: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_property_context_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_property_context_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_property_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_property_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_property_context_reply_t,
     >,
     xcb_selinux_get_property_data_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_property_data_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             property: xcb_atom_t,
         ) -> xcb_selinux_get_property_data_context_cookie_t,
     >,
     xcb_selinux_get_property_data_context_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             property: xcb_atom_t,
         ) -> xcb_selinux_get_property_data_context_cookie_t,
     >,
     xcb_selinux_get_property_data_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_property_data_context_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_property_data_context_reply_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_get_property_data_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_property_data_context_reply_t) -> c_int>,
+    xcb_selinux_get_property_data_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_property_data_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_property_data_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_get_property_data_context_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_property_data_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_property_data_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_property_data_context_reply_t,
     >,
-    xcb_selinux_list_properties_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_selinux_list_properties_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_list_properties: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_selinux_list_properties_cookie_t,
     >,
     xcb_selinux_list_properties_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_selinux_list_properties_cookie_t,
     >,
     xcb_selinux_list_properties_properties_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_list_properties_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_list_properties_reply_t) -> c_int>,
     xcb_selinux_list_properties_properties_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_list_properties_reply_t,
         ) -> xcb_selinux_list_item_iterator_t,
     >,
     xcb_selinux_list_properties_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_list_properties_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_list_properties_reply_t,
     >,
     xcb_selinux_set_selection_create_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_set_selection_create_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_selection_create_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_selection_create_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_set_selection_create_context_request_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_set_selection_create_context_request_t,
+        ) -> *mut c_char,
     >,
     xcb_selinux_set_selection_create_context_context_length: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_set_selection_create_context_request_t) -> c_int,
+        unsafe extern "C" fn(r: *const xcb_selinux_set_selection_create_context_request_t) -> c_int,
     >,
     xcb_selinux_set_selection_create_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_set_selection_create_context_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_selection_create_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_selection_create_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_selection_create_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_selection_create_context_cookie_t,
     >,
     xcb_selinux_get_selection_create_context_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_selection_create_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_selection_create_context_cookie_t,
     >,
     xcb_selinux_get_selection_create_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_selection_create_context_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_selection_create_context_reply_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_get_selection_create_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_selection_create_context_reply_t) -> c_int>,
+    xcb_selinux_get_selection_create_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_selection_create_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_selection_create_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_get_selection_create_context_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_selection_create_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_selection_create_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_selection_create_context_reply_t,
     >,
     xcb_selinux_set_selection_use_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_set_selection_use_context_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_selection_use_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             context_len: u32,
             context: *const c_char,
         ) -> xcb_void_cookie_t,
     >,
     xcb_selinux_set_selection_use_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_set_selection_use_context_request_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_set_selection_use_context_request_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_set_selection_use_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_set_selection_use_context_request_t) -> c_int>,
+    xcb_selinux_set_selection_use_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_set_selection_use_context_request_t) -> c_int,
+    >,
     xcb_selinux_set_selection_use_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_set_selection_use_context_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_selection_use_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_selection_use_context: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_selection_use_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_selection_use_context_cookie_t,
     >,
     xcb_selinux_get_selection_use_context_unchecked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_get_selection_use_context_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+        ) -> xcb_selinux_get_selection_use_context_cookie_t,
     >,
     xcb_selinux_get_selection_use_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_selection_use_context_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_selection_use_context_reply_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_get_selection_use_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_selection_use_context_reply_t) -> c_int>,
+    xcb_selinux_get_selection_use_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_selection_use_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_selection_use_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_get_selection_use_context_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_selection_use_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_selection_use_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_selection_use_context_reply_t,
     >,
     xcb_selinux_get_selection_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_selection_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             selection: xcb_atom_t,
         ) -> xcb_selinux_get_selection_context_cookie_t,
     >,
     xcb_selinux_get_selection_context_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             selection: xcb_atom_t,
         ) -> xcb_selinux_get_selection_context_cookie_t,
     >,
-    xcb_selinux_get_selection_context_context:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_selection_context_reply_t) -> *mut c_char>,
-    xcb_selinux_get_selection_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_selection_context_reply_t) -> c_int>,
+    xcb_selinux_get_selection_context_context: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_selection_context_reply_t) -> *mut c_char,
+    >,
+    xcb_selinux_get_selection_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_selection_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_selection_context_context_end: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_selection_context_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_selection_context_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_selection_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_selection_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_selection_context_reply_t,
     >,
     xcb_selinux_get_selection_data_context_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_selection_data_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             selection: xcb_atom_t,
         ) -> xcb_selinux_get_selection_data_context_cookie_t,
     >,
     xcb_selinux_get_selection_data_context_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             selection: xcb_atom_t,
         ) -> xcb_selinux_get_selection_data_context_cookie_t,
     >,
     xcb_selinux_get_selection_data_context_context: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_selection_data_context_reply_t) -> *mut c_char,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_selection_data_context_reply_t,
+        ) -> *mut c_char,
     >,
-    xcb_selinux_get_selection_data_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_selection_data_context_reply_t) -> c_int>,
+    xcb_selinux_get_selection_data_context_context_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_selection_data_context_reply_t) -> c_int,
+    >,
     xcb_selinux_get_selection_data_context_context_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_get_selection_data_context_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_selection_data_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_selection_data_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_get_selection_data_context_reply_t,
     >,
-    xcb_selinux_list_selections_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_selinux_list_selections:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_list_selections_cookie_t>,
-    xcb_selinux_list_selections_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_selinux_list_selections_cookie_t>,
+    xcb_selinux_list_selections_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_selinux_list_selections: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_selinux_list_selections_cookie_t,
+    >,
+    xcb_selinux_list_selections_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_selinux_list_selections_cookie_t,
+    >,
     xcb_selinux_list_selections_selections_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_list_selections_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_list_selections_reply_t) -> c_int>,
     xcb_selinux_list_selections_selections_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_selinux_list_selections_reply_t,
         ) -> xcb_selinux_list_item_iterator_t,
     >,
     xcb_selinux_list_selections_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_list_selections_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_selinux_list_selections_reply_t,
     >,
-    xcb_selinux_get_client_context_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_selinux_get_client_context_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_selinux_get_client_context: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             resource: u32,
         ) -> xcb_selinux_get_client_context_cookie_t,
     >,
     xcb_selinux_get_client_context_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             resource: u32,
         ) -> xcb_selinux_get_client_context_cookie_t,
     >,
-    xcb_selinux_get_client_context_context:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_client_context_reply_t) -> *mut c_char>,
+    xcb_selinux_get_client_context_context: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_selinux_get_client_context_reply_t) -> *mut c_char,
+    >,
     xcb_selinux_get_client_context_context_length:
-        LazySymbol<unsafe fn(r: *const xcb_selinux_get_client_context_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_selinux_get_client_context_reply_t) -> c_int>,
     xcb_selinux_get_client_context_context_end: LazySymbol<
-        unsafe fn(r: *const xcb_selinux_get_client_context_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_selinux_get_client_context_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_selinux_get_client_context_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_selinux_get_client_context_cookie_t,
             e: *mut *mut xcb_generic_error_t,

@@ -71,12 +71,14 @@ impl Default for xcb_big_requests_enable_reply_t {
 
 pub(crate) struct XcbBigreq {
     xcb_big_requests_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_big_requests_enable:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_big_requests_enable_cookie_t>,
-    xcb_big_requests_enable_unchecked:
-        LazySymbol<unsafe fn(c: *mut xcb_connection_t) -> xcb_big_requests_enable_cookie_t>,
+    xcb_big_requests_enable: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_big_requests_enable_cookie_t,
+    >,
+    xcb_big_requests_enable_unchecked: LazySymbol<
+        unsafe extern "C" fn(c: *mut xcb_connection_t) -> xcb_big_requests_enable_cookie_t,
+    >,
     xcb_big_requests_enable_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_big_requests_enable_cookie_t,
             e: *mut *mut xcb_generic_error_t,

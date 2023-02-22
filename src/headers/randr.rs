@@ -130,6 +130,9 @@ pub struct xcb_randr_bad_output_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_randr_bad_output_error_t {
@@ -151,6 +154,9 @@ pub struct xcb_randr_bad_crtc_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_randr_bad_crtc_error_t {
@@ -172,6 +178,9 @@ pub struct xcb_randr_bad_mode_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_randr_bad_mode_error_t {
@@ -193,6 +202,9 @@ pub struct xcb_randr_bad_provider_error_t {
     pub response_type: u8,
     pub error_code: u8,
     pub sequence: u16,
+    pub bad_value: u32,
+    pub minor_opcode: u16,
+    pub major_opcode: u8,
 }
 
 impl Default for xcb_randr_bad_provider_error_t {
@@ -3270,57 +3282,65 @@ impl Default for xcb_randr_notify_event_t {
 #[cfg(feature = "xcb_randr")]
 pub(crate) struct XcbRandrRandr {
     xcb_randr_id: LazySymbol<*mut xcb_extension_t>,
-    xcb_randr_mode_next: LazySymbol<unsafe fn(i: *mut xcb_randr_mode_iterator_t)>,
+    xcb_randr_mode_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_mode_iterator_t)>,
     xcb_randr_mode_end:
-        LazySymbol<unsafe fn(i: xcb_randr_mode_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_crtc_next: LazySymbol<unsafe fn(i: *mut xcb_randr_crtc_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_randr_mode_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_randr_crtc_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_crtc_iterator_t)>,
     xcb_randr_crtc_end:
-        LazySymbol<unsafe fn(i: xcb_randr_crtc_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_output_next: LazySymbol<unsafe fn(i: *mut xcb_randr_output_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_randr_crtc_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_randr_output_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_output_iterator_t)>,
     xcb_randr_output_end:
-        LazySymbol<unsafe fn(i: xcb_randr_output_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_provider_next: LazySymbol<unsafe fn(i: *mut xcb_randr_provider_iterator_t)>,
-    xcb_randr_provider_end:
-        LazySymbol<unsafe fn(i: xcb_randr_provider_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_lease_next: LazySymbol<unsafe fn(i: *mut xcb_randr_lease_iterator_t)>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_randr_output_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_randr_provider_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_provider_iterator_t)>,
+    xcb_randr_provider_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_provider_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_lease_next: LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_lease_iterator_t)>,
     xcb_randr_lease_end:
-        LazySymbol<unsafe fn(i: xcb_randr_lease_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_screen_size_next: LazySymbol<unsafe fn(i: *mut xcb_randr_screen_size_iterator_t)>,
-    xcb_randr_screen_size_end:
-        LazySymbol<unsafe fn(i: xcb_randr_screen_size_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_refresh_rates_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(i: xcb_randr_lease_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_randr_screen_size_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_screen_size_iterator_t)>,
+    xcb_randr_screen_size_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_screen_size_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_refresh_rates_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_refresh_rates_rates:
-        LazySymbol<unsafe fn(r: *const xcb_randr_refresh_rates_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_refresh_rates_t) -> *mut u16>,
     xcb_randr_refresh_rates_rates_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_refresh_rates_t) -> c_int>,
-    xcb_randr_refresh_rates_rates_end:
-        LazySymbol<unsafe fn(r: *const xcb_randr_refresh_rates_t) -> xcb_generic_iterator_t>,
-    xcb_randr_refresh_rates_next: LazySymbol<unsafe fn(i: *mut xcb_randr_refresh_rates_iterator_t)>,
-    xcb_randr_refresh_rates_end:
-        LazySymbol<unsafe fn(i: xcb_randr_refresh_rates_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_refresh_rates_t) -> c_int>,
+    xcb_randr_refresh_rates_rates_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_refresh_rates_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_refresh_rates_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_refresh_rates_iterator_t)>,
+    xcb_randr_refresh_rates_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_refresh_rates_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_query_version: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
         ) -> xcb_randr_query_version_cookie_t,
     >,
     xcb_randr_query_version_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             major_version: u32,
             minor_version: u32,
         ) -> xcb_randr_query_version_cookie_t,
     >,
     xcb_randr_query_version_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_query_version_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_query_version_reply_t,
     >,
     xcb_randr_set_screen_config: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             timestamp: xcb_timestamp_t,
@@ -3331,7 +3351,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_set_screen_config_cookie_t,
     >,
     xcb_randr_set_screen_config_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             timestamp: xcb_timestamp_t,
@@ -3342,74 +3362,87 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_set_screen_config_cookie_t,
     >,
     xcb_randr_set_screen_config_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_set_screen_config_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_set_screen_config_reply_t,
     >,
     xcb_randr_select_input_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, window: xcb_window_t, enable: u16) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            window: xcb_window_t,
+            enable: u16,
+        ) -> xcb_void_cookie_t,
     >,
     xcb_randr_select_input: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, window: xcb_window_t, enable: u16) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(
+            c: *mut xcb_connection_t,
+            window: xcb_window_t,
+            enable: u16,
+        ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_get_screen_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_screen_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_screen_info: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_screen_info_cookie_t,
     >,
     xcb_randr_get_screen_info_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_screen_info_cookie_t,
     >,
     xcb_randr_get_screen_info_sizes: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_screen_info_reply_t) -> *mut xcb_randr_screen_size_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_screen_info_reply_t,
+        ) -> *mut xcb_randr_screen_size_t,
     >,
     xcb_randr_get_screen_info_sizes_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_screen_info_reply_t) -> c_int>,
     xcb_randr_get_screen_info_sizes_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_screen_info_reply_t) -> xcb_randr_screen_size_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_screen_info_reply_t,
+        ) -> xcb_randr_screen_size_iterator_t,
     >,
     xcb_randr_get_screen_info_rates_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_screen_info_reply_t) -> c_int>,
     xcb_randr_get_screen_info_rates_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_info_reply_t,
         ) -> xcb_randr_refresh_rates_iterator_t,
     >,
     xcb_randr_get_screen_info_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_screen_info_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_screen_info_reply_t,
     >,
     xcb_randr_get_screen_size_range: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_screen_size_range_cookie_t,
     >,
     xcb_randr_get_screen_size_range_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_screen_size_range_cookie_t,
     >,
     xcb_randr_get_screen_size_range_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_screen_size_range_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_screen_size_range_reply_t,
     >,
     xcb_randr_set_screen_size_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             width: u16,
@@ -3419,7 +3452,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_screen_size: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             width: u16,
@@ -3428,174 +3461,204 @@ pub(crate) struct XcbRandrRandr {
             mm_height: u32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_mode_info_next: LazySymbol<unsafe fn(i: *mut xcb_randr_mode_info_iterator_t)>,
-    xcb_randr_mode_info_end:
-        LazySymbol<unsafe fn(i: xcb_randr_mode_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_get_screen_resources_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_mode_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_mode_info_iterator_t)>,
+    xcb_randr_mode_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_mode_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_get_screen_resources_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_screen_resources: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_screen_resources_cookie_t,
     >,
     xcb_randr_get_screen_resources_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_screen_resources_cookie_t,
     >,
     xcb_randr_get_screen_resources_crtcs: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> *mut xcb_randr_crtc_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_screen_resources_reply_t,
+        ) -> *mut xcb_randr_crtc_t,
     >,
     xcb_randr_get_screen_resources_crtcs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_reply_t) -> c_int>,
     xcb_randr_get_screen_resources_crtcs_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_screen_resources_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_screen_resources_outputs: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> *mut xcb_randr_output_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_screen_resources_reply_t,
+        ) -> *mut xcb_randr_output_t,
     >,
     xcb_randr_get_screen_resources_outputs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_reply_t) -> c_int>,
     xcb_randr_get_screen_resources_outputs_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_screen_resources_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_screen_resources_modes: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> *mut xcb_randr_mode_info_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_screen_resources_reply_t,
+        ) -> *mut xcb_randr_mode_info_t,
     >,
     xcb_randr_get_screen_resources_modes_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_reply_t) -> c_int>,
     xcb_randr_get_screen_resources_modes_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_resources_reply_t,
         ) -> xcb_randr_mode_info_iterator_t,
     >,
-    xcb_randr_get_screen_resources_names:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> *mut u8>,
+    xcb_randr_get_screen_resources_names: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_reply_t) -> *mut u8,
+    >,
     xcb_randr_get_screen_resources_names_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_reply_t) -> c_int>,
     xcb_randr_get_screen_resources_names_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_screen_resources_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_screen_resources_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_screen_resources_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_screen_resources_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_screen_resources_reply_t,
     >,
-    xcb_randr_get_output_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_output_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_output_info: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             config_timestamp: xcb_timestamp_t,
         ) -> xcb_randr_get_output_info_cookie_t,
     >,
     xcb_randr_get_output_info_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             config_timestamp: xcb_timestamp_t,
         ) -> xcb_randr_get_output_info_cookie_t,
     >,
-    xcb_randr_get_output_info_crtcs:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> *mut xcb_randr_crtc_t>,
-    xcb_randr_get_output_info_crtcs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> c_int>,
-    xcb_randr_get_output_info_crtcs_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> xcb_generic_iterator_t,
+    xcb_randr_get_output_info_crtcs: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> *mut xcb_randr_crtc_t,
     >,
-    xcb_randr_get_output_info_modes:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> *mut xcb_randr_mode_t>,
+    xcb_randr_get_output_info_crtcs_length:
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> c_int>,
+    xcb_randr_get_output_info_crtcs_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_get_output_info_modes: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> *mut xcb_randr_mode_t,
+    >,
     xcb_randr_get_output_info_modes_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> c_int>,
     xcb_randr_get_output_info_modes_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_output_info_clones: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> *mut xcb_randr_output_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_output_info_reply_t,
+        ) -> *mut xcb_randr_output_t,
     >,
     xcb_randr_get_output_info_clones_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> c_int>,
     xcb_randr_get_output_info_clones_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_output_info_name:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> *mut u8>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> *mut u8>,
     xcb_randr_get_output_info_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> c_int>,
     xcb_randr_get_output_info_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_output_info_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(r: *const xcb_randr_get_output_info_reply_t) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_output_info_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_output_info_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_output_info_reply_t,
     >,
-    xcb_randr_list_output_properties_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_list_output_properties_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_list_output_properties: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
         ) -> xcb_randr_list_output_properties_cookie_t,
     >,
     xcb_randr_list_output_properties_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
         ) -> xcb_randr_list_output_properties_cookie_t,
     >,
     xcb_randr_list_output_properties_atoms: LazySymbol<
-        unsafe fn(r: *const xcb_randr_list_output_properties_reply_t) -> *mut xcb_atom_t,
+        unsafe extern "C" fn(r: *const xcb_randr_list_output_properties_reply_t) -> *mut xcb_atom_t,
     >,
-    xcb_randr_list_output_properties_atoms_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_list_output_properties_reply_t) -> c_int>,
+    xcb_randr_list_output_properties_atoms_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_list_output_properties_reply_t) -> c_int,
+    >,
     xcb_randr_list_output_properties_atoms_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_list_output_properties_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_list_output_properties_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_list_output_properties_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_list_output_properties_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_list_output_properties_reply_t,
     >,
-    xcb_randr_query_output_property_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_query_output_property_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_query_output_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
         ) -> xcb_randr_query_output_property_cookie_t,
     >,
     xcb_randr_query_output_property_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
         ) -> xcb_randr_query_output_property_cookie_t,
     >,
-    xcb_randr_query_output_property_valid_values:
-        LazySymbol<unsafe fn(r: *const xcb_randr_query_output_property_reply_t) -> *mut i32>,
-    xcb_randr_query_output_property_valid_values_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_query_output_property_reply_t) -> c_int>,
+    xcb_randr_query_output_property_valid_values: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_query_output_property_reply_t) -> *mut i32,
+    >,
+    xcb_randr_query_output_property_valid_values_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_query_output_property_reply_t) -> c_int,
+    >,
     xcb_randr_query_output_property_valid_values_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_query_output_property_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_query_output_property_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_query_output_property_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_query_output_property_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_query_output_property_reply_t,
     >,
     xcb_randr_configure_output_property_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, values_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, values_len: u32) -> c_int>,
     xcb_randr_configure_output_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
@@ -3606,7 +3669,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_configure_output_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
@@ -3616,18 +3679,21 @@ pub(crate) struct XcbRandrRandr {
             values: *const i32,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_configure_output_property_values:
-        LazySymbol<unsafe fn(r: *const xcb_randr_configure_output_property_request_t) -> *mut i32>,
-    xcb_randr_configure_output_property_values_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_configure_output_property_request_t) -> c_int>,
+    xcb_randr_configure_output_property_values: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_configure_output_property_request_t) -> *mut i32,
+    >,
+    xcb_randr_configure_output_property_values_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_configure_output_property_request_t) -> c_int,
+    >,
     xcb_randr_configure_output_property_values_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_configure_output_property_request_t,
         ) -> xcb_generic_iterator_t,
     >,
-    xcb_randr_change_output_property_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_change_output_property_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_change_output_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
@@ -3639,7 +3705,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_change_output_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
@@ -3650,30 +3716,35 @@ pub(crate) struct XcbRandrRandr {
             data: *const c_void,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_change_output_property_data:
-        LazySymbol<unsafe fn(r: *const xcb_randr_change_output_property_request_t) -> *mut c_void>,
-    xcb_randr_change_output_property_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_change_output_property_request_t) -> c_int>,
+    xcb_randr_change_output_property_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_change_output_property_request_t) -> *mut c_void,
+    >,
+    xcb_randr_change_output_property_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_change_output_property_request_t) -> c_int,
+    >,
     xcb_randr_change_output_property_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_change_output_property_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_change_output_property_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_delete_output_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_delete_output_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_get_output_property_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_output_property_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_output_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
@@ -3685,7 +3756,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_get_output_property_cookie_t,
     >,
     xcb_randr_get_output_property_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             property: xcb_atom_t,
@@ -3696,24 +3767,27 @@ pub(crate) struct XcbRandrRandr {
             pending: u8,
         ) -> xcb_randr_get_output_property_cookie_t,
     >,
-    xcb_randr_get_output_property_data:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_property_reply_t) -> *mut u8>,
+    xcb_randr_get_output_property_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_output_property_reply_t) -> *mut u8,
+    >,
     xcb_randr_get_output_property_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_output_property_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_output_property_reply_t) -> c_int>,
     xcb_randr_get_output_property_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_output_property_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_output_property_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_output_property_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_output_property_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_output_property_reply_t,
     >,
     xcb_randr_create_mode_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, name_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, name_len: u32) -> c_int>,
     xcb_randr_create_mode: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             mode_info: xcb_randr_mode_info_t,
@@ -3722,7 +3796,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_create_mode_cookie_t,
     >,
     xcb_randr_create_mode_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             mode_info: xcb_randr_mode_info_t,
@@ -3731,84 +3805,89 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_create_mode_cookie_t,
     >,
     xcb_randr_create_mode_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_create_mode_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_create_mode_reply_t,
     >,
     xcb_randr_destroy_mode_checked: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, mode: xcb_randr_mode_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(c: *mut xcb_connection_t, mode: xcb_randr_mode_t) -> xcb_void_cookie_t,
     >,
     xcb_randr_destroy_mode: LazySymbol<
-        unsafe fn(c: *mut xcb_connection_t, mode: xcb_randr_mode_t) -> xcb_void_cookie_t,
+        unsafe extern "C" fn(c: *mut xcb_connection_t, mode: xcb_randr_mode_t) -> xcb_void_cookie_t,
     >,
     xcb_randr_add_output_mode_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             mode: xcb_randr_mode_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_add_output_mode: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             mode: xcb_randr_mode_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_delete_output_mode_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             mode: xcb_randr_mode_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_delete_output_mode: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             output: xcb_randr_output_t,
             mode: xcb_randr_mode_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_get_crtc_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_crtc_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_crtc_info: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             config_timestamp: xcb_timestamp_t,
         ) -> xcb_randr_get_crtc_info_cookie_t,
     >,
     xcb_randr_get_crtc_info_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             config_timestamp: xcb_timestamp_t,
         ) -> xcb_randr_get_crtc_info_cookie_t,
     >,
-    xcb_randr_get_crtc_info_outputs:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_info_reply_t) -> *mut xcb_randr_output_t>,
+    xcb_randr_get_crtc_info_outputs: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_info_reply_t) -> *mut xcb_randr_output_t,
+    >,
     xcb_randr_get_crtc_info_outputs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_info_reply_t) -> c_int>,
-    xcb_randr_get_crtc_info_outputs_end:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_info_reply_t) -> xcb_generic_iterator_t>,
-    xcb_randr_get_crtc_info_possible:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_info_reply_t) -> *mut xcb_randr_output_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_info_reply_t) -> c_int>,
+    xcb_randr_get_crtc_info_outputs_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_info_reply_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_get_crtc_info_possible: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_info_reply_t) -> *mut xcb_randr_output_t,
+    >,
     xcb_randr_get_crtc_info_possible_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_info_reply_t) -> c_int>,
-    xcb_randr_get_crtc_info_possible_end:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_info_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_info_reply_t) -> c_int>,
+    xcb_randr_get_crtc_info_possible_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_info_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_get_crtc_info_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_crtc_info_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_crtc_info_reply_t,
     >,
     xcb_randr_set_crtc_config_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, outputs_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, outputs_len: u32) -> c_int>,
     xcb_randr_set_crtc_config: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             timestamp: xcb_timestamp_t,
@@ -3822,7 +3901,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_set_crtc_config_cookie_t,
     >,
     xcb_randr_set_crtc_config_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             timestamp: xcb_timestamp_t,
@@ -3836,72 +3915,77 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_set_crtc_config_cookie_t,
     >,
     xcb_randr_set_crtc_config_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_set_crtc_config_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_set_crtc_config_reply_t,
     >,
     xcb_randr_get_crtc_gamma_size: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
         ) -> xcb_randr_get_crtc_gamma_size_cookie_t,
     >,
     xcb_randr_get_crtc_gamma_size_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
         ) -> xcb_randr_get_crtc_gamma_size_cookie_t,
     >,
     xcb_randr_get_crtc_gamma_size_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_crtc_gamma_size_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_crtc_gamma_size_reply_t,
     >,
-    xcb_randr_get_crtc_gamma_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_crtc_gamma_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_crtc_gamma: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
         ) -> xcb_randr_get_crtc_gamma_cookie_t,
     >,
     xcb_randr_get_crtc_gamma_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
         ) -> xcb_randr_get_crtc_gamma_cookie_t,
     >,
     xcb_randr_get_crtc_gamma_red:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> *mut u16>,
     xcb_randr_get_crtc_gamma_red_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> c_int>,
-    xcb_randr_get_crtc_gamma_red_end:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> c_int>,
+    xcb_randr_get_crtc_gamma_red_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_get_crtc_gamma_green:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> *mut u16>,
     xcb_randr_get_crtc_gamma_green_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> c_int>,
-    xcb_randr_get_crtc_gamma_green_end:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> c_int>,
+    xcb_randr_get_crtc_gamma_green_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_get_crtc_gamma_blue:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> *mut u16>,
     xcb_randr_get_crtc_gamma_blue_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> c_int>,
-    xcb_randr_get_crtc_gamma_blue_end:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> c_int>,
+    xcb_randr_get_crtc_gamma_blue_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_gamma_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_get_crtc_gamma_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_crtc_gamma_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_crtc_gamma_reply_t,
     >,
-    xcb_randr_set_crtc_gamma_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_set_crtc_gamma_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_set_crtc_gamma_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             size: u16,
@@ -3911,7 +3995,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_crtc_gamma: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             size: u16,
@@ -3921,96 +4005,107 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_crtc_gamma_red:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> *mut u16>,
     xcb_randr_set_crtc_gamma_red_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> c_int>,
     xcb_randr_set_crtc_gamma_red_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_set_crtc_gamma_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_set_crtc_gamma_green:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> *mut u16>,
     xcb_randr_set_crtc_gamma_green_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> c_int>,
     xcb_randr_set_crtc_gamma_green_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_set_crtc_gamma_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_set_crtc_gamma_blue:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> *mut u16>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> *mut u16>,
     xcb_randr_set_crtc_gamma_blue_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> c_int>,
     xcb_randr_set_crtc_gamma_blue_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_set_crtc_gamma_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_set_crtc_gamma_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_screen_resources_current_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_screen_resources_current: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_screen_resources_current_cookie_t,
     >,
     xcb_randr_get_screen_resources_current_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_screen_resources_current_cookie_t,
     >,
     xcb_randr_get_screen_resources_current_crtcs: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_resources_current_reply_t,
         ) -> *mut xcb_randr_crtc_t,
     >,
-    xcb_randr_get_screen_resources_current_crtcs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> c_int>,
+    xcb_randr_get_screen_resources_current_crtcs_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> c_int,
+    >,
     xcb_randr_get_screen_resources_current_crtcs_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_resources_current_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_screen_resources_current_outputs: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_resources_current_reply_t,
         ) -> *mut xcb_randr_output_t,
     >,
-    xcb_randr_get_screen_resources_current_outputs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> c_int>,
+    xcb_randr_get_screen_resources_current_outputs_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> c_int,
+    >,
     xcb_randr_get_screen_resources_current_outputs_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_resources_current_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_screen_resources_current_modes: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_resources_current_reply_t,
         ) -> *mut xcb_randr_mode_info_t,
     >,
-    xcb_randr_get_screen_resources_current_modes_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> c_int>,
+    xcb_randr_get_screen_resources_current_modes_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> c_int,
+    >,
     xcb_randr_get_screen_resources_current_modes_iterator: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_resources_current_reply_t,
         ) -> xcb_randr_mode_info_iterator_t,
     >,
-    xcb_randr_get_screen_resources_current_names:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> *mut u8>,
-    xcb_randr_get_screen_resources_current_names_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> c_int>,
+    xcb_randr_get_screen_resources_current_names: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> *mut u8,
+    >,
+    xcb_randr_get_screen_resources_current_names_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_screen_resources_current_reply_t) -> c_int,
+    >,
     xcb_randr_get_screen_resources_current_names_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_get_screen_resources_current_reply_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_screen_resources_current_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_screen_resources_current_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_screen_resources_current_reply_t,
     >,
     xcb_randr_set_crtc_transform_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, filter_params_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, filter_params_len: u32) -> c_int>,
     xcb_randr_set_crtc_transform_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             transform: xcb_render_transform_t,
@@ -4021,7 +4116,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_crtc_transform: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             transform: xcb_render_transform_t,
@@ -4031,92 +4126,114 @@ pub(crate) struct XcbRandrRandr {
             filter_params: *const xcb_render_fixed_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_set_crtc_transform_filter_name:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_transform_request_t) -> *mut c_char>,
+    xcb_randr_set_crtc_transform_filter_name: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_set_crtc_transform_request_t) -> *mut c_char,
+    >,
     xcb_randr_set_crtc_transform_filter_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_transform_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_set_crtc_transform_request_t) -> c_int>,
     xcb_randr_set_crtc_transform_filter_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_set_crtc_transform_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_set_crtc_transform_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_set_crtc_transform_filter_params: LazySymbol<
-        unsafe fn(r: *const xcb_randr_set_crtc_transform_request_t) -> *mut xcb_render_fixed_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_set_crtc_transform_request_t,
+        ) -> *mut xcb_render_fixed_t,
     >,
     xcb_randr_set_crtc_transform_filter_params_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_set_crtc_transform_request_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_set_crtc_transform_request_t) -> c_int>,
     xcb_randr_set_crtc_transform_filter_params_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_set_crtc_transform_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_set_crtc_transform_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_randr_get_crtc_transform_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_crtc_transform_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_crtc_transform: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
         ) -> xcb_randr_get_crtc_transform_cookie_t,
     >,
     xcb_randr_get_crtc_transform_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
         ) -> xcb_randr_get_crtc_transform_cookie_t,
     >,
-    xcb_randr_get_crtc_transform_pending_filter_name:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> *mut c_char>,
+    xcb_randr_get_crtc_transform_pending_filter_name: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> *mut c_char,
+    >,
     xcb_randr_get_crtc_transform_pending_filter_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> c_int>,
     xcb_randr_get_crtc_transform_pending_filter_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_crtc_transform_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_crtc_transform_pending_params: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> *mut xcb_render_fixed_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_crtc_transform_reply_t,
+        ) -> *mut xcb_render_fixed_t,
     >,
     xcb_randr_get_crtc_transform_pending_params_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> c_int>,
     xcb_randr_get_crtc_transform_pending_params_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_crtc_transform_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_randr_get_crtc_transform_current_filter_name:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> *mut c_char>,
+    xcb_randr_get_crtc_transform_current_filter_name: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> *mut c_char,
+    >,
     xcb_randr_get_crtc_transform_current_filter_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> c_int>,
     xcb_randr_get_crtc_transform_current_filter_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_crtc_transform_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_crtc_transform_current_params: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> *mut xcb_render_fixed_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_crtc_transform_reply_t,
+        ) -> *mut xcb_render_fixed_t,
     >,
     xcb_randr_get_crtc_transform_current_params_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> c_int>,
     xcb_randr_get_crtc_transform_current_params_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_crtc_transform_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_crtc_transform_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_crtc_transform_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_crtc_transform_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_crtc_transform_reply_t,
     >,
     xcb_randr_get_panning: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
         ) -> xcb_randr_get_panning_cookie_t,
     >,
     xcb_randr_get_panning_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
         ) -> xcb_randr_get_panning_cookie_t,
     >,
     xcb_randr_get_panning_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_panning_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_panning_reply_t,
     >,
     xcb_randr_set_panning: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             timestamp: xcb_timestamp_t,
@@ -4135,7 +4252,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_set_panning_cookie_t,
     >,
     xcb_randr_set_panning_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             crtc: xcb_randr_crtc_t,
             timestamp: xcb_timestamp_t,
@@ -4154,134 +4271,156 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_set_panning_cookie_t,
     >,
     xcb_randr_set_panning_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_set_panning_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_set_panning_reply_t,
     >,
     xcb_randr_set_output_primary_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             output: xcb_randr_output_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_output_primary: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             output: xcb_randr_output_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_get_output_primary: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_output_primary_cookie_t,
     >,
     xcb_randr_get_output_primary_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_output_primary_cookie_t,
     >,
     xcb_randr_get_output_primary_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_output_primary_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_output_primary_reply_t,
     >,
-    xcb_randr_get_providers_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_providers_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_providers: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_providers_cookie_t,
     >,
     xcb_randr_get_providers_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
         ) -> xcb_randr_get_providers_cookie_t,
     >,
     xcb_randr_get_providers_providers: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_providers_reply_t) -> *mut xcb_randr_provider_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_providers_reply_t,
+        ) -> *mut xcb_randr_provider_t,
     >,
     xcb_randr_get_providers_providers_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_providers_reply_t) -> c_int>,
-    xcb_randr_get_providers_providers_end:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_providers_reply_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_providers_reply_t) -> c_int>,
+    xcb_randr_get_providers_providers_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_providers_reply_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_get_providers_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_providers_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_providers_reply_t,
     >,
-    xcb_randr_get_provider_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_provider_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_provider_info: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             config_timestamp: xcb_timestamp_t,
         ) -> xcb_randr_get_provider_info_cookie_t,
     >,
     xcb_randr_get_provider_info_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             config_timestamp: xcb_timestamp_t,
         ) -> xcb_randr_get_provider_info_cookie_t,
     >,
     xcb_randr_get_provider_info_crtcs: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> *mut xcb_randr_crtc_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_info_reply_t,
+        ) -> *mut xcb_randr_crtc_t,
     >,
     xcb_randr_get_provider_info_crtcs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
     xcb_randr_get_provider_info_crtcs_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_info_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_provider_info_outputs: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> *mut xcb_randr_output_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_info_reply_t,
+        ) -> *mut xcb_randr_output_t,
     >,
     xcb_randr_get_provider_info_outputs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
     xcb_randr_get_provider_info_outputs_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_info_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_provider_info_associated_providers: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> *mut xcb_randr_provider_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_info_reply_t,
+        ) -> *mut xcb_randr_provider_t,
     >,
     xcb_randr_get_provider_info_associated_providers_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
     xcb_randr_get_provider_info_associated_providers_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_info_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_provider_info_associated_capability:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> *mut u32>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_provider_info_reply_t) -> *mut u32>,
     xcb_randr_get_provider_info_associated_capability_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
     xcb_randr_get_provider_info_associated_capability_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_info_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
-    xcb_randr_get_provider_info_name:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> *mut c_char>,
+    xcb_randr_get_provider_info_name: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_provider_info_reply_t) -> *mut c_char,
+    >,
     xcb_randr_get_provider_info_name_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_provider_info_reply_t) -> c_int>,
     xcb_randr_get_provider_info_name_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_info_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_info_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_provider_info_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_provider_info_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_provider_info_reply_t,
     >,
     xcb_randr_set_provider_offload_sink_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             sink_provider: xcb_randr_provider_t,
@@ -4289,7 +4428,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_provider_offload_sink: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             sink_provider: xcb_randr_provider_t,
@@ -4297,7 +4436,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_provider_output_source_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             source_provider: xcb_randr_provider_t,
@@ -4305,7 +4444,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_provider_output_source: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             source_provider: xcb_randr_provider_t,
@@ -4313,68 +4452,77 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_list_provider_properties_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_list_provider_properties: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
         ) -> xcb_randr_list_provider_properties_cookie_t,
     >,
     xcb_randr_list_provider_properties_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
         ) -> xcb_randr_list_provider_properties_cookie_t,
     >,
     xcb_randr_list_provider_properties_atoms: LazySymbol<
-        unsafe fn(r: *const xcb_randr_list_provider_properties_reply_t) -> *mut xcb_atom_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_list_provider_properties_reply_t,
+        ) -> *mut xcb_atom_t,
     >,
-    xcb_randr_list_provider_properties_atoms_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_list_provider_properties_reply_t) -> c_int>,
+    xcb_randr_list_provider_properties_atoms_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_list_provider_properties_reply_t) -> c_int,
+    >,
     xcb_randr_list_provider_properties_atoms_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_list_provider_properties_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_list_provider_properties_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_list_provider_properties_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_list_provider_properties_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_list_provider_properties_reply_t,
     >,
     xcb_randr_query_provider_property_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_query_provider_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
         ) -> xcb_randr_query_provider_property_cookie_t,
     >,
     xcb_randr_query_provider_property_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
         ) -> xcb_randr_query_provider_property_cookie_t,
     >,
-    xcb_randr_query_provider_property_valid_values:
-        LazySymbol<unsafe fn(r: *const xcb_randr_query_provider_property_reply_t) -> *mut i32>,
-    xcb_randr_query_provider_property_valid_values_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_query_provider_property_reply_t) -> c_int>,
+    xcb_randr_query_provider_property_valid_values: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_query_provider_property_reply_t) -> *mut i32,
+    >,
+    xcb_randr_query_provider_property_valid_values_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_query_provider_property_reply_t) -> c_int,
+    >,
     xcb_randr_query_provider_property_valid_values_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_query_provider_property_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_query_provider_property_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_query_provider_property_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_query_provider_property_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_query_provider_property_reply_t,
     >,
     xcb_randr_configure_provider_property_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void, values_len: u32) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void, values_len: u32) -> c_int>,
     xcb_randr_configure_provider_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
@@ -4385,7 +4533,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_configure_provider_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
@@ -4396,19 +4544,20 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_configure_provider_property_values: LazySymbol<
-        unsafe fn(r: *const xcb_randr_configure_provider_property_request_t) -> *mut i32,
+        unsafe extern "C" fn(r: *const xcb_randr_configure_provider_property_request_t) -> *mut i32,
     >,
-    xcb_randr_configure_provider_property_values_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_configure_provider_property_request_t) -> c_int>,
+    xcb_randr_configure_provider_property_values_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_configure_provider_property_request_t) -> c_int,
+    >,
     xcb_randr_configure_provider_property_values_end: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             r: *const xcb_randr_configure_provider_property_request_t,
         ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_change_provider_property_sizeof:
-        LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_change_provider_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
@@ -4420,7 +4569,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_change_provider_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
@@ -4432,30 +4581,34 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_change_provider_property_data: LazySymbol<
-        unsafe fn(r: *const xcb_randr_change_provider_property_request_t) -> *mut c_void,
+        unsafe extern "C" fn(r: *const xcb_randr_change_provider_property_request_t) -> *mut c_void,
     >,
-    xcb_randr_change_provider_property_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_change_provider_property_request_t) -> c_int>,
+    xcb_randr_change_provider_property_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_change_provider_property_request_t) -> c_int,
+    >,
     xcb_randr_change_provider_property_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_change_provider_property_request_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_change_provider_property_request_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_delete_provider_property_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_delete_provider_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_get_provider_property_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_get_provider_property_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_provider_property: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
@@ -4467,7 +4620,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_get_provider_property_cookie_t,
     >,
     xcb_randr_get_provider_property_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             provider: xcb_randr_provider_t,
             property: xcb_atom_t,
@@ -4478,114 +4631,137 @@ pub(crate) struct XcbRandrRandr {
             pending: u8,
         ) -> xcb_randr_get_provider_property_cookie_t,
     >,
-    xcb_randr_get_provider_property_data:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_property_reply_t) -> *mut c_void>,
-    xcb_randr_get_provider_property_data_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_provider_property_reply_t) -> c_int>,
+    xcb_randr_get_provider_property_data: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_provider_property_reply_t) -> *mut c_void,
+    >,
+    xcb_randr_get_provider_property_data_length: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_get_provider_property_reply_t) -> c_int,
+    >,
     xcb_randr_get_provider_property_data_end: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_provider_property_reply_t) -> xcb_generic_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_provider_property_reply_t,
+        ) -> xcb_generic_iterator_t,
     >,
     xcb_randr_get_provider_property_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_provider_property_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_provider_property_reply_t,
     >,
-    xcb_randr_crtc_change_next: LazySymbol<unsafe fn(i: *mut xcb_randr_crtc_change_iterator_t)>,
-    xcb_randr_crtc_change_end:
-        LazySymbol<unsafe fn(i: xcb_randr_crtc_change_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_output_change_next: LazySymbol<unsafe fn(i: *mut xcb_randr_output_change_iterator_t)>,
-    xcb_randr_output_change_end:
-        LazySymbol<unsafe fn(i: xcb_randr_output_change_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_randr_crtc_change_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_crtc_change_iterator_t)>,
+    xcb_randr_crtc_change_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_crtc_change_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_output_change_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_output_change_iterator_t)>,
+    xcb_randr_output_change_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_output_change_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_output_property_next:
-        LazySymbol<unsafe fn(i: *mut xcb_randr_output_property_iterator_t)>,
-    xcb_randr_output_property_end:
-        LazySymbol<unsafe fn(i: xcb_randr_output_property_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_output_property_iterator_t)>,
+    xcb_randr_output_property_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_output_property_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_provider_change_next:
-        LazySymbol<unsafe fn(i: *mut xcb_randr_provider_change_iterator_t)>,
-    xcb_randr_provider_change_end:
-        LazySymbol<unsafe fn(i: xcb_randr_provider_change_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_provider_change_iterator_t)>,
+    xcb_randr_provider_change_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_provider_change_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_provider_property_next:
-        LazySymbol<unsafe fn(i: *mut xcb_randr_provider_property_iterator_t)>,
-    xcb_randr_provider_property_end:
-        LazySymbol<unsafe fn(i: xcb_randr_provider_property_iterator_t) -> xcb_generic_iterator_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_provider_property_iterator_t)>,
+    xcb_randr_provider_property_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_provider_property_iterator_t) -> xcb_generic_iterator_t,
+    >,
     xcb_randr_resource_change_next:
-        LazySymbol<unsafe fn(i: *mut xcb_randr_resource_change_iterator_t)>,
-    xcb_randr_resource_change_end:
-        LazySymbol<unsafe fn(i: xcb_randr_resource_change_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_monitor_info_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
-    xcb_randr_monitor_info_outputs:
-        LazySymbol<unsafe fn(r: *const xcb_randr_monitor_info_t) -> *mut xcb_randr_output_t>,
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_resource_change_iterator_t)>,
+    xcb_randr_resource_change_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_resource_change_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_monitor_info_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_monitor_info_outputs: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_monitor_info_t) -> *mut xcb_randr_output_t,
+    >,
     xcb_randr_monitor_info_outputs_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_monitor_info_t) -> c_int>,
-    xcb_randr_monitor_info_outputs_end:
-        LazySymbol<unsafe fn(r: *const xcb_randr_monitor_info_t) -> xcb_generic_iterator_t>,
-    xcb_randr_monitor_info_next: LazySymbol<unsafe fn(i: *mut xcb_randr_monitor_info_iterator_t)>,
-    xcb_randr_monitor_info_end:
-        LazySymbol<unsafe fn(i: xcb_randr_monitor_info_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_get_monitors_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_monitor_info_t) -> c_int>,
+    xcb_randr_monitor_info_outputs_end: LazySymbol<
+        unsafe extern "C" fn(r: *const xcb_randr_monitor_info_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_monitor_info_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_monitor_info_iterator_t)>,
+    xcb_randr_monitor_info_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_monitor_info_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_get_monitors_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_get_monitors: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             get_active: u8,
         ) -> xcb_randr_get_monitors_cookie_t,
     >,
     xcb_randr_get_monitors_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             get_active: u8,
         ) -> xcb_randr_get_monitors_cookie_t,
     >,
     xcb_randr_get_monitors_monitors_length:
-        LazySymbol<unsafe fn(r: *const xcb_randr_get_monitors_reply_t) -> c_int>,
+        LazySymbol<unsafe extern "C" fn(r: *const xcb_randr_get_monitors_reply_t) -> c_int>,
     xcb_randr_get_monitors_monitors_iterator: LazySymbol<
-        unsafe fn(r: *const xcb_randr_get_monitors_reply_t) -> xcb_randr_monitor_info_iterator_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_get_monitors_reply_t,
+        ) -> xcb_randr_monitor_info_iterator_t,
     >,
     xcb_randr_get_monitors_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_get_monitors_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_get_monitors_reply_t,
     >,
-    xcb_randr_set_monitor_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_set_monitor_sizeof: LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_set_monitor_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             monitorinfo: *mut xcb_randr_monitor_info_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_monitor: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             monitorinfo: *mut xcb_randr_monitor_info_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_set_monitor_monitorinfo: LazySymbol<
-        unsafe fn(r: *const xcb_randr_set_monitor_request_t) -> *mut xcb_randr_monitor_info_t,
+        unsafe extern "C" fn(
+            r: *const xcb_randr_set_monitor_request_t,
+        ) -> *mut xcb_randr_monitor_info_t,
     >,
     xcb_randr_delete_monitor_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             name: xcb_atom_t,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_delete_monitor: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             name: xcb_atom_t,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_create_lease_sizeof: LazySymbol<unsafe fn(_buffer: *const c_void) -> c_int>,
+    xcb_randr_create_lease_sizeof:
+        LazySymbol<unsafe extern "C" fn(_buffer: *const c_void) -> c_int>,
     xcb_randr_create_lease: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             lid: xcb_randr_lease_t,
@@ -4596,7 +4772,7 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_create_lease_cookie_t,
     >,
     xcb_randr_create_lease_unchecked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             window: xcb_window_t,
             lid: xcb_randr_lease_t,
@@ -4607,38 +4783,42 @@ pub(crate) struct XcbRandrRandr {
         ) -> xcb_randr_create_lease_cookie_t,
     >,
     xcb_randr_create_lease_reply: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             cookie: xcb_randr_create_lease_cookie_t,
             e: *mut *mut xcb_generic_error_t,
         ) -> *mut xcb_randr_create_lease_reply_t,
     >,
     xcb_randr_create_lease_reply_fds: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             reply: *mut xcb_randr_create_lease_reply_t,
         ) -> *mut c_int,
     >,
     xcb_randr_free_lease_checked: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             lid: xcb_randr_lease_t,
             terminate: u8,
         ) -> xcb_void_cookie_t,
     >,
     xcb_randr_free_lease: LazySymbol<
-        unsafe fn(
+        unsafe extern "C" fn(
             c: *mut xcb_connection_t,
             lid: xcb_randr_lease_t,
             terminate: u8,
         ) -> xcb_void_cookie_t,
     >,
-    xcb_randr_lease_notify_next: LazySymbol<unsafe fn(i: *mut xcb_randr_lease_notify_iterator_t)>,
-    xcb_randr_lease_notify_end:
-        LazySymbol<unsafe fn(i: xcb_randr_lease_notify_iterator_t) -> xcb_generic_iterator_t>,
-    xcb_randr_notify_data_next: LazySymbol<unsafe fn(i: *mut xcb_randr_notify_data_iterator_t)>,
-    xcb_randr_notify_data_end:
-        LazySymbol<unsafe fn(i: xcb_randr_notify_data_iterator_t) -> xcb_generic_iterator_t>,
+    xcb_randr_lease_notify_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_lease_notify_iterator_t)>,
+    xcb_randr_lease_notify_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_lease_notify_iterator_t) -> xcb_generic_iterator_t,
+    >,
+    xcb_randr_notify_data_next:
+        LazySymbol<unsafe extern "C" fn(i: *mut xcb_randr_notify_data_iterator_t)>,
+    xcb_randr_notify_data_end: LazySymbol<
+        unsafe extern "C" fn(i: xcb_randr_notify_data_iterator_t) -> xcb_generic_iterator_t,
+    >,
 }
 
 macro_rules! sym {
