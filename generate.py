@@ -166,7 +166,7 @@ def add_sym(name, params, rv='()', fn=True):
 
     _h_setlevel(1)
     if fn:
-        _h(f'    {name}: LazySymbol<unsafe fn({params_str}){fnrv}>,')
+        _h(f'    {name}: LazySymbol<unsafe extern "C" fn({params_str}){fnrv}>,')
     else:
         _h(f'    {name}: LazySymbol<{rv}>,')
 
